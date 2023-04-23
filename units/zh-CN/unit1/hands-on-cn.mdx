@@ -14,11 +14,11 @@
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/lunarLander.gif" alt="LunarLander">
 
-最后，你将**将这个训练有素的代理上传到 Hugging Face Hub 🤗，这是一个免费的开放平台，人们可以在其中共享 ML 模型、数据集和演示。**
+最后，你将**将这个训练有素的智能体上传到 Hugging Face Hub 🤗，这是一个免费的开放平台，人们可以在其中共享 ML 模型、数据集和演示。**
 
 感谢 <a href="https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard">leaderboard</a>, 你将能够与其他同学比较你的结果并交流最佳实践以提高智能体的分数。谁将赢得第 1 单元 🏆 的挑战？
 
-为了手动验证[认证过程](https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process), 你需要将你训练好的模型推送到仓库兵器获得结果 >=200.
+为了手动验证[认证过程](https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process), 你需要将你训练好的模型推送到Hub，并获得结果 >=200.
 
 找到你的结果 去 [leaderboard](https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard) 找到你的模型, **结果 = 平均奖励 - 标准差奖励**
 
@@ -70,7 +70,7 @@
 
 
 
-## 本笔记来源于深度学习教程
+## 本实践来源于深度学习教程
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/deep-rl-course-illustration.jpg" alt="Deep RL Course illustration"/>
 
 在本免费教程中你将会得到：
@@ -99,31 +99,22 @@
 
 - 强化学习是一种**从动作学习**的计算方法。我们建立了一个智能体，通过**通过试错**与环境进行互动，并获得奖励（负或正面）作为反馈。
 
-- 任何RL代理的目标是**最大化其预期的累积奖励**（也称为预期回报），因为 RL 基于 _Reward 假设_，即所有目标都可以描述为预期累积奖励的最大化。
+- 任何RL智能体的目标是**最大化其期望的累积奖励**（也称为期望回报），因为 RL 基于 _奖励假设_，即所有目标都可以描述为最大化期望累积奖励。
 
-- RL 过程是一个**循环，输出一系列状态，动作，奖励和下一个状态**。
+- RL 过程是一个**循环，该循环输出一个 **状态、动作、奖励 和 下一个状态的序列。**
 
-- 要计算预期的累积奖励（预期的回报），**我们打折奖励**：更早的奖励（在游戏开始时）更有可能发生，因为它们比长期未来更可预测报酬。
 
-- 要解决 RL 问题，你想**找到最佳策略**;该策略是你 AI 的“大脑”，它将告诉我们采取什么行动。最佳的是为你提供最大预期收益的动作。
+- 为了计算预期的累积奖励（期望回报），我们对奖励进行折扣：较早出现的奖励（在游戏开始时）**更有可能发生，因为它们比长期的未来奖励更可预测。* *
 
-有**两种**找到最佳策略的方法：
+- 要解决 RL 问题，你需要**找到最优策略**。该策略是你智能体的“大脑”，它将告诉我们**在给定状态下采取什么动作。**最优策略**为你提供了最大化期望回报的动作。**
 
-- 通过**直接训练你的策略**：基于策略的方法。
+有两种方法可以找到你的最佳策略：
+- 通过直接训练你的策略：**基于策略的方法。**
+- 通过训练一个价值函数来告诉我们智能体在每个状态下将获得的预期回报，并使用这个函数来定义我们的策略：**基于价值的方法。**
 
-- 通过**训练价值函数**，告诉我们智能体将在每个状态下获得的返回期望，并使用此功能来定义我们的策略：基于价值的方法。
-
-*斜体文本* - 最后，我们谈到了深度 RL ，因为 **我们介绍了深层神经网络，采取基本策略估计动作或采取价值策略估计价值状态，因此叫“深度”。”**
+*斜体文本* - 最后，我们谈到深度强化学习，因为我们引入了**深度神经网络来估计要采取的动作（基于策略）或估计状态的价值（基于价值），因此得名“深度”。**
 
 # 让我们训练我们的第一个深度强化学习智能体，然后将其上传到hub 🚀
-
-
-## 获取证书
-未了验证[认证过程](https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process)你需要将你训练好的模型推送到仓库并且获得**结果》=200** .
-
-要查找结果, 去 [leaderboard](https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard) 版面查找你的模型, **结果= 平均奖励 - 标准差奖励**
-
-获取更多认证相关信息点击右边连接 👉 https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process
 
 ## 设置GPU 💪
 - 为了**加速智能体训练,我们将会用到 GPU **。这里设置 `Runtime > Change Runtime type`
@@ -166,7 +157,7 @@
 !pip3 install pyvirtualdisplay
 ```
 
-为了确保使用新的已安装库，**有时需要重新启动笔记本运行时**。下一个单元将迫使**运行时崩溃，因此你需要再次连接并从这里开始运行代码。感谢你的技巧，**我们将能够运行虚拟屏幕。**
+为了确保使用新的已安装库，**有时需要重新启动笔记本运行时**。下一个单元将迫使**运行时崩溃，因此你需要再次连接并从这里开始运行代码。感谢这个技巧，**我们将能够运行虚拟屏幕。**
 
 
 ```python
@@ -222,7 +213,7 @@ Gym 库提供了两个事情：
 每一步:
 - 我们的智能体从**环境**接收**状态 S0** - 我们将收到游戏的第一帧（环境）。
 - 基于**状态 S0，**智能体采取 **动作 A0** - 我们的智能体将移动到右边
-- 环境将变成一个**新**的**状态 S1**框架.
+- 环境将变成一个**新**的**状态 S1**（新的一帧）.
 - 环境给智能体提供了一些**奖励 R1 ** - 我们还没有死*（正奖励 +1）*。.
 
 
@@ -242,7 +233,7 @@ Gym 库提供了两个事情：
 - `done`: 标记这轮是否完成
 - `info`: 一个提供额外信息的字典 (取决于环境).
 
-如果这轮完成:
+如果这个回合技术:
 - 我们重设环境初始状态  `observation = env.reset()`
 
 **让我们看一个例子!** 确保你读了代码
@@ -346,7 +337,7 @@ print("Action Space Sample", env.action_space.sample()) # Take a random action
 
 #### 矢量化环境
 
-- 我们创建了一个 16 矢量化环境（将多个独立环境堆积到一个环境中），这样，**我们在培训期间将拥有更多的多样化体验。** 
+- 我们创建了一个 16 矢量化环境（将多个独立环境堆积到一个环境中），这样，**我们在训练期间将拥有更多的多样化体验。** 
 
 
 ```python
@@ -360,7 +351,7 @@ env = make_vec_env('LunarLander-v2', n_envs=16)
 
 - 为此，我们将使用第一个深度 RL 库[stable Baselines3（sb3）]（https://stable-baselines3.readthedocs.io/en/master/）。
 
-- SB3 是 Pytorch **中强化学习算法的一组可靠的实现**。
+- SB3 是 PyTorch **中强化学习算法的一组可靠的实现**。
 
 ---
 💡使用库时，一个好习惯是首先查看文档： https：//stable-baselines3.readthedocs.io/en/master/ ，然后尝试一些教程。
@@ -373,9 +364,9 @@ env = make_vec_env('LunarLander-v2', n_envs=16)
 
 PPO 结合了下面：
 
-- *基于价值的强化学习方法*：学习一个动作值函数，该功能将告诉我们**最有价值的行动是采取给定状态和行动**的最有价值的行动。
+- *基于价值的强化学习方法*：学习一个动作价值函数，该功能将告诉我们**给定一个状态和动作时，最有价值的行动**。
 
-- *基于策略的强化学习方法*：学习将为我们提供的概率分配的策略**。
+- *基于策略的强化学习方法*：学习一个策略，该策略能够给我们动作的概率分布**。
 
 Stable-Baselines3 简易设置:
 
@@ -423,7 +414,7 @@ model = PPO(
 
 ##训练 PPO 智能体🏃
 
-- 让我们训练我们的智能体以1,000,000个时间步长训练，不要忘记在 COLAB 上使用 GPU 。大约需要约 20 分钟，但是如果你只想尝试一下，就可以使用更少的时间段。
+- 让我们训练我们的智能体以1,000,000个时间步长训练，不要忘记在 COLAB 上使用 GPU 。大约需要约 20 分钟，但是如果你只想尝试一下，就可以使用更少的时间步数。
 
 - 在训练期间，休息一下🤗
 
@@ -492,9 +483,9 @@ print(f"mean_reward={mean_reward:.2f} +/- {std_reward}")
 
 📚库文档👉https://github.com/huggingface/huggingface_sb3/tree/main#hugging-face-face--x-stable-baselines3-v20
 
-这是模型卡的示例（带有太空入侵者）：
+这是模型卡片的示例（带有太空入侵者）：
 
-通过使用 `package_to_hub` **你评估，记录一个重演，生成智能体的型号卡并将其推到仓库**。
+通过使用 `package_to_hub` **你评估，记录一个重演，生成智能体的模型卡片并将其推到仓库**。
 
 这边：
 
@@ -535,7 +526,7 @@ notebook_login()
 
 - `model_name`：我们在``model_save''中定义的训练模型的名称
 
-- `model_architecture`：我们使用的模型体系结构：在我们的情况下PPO
+- `model_architecture`：我们使用的模型体系结构：在我们的情况下的PPO
 
 - `env_id`：环境的名称，在我们的情况下`lunarlander-v2`
 
@@ -629,7 +620,7 @@ package_to_hub(model=model, # Our trained model
 
 恭喜🥳你刚刚训练并上传了第一个深度强化学习智能体。上面的脚本应显示指向模型存储库的链接，例如 https://huggingface.co/osanseviero/test_sb3。当你转到此链接时，你可以：
 
-- 在右侧查看你的代理商的视频预览。
+- 在右侧查看你的智能体的视频预览。
 
 - 单击“文件和版本”以查看存储库中的所有文件。
 
