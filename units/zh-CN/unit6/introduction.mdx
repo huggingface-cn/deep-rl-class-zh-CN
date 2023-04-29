@@ -1,25 +1,25 @@
-# Introduction [[introduction]]
-
+# 介绍[[introduction]]
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/thumbnail.png"  alt="Thumbnail"/>
 
-In unit 4, we learned about our first Policy-Based algorithm called **Reinforce**.
+在第 4 单元中，我们了解了我们的第一个基于策略的算法，称为 **强化**。
 
-In Policy-Based methods, **we aim to optimize the policy directly without using a value function**. More precisely, Reinforce is part of a subclass of *Policy-Based Methods* called *Policy-Gradient methods*. This subclass optimizes the policy directly by **estimating the weights of the optimal policy using Gradient Ascent**.
+在基于策略的方法中，**我们的目标是直接优化策略而不使用价值函数**。 更准确地说，Reinforce（强化） 是 *Policy-Based Methods* （基于策略的方法）子类的一部分，称为 *Policy-Gradient methods*（策略梯度方法）。 该子类通过**使用梯度上升**估计最优策略的权重来直接优化策略。
 
-We saw that Reinforce worked well. However, because we use Monte-Carlo sampling to estimate return (we use an entire episode to calculate the return), **we have significant variance in policy gradient estimation**.
+我们看到 Reinforce 运作良好。 然而，因为我们使用蒙特卡洛采样来估计回报（我们使用整个事件来计算回报），**我们在策略梯度估计方面存在显着差异**。
 
-Remember that the policy gradient estimation is **the direction of the steepest increase in return**. In other words, how to update our policy weights so that actions that lead to good returns have a higher probability of being taken. The Monte Carlo variance, which we will further study in this unit, **leads to slower training since we need a lot of samples to mitigate it**.
+请记住，策略梯度估计是**回报增长最快的方向**。 换句话说，如何更新我们的政策权重，使带来良好回报的行动更有可能被采取。 我们将在本单元中进一步研究的蒙特卡洛方差**导致训练速度变慢，因为我们需要大量样本来减轻它**。
 
-So, today we'll study **Actor-Critic methods**, a hybrid architecture combining value-based and Policy-Based methods that help to stabilize the training by reducing the variance:
-- *An Actor* that controls **how our agent behaves** (Policy-Based method)
-- *A Critic* that measures **how good the taken action is** (Value-Based method)
+因此，今天我们将研究 **演员--评论家 方法**，这是一种结合了基于价值和基于策略的方法的混合架构，通过减少方差来帮助稳定训练：
 
+- *一个 人物* 控制 **我们的 智能体 的行为方式**（基于策略的方法）
+- *评论家* 衡量 **采取的行动的好坏** (基于价值的方法)
 
-We'll study one of these hybrid methods, Advantage Actor Critic (A2C), **and train our agent using Stable-Baselines3 in robotic environments**. We'll train two robots:
-- A spider 🕷️ to learn to move.
-- A robotic arm 🦾 to move in the correct position.
+我们将研究其中一种混合方法 高级演员--评论家方法 (A2C)，**并在机器人环境中使用 Stable-Baselines3 训练我们的代理**。 我们将训练两个机器人：
+
+- 一个蜘蛛🕷️正在学习如何移动。
+- 一个机械臂 🦾 正在移动向正确的位置。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/environments.gif" alt="Environments"/>
 
-Sounds exciting? Let's get started!
+听起来很令人兴奋？ 让我们开始吧！
