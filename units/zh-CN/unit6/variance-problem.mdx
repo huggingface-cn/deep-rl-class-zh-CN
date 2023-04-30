@@ -1,0 +1,28 @@
+# 强化中的方差问题 [[the-problem-of-variance-in-reinforce]]
+
+在 强化 中，我们想要**增加与回报率成正比的轨迹中的动作概率**。
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/pg.jpg"  alt="Reinforce"/>
+
+- 如果**回报率高**，我们将**提高**（状态，动作）组合的概率。
+- 否则，如果**回报率低**，它会**压低**（状态、动作）组合的概率。
+
+这个回报 \\(R(\tau)\\) 是使用*蒙特卡洛采样*计算的。 我们收集轨迹并计算折扣回报，**并使用该分数来增加或减少在该轨迹中采取的每个动作的概率**。 如果回报良好，所有行动都将通过增加采取行动的可能性来“加强”。
+
+\\(R(\tau) = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ...\\)
+
+这种方法的优点是**它是无偏的， 由于我们没有估算回报**，因此我们仅使用我们获得的真实回报。
+
+鉴于环境的随机性(事件中的随机事件)和政策的随机性，**轨迹可能导致不同的回报，这可能导致高方差。**因此，相同的起始状态可能导致非常不同的回报。
+正因为如此，**从同一状态开始的回归在不同的时期之间可能会有很大的不同。**
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/variance.jpg" alt="variance"/>
+
+解决方案是通过**使用大量轨迹来减轻方差，希望在任何一个轨迹中引入的方差将总体减少，并提供对回报的“真实”估计。**
+
+然而，增加 batch size 大小会显着**降低样本效率**。 所以我们需要找到额外的机制来减少方差。
+
+如果你想更深入地研究深度强化学习中的方差和偏差权衡问题，你可以查看这两篇文章：
+
+- [Making Sense of the Bias / Variance Trade-off in (Deep) Reinforcement Learning](https://blog.mlreview.com/making-sense-of-the-bias-variance-trade-off-in-deep-reinforcement-learning-79cf1e83d565)
+- [Bias-variance Tradeoff in Reinforcement Learning](https://www.endtoend.ai/blog/bias-variance-tradeoff-in-reinforcement-learning/)
