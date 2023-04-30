@@ -1,70 +1,72 @@
-# Advantage Actor-Critic (A2C) [[advantage-actor-critic]]
+# 高阶演员--评论家（A2C)方法[[advantage-actor-critic]]
 
-## Reducing variance with Actor-Critic methods
+## 使用演员--评论家方法减少方差
 
-The solution to reducing the variance of the Reinforce algorithm and training our agent faster and better is to use a combination of Policy-Based and Value-Based methods: *the Actor-Critic method*.
+减少强化学习算法的方差并更快更好地训练我们的智能体的解决方案是结合使用基于策略和基于价值的方法：*演员--评论家 方法*。
 
-To understand the Actor-Critic, imagine you play a video game. You can play with a friend that will provide you with some feedback. You're the Actor and your friend is the Critic.
+要了解*演员--评论家*方法，请想象您玩电子游戏。 你可以和一个朋友一起玩，他会给你一些反馈。 此种情况下，你是演员，你的朋友是评论家。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/ac.jpg" alt="Actor Critic"/>
 
-You don't know how to play at the beginning, **so you try some actions randomly**. The Critic observes your action and **provides feedback**.
+一开始你不知道怎么玩，**所以你随机尝试一些动作**。 评论家会观察您的行为并**提供反馈**。
 
-Learning from this feedback, **you'll update your policy and be better at playing that game.**
+从此反馈中学习，**您将更新您的策略并更好地玩该游戏。**
 
-On the other hand, your friend (Critic) will also update their way to provide feedback so it can be better next time.
+另一方面，您的朋友（评论家）也会更新他们提供反馈的方式，以便下次可以做得更好。
 
-This is the idea behind Actor-Critic. We learn two function approximations:
+这就是“演员--评论家”方法背后的理念。我们学习了两个函数近似:
 
-- *A policy* that **controls how our agent acts**: \\( \pi_{\theta}(s,a) \\)
+- *一项策略*，**控制我们的智能体如何行事**: \\( \pi_{\theta}(s,a) \\)
+- *一个价值函数*  ，通过衡量所采取的行动有多好来协助政策更新: \\( \hat{q}_{w}(s,a) \\)
 
-- *A value function* to assist the policy update by measuring how good the action taken is: \\( \hat{q}_{w}(s,a) \\)
+## 演员--评论家方法实现过程
 
-## The Actor-Critic Process
-Now that we have seen the Actor Critic's big picture, let's dive deeper to understand how Actor and Critic improve together during the training.
+现在我们已经有了对 Actor--Critic 方法的全面的总体看法，让我们更深入地了解 演员 和 评论家 在训练过程中是如何一起改进的。
 
-As we saw, with Actor-Critic methods, there are two function approximations (two neural networks):
-- *Actor*, a **policy function** parameterized by theta: \\( \pi_{\theta}(s,a) \\)
-- *Critic*, a **value function** parameterized by w: \\( \hat{q}_{w}(s,a) \\)
+正如我们所见，对于 Actor-Critic 方法，有两个函数近似（两个神经网络）：
 
-Let's see the training process to understand how Actor and Critic are optimized:
-- At each timestep, t, we get the current state \\( S_t\\) from the environment and **pass it as input through our Actor and Critic**.
+- *Actor*，一个参数化的**策略函数** theta: \\( \pi_{\theta}(s,a) \\)
+- *Critic*，一个参数化的**价值函数** w: \\( \hat{q}_{w}(s,a) \\)
 
-- Our Policy takes the state and **outputs an action**  \\( A_t \\).
+让我们看看训练过程，了解 演员 和 评论家 是如何优化的：
+
+- 在每个时间步长 t，我们从环境中得到当前状态 \\( S_t\\) 并将其**通过我们的演员和评论家**作为输入传递。
+- 我们的训练策略接收状态并**输出一个动作** \\( A_t \\)。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step1.jpg" alt="Step 1 Actor Critic"/>
 
-- The Critic takes that action also as input and, using \\( S_t\\) and \\( A_t \\), **computes the value of taking that action at that state: the Q-value**.
+- 评论家也将该动作作为输入，并使用 \\( S_t\\) 和 \\( A_t \\)，**计算在该状态下采取该动作的值：Q 值**。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step2.jpg" alt="Step 2 Actor Critic"/>
 
-- The action \\( A_t\\) performed in the environment outputs a new state \\( S_{t+1}\\) and a reward \\( R_{t+1} \\) .
+- 在环境中执行的动作 \\( A_t\\) 输出一个新状态 \\( S_{t+1}\\) 和一个奖励 \\( R_{t+1} \\) 。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step3.jpg" alt="Step 3 Actor Critic"/>
 
-- The Actor updates its policy parameters using the Q value.
+- Actor 使用 Q 值更新其策略参数。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step4.jpg" alt="Step 4 Actor Critic"/>
 
-- Thanks to its updated parameters, the Actor produces the next action to take at \\( A_{t+1} \\) given the new state \\( S_{t+1} \\).
-
-- The Critic then updates its value parameters.
+- 由于其更新的参数，在给定新状态 \\( S_{t+1} \\) 的情况下，Actor 会在 \\( A_{t+1} \\) 处产生要采取的下一个动作。
+- 然后 评论家 更新它的参数的值。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step5.jpg" alt="Step 5 Actor Critic"/>
 
 ## Adding Advantage in Actor-Critic (A2C)
-We can stabilize learning further by **using the Advantage function as Critic instead of the Action value function**.
 
-The idea is that the Advantage function calculates the relative advantage of an action compared to the others possible at a state: **how taking that action at a state is better compared to the average value of the state**. It's subtracting the mean value of the state from the state action pair:
+我们可以通过**使用 优势函数 作为 评论家 以替代 动作值函数** 来进一步稳定学习。
+
+这个想法是 优势函数 计算一个动作与一个状态下可能的其他动作相比的相对优势：**与状态的平均值相比，在一个状态下采取该动作如何更好**。 它是从状态动作对中减去状态的平均值：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/advantage1.jpg" alt="Advantage Function"/>
 
-In other words, this function calculates **the extra reward we get if we take this action at that state compared to the mean reward we get at that state**.
+换句话说，这个函数计算**如果我们在那个状态下采取这个行动，我们得到的额外奖励和我们在那个状态下得到的平均奖励相比较的结果**。
 
-The extra reward is what's beyond the expected value of that state.
-- If A(s,a) > 0: our gradient is **pushed in that direction**.
-- If A(s,a) < 0 (our action does worse than the average value of that state), **our gradient is pushed in the opposite direction**.
+额外的奖励是超出预期价值的东西。
 
-The problem with implementing this advantage function is that it requires two value functions —  \\( Q(s,a)\\) and  \\( V(s)\\). Fortunately, **we can use the TD error as a good estimator of the advantage function.**
+- 如果 A(s,a) > 0: 我们的梯度被**推向那个方向**。
+- 如果 A(s,a) < 0 （我们的行动确实比那个状态的平均值差），**我们的梯度被推向相反的方向**。
+
+实现这个优势函数的问题在于它需要两个值函数——\\( Q(s,a)\\) 和 \\( V(s)\\)。 幸运的是，**我们可以使用 TD 误差作为优势函数的良好估计量。**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/advantage2.jpg" alt="Advantage Function"/>
