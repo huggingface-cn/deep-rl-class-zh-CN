@@ -1,23 +1,22 @@
 # 什么是强化学习？ [[what-is-rl]]
 
-要了解强化学习，让我们从下面这张图开始。
+要了解强化学习，让我们从宏观角度开始。
 
 ## 图 [[graph]]
 
-强化学习背后的想法是，智能体（AI）将在环境中通过 **交互**（通过实验和报错）和 **反馈奖励** （负面或正面）执行动作。
+强化学习背后的想法是，智能体（AI）将在环境中通过 **交互**（通过试错）和 **接收的奖励** （负面或正面）执行动作。
 
 从与环境的互动中学习**来自我们的自然经验。**
 
 例如，想象一下，将你的弟弟放在他从未玩过的视频游戏前，给他一个控制器，然后让他一个人呆着。
 
-
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/Illustration_1.jpg" alt="Illustration_1" width="100%">
 
-你的兄弟将与环境（视频游戏）通过按压右键（动作）进行互动。他获得了一枚硬币，并获得了 +1 的奖励。这是积极的，因为他知道在游戏中 **必须获得金币** 。
+你的弟弟将与环境（视频游戏）通过按压右键（动作）进行互动。他获得了一枚金币，并获得了 +1 的奖励。这是正面的，因为他知道在游戏中 **必须获得金币** 。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/Illustration_2.jpg" alt="Illustration_2" width="100%">
 
-"然而，当他再次向 **右压** 时，他撞到了一个敌人。由于他刚刚死了，因此这是一个 -1 的奖励。"
+"然而，当他再次向 **按右键** 时，他撞到了一个敌人。由于他刚刚死了，因此这是一个 -1 的奖励。"
 
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/Illustration_3.jpg" alt="Illustration_3" width="100%">
@@ -34,7 +33,7 @@
 如果我们现在采用正式定义：
 
 <tip>
-强化学习是一种通过智能体与环境交互，学习通过获得奖励（正面或负面）来解决控制任务的框架。
+强化学习是一种框架，该框架构建智能体与环境交互，让智能体通过试错和获得唯一的反馈（正面或负面奖励）来解决控制任务（也称为决策问题）。
 </tip>
 
 但是强化学习是如何工作的呢？
