@@ -1,39 +1,39 @@
-# The Pyramid environment
+# Pyramids 环境
 
-The goal in this environment is to train our agent to **get the gold brick on the top of the Pyramid. To do that, it needs to press a button to spawn a Pyramid, navigate to the Pyramid, knock it over, and move to the gold brick at the top**.
+在这种环境下我们的目标是训练我们的智能体**获得金字塔顶端的金砖。为此，它需要按下一个按钮来生成金字塔，导航到金字塔，将其推倒，然后移动到顶部的金砖。**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/pyramids.png" alt="Pyramids Environment"/>
 
 
-## The reward function
+## 奖励函数：
 
-The reward function is:
+奖励函数如下：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/pyramids-reward.png" alt="Pyramids Environment"/>
 
-In terms of code, it looks like this
+在代码方面，他看起来像这样
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/pyramids-reward-code.png" alt="Pyramids Reward"/>
 
-To train this new agent that seeks that button and then the Pyramid to destroy, we’ll use a combination of two types of rewards:
+为了训练这个新的智能体去寻找那个按钮并且之后去摧毁金字塔，我们结合了以下两种奖励机制：
 
-- The *extrinsic one* given by the environment (illustration above).
-- But also an *intrinsic* one called **curiosity**. This second will **push our agent to be curious, or in other terms, to better explore its environment**.
+- 环境所给的*外在条件*(上述描述的)。
+- 但是同样结合*内部*称之为**好奇心**的机制。这个第二种机制将会**让你的智能体变得更好奇，换句话说，这将会帮助你更好探索环境**。
 
-If you want to know more about curiosity, the next section (optional) will explain the basics.
+如果你想对好奇心机制了解更多，下一部分(选修)将会解释其基本原理。
 
-## The observation space
+## 观察空间
 
-In terms of observation, we **use 148 raycasts that can each detect objects** (switch, bricks, golden brick, and walls.)
+在观察方面，我们**使用了 148 个光线投射，每个光线投射都可以检测物体**(开关，砖块，金砖和墙壁)。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/pyramids_raycasts.png"/>
 
-We also use a **boolean variable indicating the switch state** (did we turn on or off the switch to spawn the Pyramid) and a vector that **contains the agent’s speed**.
+我们还使用一个**布尔变量来指示开关状态**（我们是打开还是关闭开关来生成金字塔）和一个**包含智能体速度的向量。**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/pyramids-obs-code.png" alt="Pyramids obs code"/>
 
 
-## The action space
+## 动作空间
 
-The action space is **discrete** with four possible actions:
+动作空间是**离散的**，有以下四种可能动作：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/pyramids-action.png" alt="Pyramids Environment"/>

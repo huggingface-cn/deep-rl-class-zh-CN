@@ -1,68 +1,68 @@
-# How do Unity ML-Agents work? [[how-mlagents-works]]
+# Unity ML-Agents 是怎样工作的? [[how-mlagents-works]]
 
-Before training our agent, we need to understand **what ML-Agents is and how it works**.
+在训练我们的智能体前 ，我们需要理解 **什么是 ML-Agents 并且他是怎么工作的**。
 
-## What is Unity ML-Agents? [[what-is-mlagents]]
+## 什么是 Unity ML-Agents? [[what-is-mlagents]]
 
-[Unity ML-Agents](https://github.com/Unity-Technologies/ml-agents) is a toolkit for the game engine Unity that **allows us to create environments using Unity or use pre-made environments to train our agents**.
+[Unity ML-Agents](https://github.com/Unity-Technologies/ml-agents) 是游戏引擎 Unity 的一个工具包，**这个工具包允许我们使用 Unity 创建环境或者用预置环境来训练我们的智能体**。
 
-It’s developed by [Unity Technologies](https://unity.com/), the developers of Unity, one of the most famous Game Engines used by the creators of Firewatch, Cuphead, and Cities: Skylines.
+ML-Agents 是 [Unity Technologies](https://unity.com/)， Unity 的开发者们， 研发的。该引擎是 Firewatch, Cuphead, 和 Cities: Skylines 等游戏创作者使用的最著名的游戏引擎之一。
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit5/firewatch.jpeg" alt="Firewatch"/>
-<figcaption>Firewatch was made with Unity</figcaption>
+<figcaption>Unity 制作的 Firewatch </figcaption>
 </figure>
 
-## The six components [[six-components]]
+## 六个组成部分 [[six-components]]
 
-With Unity ML-Agents, you have six essential components:
+在 Unity ML-Agents 中, 你有六个非常重要的部分：
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit5/mlagents-1.png" alt="MLAgents"/>
-<figcaption>Source: <a href="https://unity-technologies.github.io/ml-agents/">Unity ML-Agents Documentation</a> </figcaption>
+<figcaption>来源：<a href="https://unity-technologies.github.io/ml-agents/">Unity ML-Agents 文档</a> </figcaption>
 </figure>
 
-- The first is the *Learning Environment*, which contains **the Unity scene (the environment) and the environment elements** (game characters).
-- The second is the *Python Low-level API*, which contains **the low-level Python interface for interacting and manipulating the environment**. It’s the API we use to launch the training.
-- Then, we have the *External Communicator* that **connects the Learning Environment (made with C#) with the low level Python API (Python)**.
-- The *Python trainers*: the **Reinforcement algorithms made with PyTorch (PPO, SAC…)**.
-- The *Gym wrapper*: to encapsulate RL environment in a gym wrapper.
-- The *PettingZoo wrapper*: PettingZoo is the multi-agents of gym wrapper.
+- 第一个部分就是 *Learning Environment*, 这个部分包含了** Unity 场景 (环境) 和环境元素** (游戏角色)。
+- 第二个部分是 *Python Low-level API*, 这个部分包含了**低等级 Python 接口，其作用是用来交互和操作环境的**。这是我们用来开始训练的 API。
+- 然后是 *External Communicator* ，**这部分连接了学习环境(用 C# 编写的) 和低等级 Python API**。
+- *Python trainers*: **使用 PyTorch 制作的强化算法(PPO、SAC……)**。
+- *Gym wrapper*: 将 RL 环境封装在 gym wrapper 中。
+- *PettingZoo wrapper*: PettingZoo 是多智能体的 gym wrapper。
 
-## Inside the Learning Component [[inside-learning-component]]
+## 学习组件内部 [[inside-learning-component]]
 
-Inside the Learning Component, we have **three important elements**:
+在学习组件中，我们有**三个重要元素**：
 
-- The first is the *agent component*, the actor of the scene. We’ll **train the agent by optimizing its policy** (which will tell us what action to take in each state). The policy is called *Brain*.
-- Finally, there is the *Academy*. This component **orchestrates agents and their decision-making processes**. Think of this Academy as a teacher who handles Python API requests.
+- 首先是**智能体组件**，是场景的演员。我们**将通过优化其策略**(这将告诉我们在每个状态下采取什么动作)来训练训练智能体。该策略称为 *Brain*。
+- 最后，还有 *学院*。该组件**协调智能体及其决策过程**。将这个学院想象成处理 Python API 请求的老师。
 
-To better understand its role, let’s remember the RL process. This can be modeled as a loop that works like this:
+为了更好地理解它的作用，让我们记住 RL 过程。这可以建模为一个循环，其工作方式如下：
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/RL_process.jpg" alt="The RL process" width="100%">
-<figcaption>The RL Process: a loop of state, action, reward and next state</figcaption>
-<figcaption>Source: <a href="http://incompleteideas.net/book/RLbook2020.pdf">Reinforcement Learning: An Introduction, Richard Sutton and Andrew G. Barto</a></figcaption>
+<figcaption>RL 过程：状态、动作、奖励和下一个状态的循环</figcaption>
+<figcaption>来源： <a href="http://incompleteideas.net/book/RLbook2020.pdf">强化学习：简介，Richard Sutton 和 Andrew G. BartoSource:</a></figcaption>
 </figure>
 
-Now, let’s imagine an agent learning to play a platform game. The RL process looks like this:
+现在，让我们想象一个智能体学习玩平台游戏。RL 过程如下所示：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/RL_process_game.jpg" alt="The RL process" width="100%">
 
-- Our Agent receives **state  \\(S_0\\)** from the **Environment** — we receive the first frame of our game (Environment).
-- Based on that **state \\(S_0\\),** the Agent takes **action \\(A_0\\)** — our Agent will move to the right.
-- Environment goes to a **new** **state \\(S_1\\)** — new frame.
-- The environment gives some **reward \\(R_1\\)** to the Agent — we’re not dead *(Positive Reward +1)*.
+- 我们的智能体从**环境**接收**状态 \\(S_0\\)** —这是我们接收我们游戏(环境)的第一帧。
+- 基于那个**状态 \\(S_0\\)，智能体采取**动作 \\(A_0\\)** —我们的智能体将向又移动。
+- 环境会变化进入**新状态 \\(S_1\\)** — 新一帧。
+- 环境会给智能体一些**奖励 \\(R_1\\)**— 我们如果没有死*(正向奖励 +1)*。
 
-This RL loop outputs a sequence of **state, action, reward and next state.** The goal of the agent is to **maximize the expected cumulative reward**.
+这个 RL 循环输出一系列 **状态、动作、奖励和下一个状态**。智能体的目标是**最大化预期的累积奖励**。
 
-The Academy will be the one that will **send the order to our Agents and ensure that agents are in sync**:
+学院将向我们的智能体**发送命令并确保智能体的同步**：
 
-- Collect Observations
-- Select your action using your policy
-- Take the Action
-- Reset if you reached the max step or if you’re done.
+- 收集观察
+- 使用你的策略选择你的动作
+- 采取动作
+- 如果你达到最大步数或完成，请重置。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit5/academy.png" alt="The MLAgents Academy" width="100%">
 
 
-Now that we understand how ML-Agents works, **we’re ready to train our agents.**
+既然我们了解了 ML-Agents 的工作原理，**我们就可以训练我们的智能体了**。

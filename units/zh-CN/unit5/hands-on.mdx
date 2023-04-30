@@ -1,4 +1,4 @@
-# Hands-on
+# 动手尝试
 
 <CourseFloatingBanner classNames="absolute z-10 right-0 top-0"
 notebooks={[
@@ -7,71 +7,70 @@ notebooks={[
   askForHelpUrl="http://hf.co/join/discord" />
 
 
-We learned what ML-Agents is and how it works. We also studied the two environments we're going to use. Now we're ready to train our agents!
+我们了解了 ML-Agents 是什么以及它是如何工作的。我们还研究了我们将要使用的两种环境。现在我们准备好训练我们的智能体了！
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/envs.png" alt="Environments" />
 
-The ML-Agents integration on the Hub **is still experimental**. Some features will be added in the future. But for now, to validate this hands-on for the certification process, you just need to push your trained models to the Hub.
-There are no minimum results to attain to validate this Hands On. But if you want to get nice results, you can try to reach the following:
+Hub 上的 ML-Agents 部分**仍处于试验阶段**。将来会添加一些功能。但就目前而言，要验证认证过程的实际操作，你只需将经过训练的模型推送到 Hub 上。验证此动手尝试没有最低限度结果。但如果你想获得不错的结果，你可以尝试在下面结果之上：
 
-- For [Pyramids](https://singularite.itch.io/pyramids): Mean Reward = 1.75
-- For [SnowballTarget](https://singularite.itch.io/snowballtarget): Mean Reward = 15 or 30 targets shoot in an episode.
+- 针对 [Pyramids 环境](https://singularite.itch.io/pyramids): 平均奖励 = 1.75
+- 针对 [SnowballTarget 环境](https://singularite.itch.io/snowballtarget): 平均奖励 = 一回合 15 或 30 个目标射击。
 
-For more information about the certification process, check this section 👉 https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process
+有关认证过程的更多信息，请查看此部分 👉 https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process
 
-**To start the hands-on, click on Open In Colab button** 👇 :
+**点击下方开始尝试本次实验** 👇 :
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit5/unit5.ipynb)
 
-# Unit 5: An Introduction to ML-Agents
+# 第 5 单元： ML-Agents 简介
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/thumbnail.png" alt="Thumbnail"/>
 
-In this notebook, you'll learn about ML-Agents and train two agents.
+在本 notebook 中， 你将了解 ML-Agents 并训练两个智能体。
 
-- The first one will learn to **shoot snowballs onto spawning targets**.
-- The second need to press a button to spawn a pyramid, then navigate to the pyramid, knock it over, **and move to the gold brick at the top**. To do that, it will need to explore its environment, and we will use a technique called curiosity.
+- 第一个将学习**将雪球射到生成的目标上**。
+- 第二个需要按一个按钮来生成金字塔，然后导航到金字塔，将其打倒，**然后移动到顶部的金砖**。为此，它需要探索其环境，我们将使用一种称为好奇心的技术。
 
-After that, you'll be able **to watch your agents playing directly on your browser**.
+之后，你将能够直接在**浏览器上观看你的智能体运行。**
 
-For more information about the certification process, check this section 👉 https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process
+有关认证过程的更多信息，请查看此部分 👉 https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process
 
-⬇️ Here is an example of what **you will achieve at the end of this unit.** ⬇️
+⬇️ **这是您将在本单元结束时实现**的示例。⬇️
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/pyramids.gif" alt="Pyramids"/>
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballtarget.gif" alt="SnowballTarget"/>
 
-### 🎮 Environments:
+### 🎮 环境:
 
 - [Pyramids](https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Learning-Environment-Examples.md#pyramids)
 - SnowballTarget
 
-### 📚 RL-Library:
+### 📚 RL-库:
 
-- [ML-Agents (HuggingFace Experimental Version)](https://github.com/huggingface/ml-agents)
+- [ML-Agents (HuggingFace 实验版本)](https://github.com/huggingface/ml-agents)
 
-⚠ We're going to use an experimental version of ML-Agents where you can push to Hub and load from Hub Unity ML-Agents Models **you need to install the same version**
+⚠ 我们将使用一个实验版本的 ML-Agents ，你可以将其推送到 Hub 并从 Hub 中加载 Unity ML-Agents 模型。请注意，**你需要安装相同的版本**。
 
-We're constantly trying to improve our tutorials, so **if you find some issues in this notebook**, please [open an issue on the GitHub Repo](https://github.com/huggingface/deep-rl-class/issues).
+我们会持续提升我们的教程质量，**如果你在本 notebook 中发现了什么问题**请 [在 Github Repo 上提出 issue](https://github.com/huggingface/deep-rl-class/issues)。
 
-## Objectives of this notebook 🏆
+## 本 notebook 的目标 🏆
 
-At the end of the notebook, you will:
+在 notebook 结束后，你将会得到：
 
-- Understand how works **ML-Agents**, the environment library.
-- Be able to **train agents in Unity Environments**.
+- 了解环境库和 **ML-Agents** 的工作原理。
+- 能够在 **Unity 环境中训练智能体**。
 
-## Prerequisites 🏗️
-Before diving into the notebook, you need to:
+## 前置准备 🏗️
+在进入 notebook 前，你需要：
 
-🔲 📚 **Study [what is ML-Agents and how it works by reading Unit 5](https://huggingface.co/deep-rl-course/unit5/introduction)**  🤗
+🔲 📚 ** 通过阅读第 5 单元内容学习[什么是 ML-Agents 并且他是怎么工作的](https://huggingface.co/deep-rl-course/unit5/introduction)**  🤗
 
-# Let's train our agents 🚀
+# 让我们训练我们的智能体 🚀
 
-## Set the GPU 💪
+## 设置 GPU  💪
 
-- To **accelerate the agent's training, we'll use a GPU**. To do that, go to `Runtime > Change Runtime type`
+- 为了 **加速智能体的训练，我们将使用 GPU**. 点击 `Runtime > Change Runtime type`
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/gpu-step1.jpg" alt="GPU Step 1">
 
@@ -79,8 +78,8 @@ Before diving into the notebook, you need to:
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/gpu-step2.jpg" alt="GPU Step 2">
 
-## Clone the repository and install the dependencies 🔽
-- We need to clone the repository that **contains the experimental version of the library that allows you to push your trained agent to the Hub.**
+## 克隆仓库并安装依赖 🔽
+- 我们需要克隆仓库，该仓库**包含该库的实验版本允许你将训练好的智能体推送到 Hub 上。**
 
 ```python
 %%capture
@@ -98,13 +97,13 @@ Before diving into the notebook, you need to:
 
 ## SnowballTarget ⛄
 
-If you need a refresher on how this environment works check this section 👉
+如果你需要回顾以下该环境怎么运行请查看这部分 👉
 https://huggingface.co/deep-rl-course/unit5/snowball-target
 
-### Download and move the environm  ent zip file in `./training-envs-executables/linux/`
-- Our environment executable is in a zip file.
-- We need to download it and place it to `./training-envs-executables/linux/`
-- We use a linux executable because we use colab, and colab machines OS is Ubuntu (linux)
+### 下载并移动环境 zip 文件到 `./training-envs-executables/linux/`
+- 我们的环境的可执行文件在一个 zip 文件中。
+- 我们需要下载它并将其放到 `./training-envs-executables/linux/`
+- 因为我们使用 colab 所以我们使用 Liunx 可执行文件，colab 的机器操作系统是 Ubuntu (linux)
 
 ```python
 # Here, we create training-envs-executables and linux
@@ -112,36 +111,35 @@ https://huggingface.co/deep-rl-course/unit5/snowball-target
 !mkdir ./training-envs-executables/linux
 ```
 
-Download the file SnowballTarget.zip from https://drive.google.com/file/d/1YHHLjyj6gaZ3Gemx1hQgqrPgSS2ZhmB5 using `wget`.
+用 `wget` 从 https://drive.google.com/file/d/1YHHLjyj6gaZ3Gemx1hQgqrPgSS2ZhmB5 下载文件 SnowballTarget.zip。
 
-Check out the full solution to download large files from GDrive [here](https://bcrf.biochem.wisc.edu/2021/02/05/download-google-drive-files-using-wget/)
+[在此处](https://bcrf.biochem.wisc.edu/2021/02/05/download-google-drive-files-using-wget/) 查看从 GDrive 下载大文件的完整解决方案
 
 ```python
 !wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1YHHLjyj6gaZ3Gemx1hQgqrPgSS2ZhmB5' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1YHHLjyj6gaZ3Gemx1hQgqrPgSS2ZhmB5" -O ./training-envs-executables/linux/SnowballTarget.zip && rm -rf /tmp/cookies.txt
 ```
 
-We unzip the executable.zip file
+解压 executable.zip 文件
 
 ```python
 %%capture
 !unzip -d ./training-envs-executables/linux/ ./training-envs-executables/linux/SnowballTarget.zip
 ```
 
-Make sure your file is accessible
+确保你的文件可访问
 
 ```python
 !chmod -R 755 ./training-envs-executables/linux/SnowballTarget
 ```
 
-### Define the SnowballTarget config file
-- In ML-Agents, you define the **training hyperparameters into config.yaml files.**
+### 定义 SnowballTarget 配置文件
+- 在 ML-Agents 中, 你需要在 config.yaml 文件中定义**训练的超参数**。
 
-There are multiple hyperparameters. To know them better, you should check for each explanation with [the documentation](https://github.com/Unity-Technologies/ml-agents/blob/release_20_docs/docs/Training-Configuration-File.md)
+这里有多种超参数。为了更好了解他们，你应该在[文档](https://github.com/Unity-Technologies/ml-agents/blob/release_20_docs/docs/Training-Configuration-File.md)中检查每个超参数的含义。
 
+你需要在 ./content/ml-agents/config/ppo/ 下创建一个 `SnowballTarget.yaml` 配置文件。
 
-You need to create a `SnowballTarget.yaml` config file in ./content/ml-agents/config/ppo/
-
-We'll give you here a first version of this config (to copy and paste into your `SnowballTarget.yaml file`), **but you should modify it**.
+我们将会给你第一版的配置(将其复制粘贴到 `SnowballTarget.yaml file`)，**但你需要优化它**
 
 ```yaml
 behaviors:
@@ -176,48 +174,48 @@ behaviors:
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballfight_config1.png" alt="Config SnowballTarget"/>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballfight_config2.png" alt="Config SnowballTarget"/>
 
-As an experiment, try to modify some other hyperparameters. Unity provides very [good documentation explaining each of them here](https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Training-Configuration-File.md).
+作为实验，尽量优化一些其他超参数。Unity 在这里提供了[非常好的文档去解释每一个超参数](https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Training-Configuration-File.md)。
 
-Now that you've created the config file and understand what most hyperparameters do, we're ready to train our agent 🔥.
+现在你已经创建了配置文件并且理解大部分超参数的含义，我们就准备开始训练我们的智能体了 🔥。
 
-### Train the agent
+### 训练智能体
 
-To train our agent, we need to **launch mlagents-learn and select the executable containing the environment.**
+为了训练我们的智能体，我们需要去**运行 mlagents-learn 并且选择可执行的环境容器。**
 
-We define four parameters:
+我们定义四个参数：
 
-1. `mlagents-learn <config>`: the path where the hyperparameter config file is.
-2. `--env`: where the environment executable is.
-3. `--run_id`: the name you want to give to your training run id.
-4. `--no-graphics`: to not launch the visualization during the training.
+1. `mlagents-learn <config>`: 超参数配置文件的路径。
+2. `--env`: 可执行环境位置。
+3. `--run_id`: 为你的训练运行 ID 指定名称。
+4. `--no-graphics`: 防止在训练中可视化。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/mlagentslearn.png" alt="MlAgents learn"/>
 
-Train the model and use the `--resume` flag to continue training in case of interruption.
+训练模型并且使用 `--resume` 标记在打断情况下继续训练。
 
-> It will fail the first time if and when you use `--resume`. Try rerunning the block to bypass the error.
+> 如果您使用了 `--resume` 参数，第一次运行可能会失败。请尝试重新运行该代码块以跳过错误。
 
-The training will take 10 to 35min depending on your config. Go take a ☕️you deserve it 🤗.
+训练将根据你的配置需要 10 至 35 分钟不等。去享受一杯 ☕️吧，你值得拥有它 🤗。
 
 ```bash
 !mlagents-learn ./config/ppo/SnowballTarget.yaml --env=./training-envs-executables/linux/SnowballTarget/SnowballTarget --run-id="SnowballTarget1" --no-graphics
 ```
 
-### Push the agent to the Hugging Face Hub
+### 将智能体推送到 Hugging Face Hub 
 
-- Now that we trained our agent, we’re **ready to push it to the Hub to be able to visualize it playing on your browser🔥.**
+- 现在我们已经训练了我们的智能体，我们**准备将它推送到 Hub，以便能够在你的浏览器上可视化播放它🔥。**
 
-To be able to share your model with the community, there are three more steps to follow:
+为了能够分享你的模型到社区，你需要遵循以下三个步骤：
 
-1️⃣ (If it's not already done) create an account to HF ➡ https://huggingface.co/join
+1️⃣ (如果没有) 创建一个 HF 账号 ➡ https://huggingface.co/join
 
-2️⃣ Sign in and store your authentication token from the Hugging Face website.
-- Create a new token (https://huggingface.co/settings/tokens) **with write role**
+2️⃣ 登陆, 从网站中获取认证 token。
+- 创建一个具有**写权限**的新 token (https://huggingface.co/settings/tokens)
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/create-token.jpg" alt="Create HF Token">
 
-- Copy the token
-- Run the cell below and paste the token
+- 复制 token
+- 运行下面单元格代码并粘贴 token
 
 ```python
 from huggingface_hub import notebook_login
@@ -225,21 +223,21 @@ from huggingface_hub import notebook_login
 notebook_login()
 ```
 
-If you don't want to use a Google Colab or a Jupyter Notebook, you need to use this command instead: `huggingface-cli login`
+如果你不想使用 Google Colab 或者 Jupyter Notebook，你需要用这行命令替代：`huggingface-cli login` (or `login`)
 
-Then, we need to run `mlagents-push-to-hf`.
+下面，我们需要运行 `mlagents-push-to-hf`.
 
-And we define four parameters:
+然后我们定义四个参数：
 
-1. `--run-id`: the name of the training run id.
-2. `--local-dir`: where the agent was saved, it’s results/<run_id name>, so in my case results/First Training.
-3. `--repo-id`: the name of the Hugging Face repo you want to create or update. It’s always <your huggingface username>/<the repo name>
-If the repo does not exist **it will be created automatically**
-4. `--commit-message`: since HF repos are git repository you need to define a commit message.
+1. `--run-id`: 训练运行 ID 的名字。
+2. `--local-dir`: 智能体保存位置，写为 results/<run_id name>, 这里我的例子是 results/First Training。
+3. `--repo-id`: 你想创建或更新Hugging Face repo。 格式是 <你的 huggingface 用户名>/<仓库名>
+如果仓库不存在**他会自动创建一个**
+4. `--commit-message`: 自动 HF 仓库使用 git 管理，你需要定义提交信息。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/mlagentspushtohub.png" alt="Push to Hub"/>
 
-For instance:
+示例：
 
 `!mlagents-push-to-hf  --run-id="SnowballTarget1" --local-dir="./results/SnowballTarget1" --repo-id="ThomasSimonini/ppo-SnowballTarget"  --commit-message="First Push"`
 
@@ -247,124 +245,127 @@ For instance:
 !mlagents-push-to-hf  --run-id= # Add your run id  --local-dir= # Your local dir  --repo-id= # Your repo id  --commit-message= # Your commit message
 ```
 
-Else, if everything worked you should have this at the end of the process(but with a different url 😆) :
+否则，如果一切正常，你应该在过程结束时有这个（但使用不同的 url 😆）：
 
 
 
 ```
-Your model is pushed to the hub. You can view your model here: https://huggingface.co/ThomasSimonini/ppo-SnowballTarget
+你的模型会被推送到 Hub。你可以在此处查看你的模型： https://huggingface.co/ThomasSimonini/ppo-SnowballTarget
 ```
 
-It's the link to your model. It contains a model card that explains how to use it, your Tensorboard, and your config file. **What's awesome is that it's a git repository, which means you can have different commits, update your repository with a new push, etc.**
+它是你模型的链接。它包含一张解释如何使用它的模型卡、你的 Tensorboard 和你的配置文件。**更棒的是它是一个 git 仓库，这意味着你可以有不同的提交，用新的推送更新你仓库，等等。**
 
-But now comes the best: **being able to visualize your agent online 👀.**
+但现在最好的部分来了：**可以在线可视化您的智能体 👀。**
 
-### Watch your agent playing 👀
+### 观看你的智能体 👀
 
-This step it's simple:
+步骤很简单：
 
-1. Remember your repo-id
+1. 记住你的 repo-id
 
-2. Go here: https://singularite.itch.io/snowballtarget
+2. 转到这里： https://singularite.itch.io/snowballtarget
 
-3. Launch the game and put it in full screen by clicking on the bottom right button
+3. 运行游戏并且通过右下角按钮进入全屏
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballtarget_load.png" alt="Snowballtarget load"/>
 
-1. In step 1, choose your model repository, which is the model id (in my case ThomasSimonini/ppo-SnowballTarget).
+1. 步骤 1 ，选择你的模型仓库I，就是你的模型 id(我这里是 ThomasSimonini/ppo-SnowballTarget)。
 
-2. In step 2, **choose what model you want to replay**:
-  - I have multiple ones since we saved a model every 500000 timesteps.
-  - But if I want the more recent I choose `SnowballTarget.onnx`
+2. 步骤 2，**选择你想要回放的模型**：
+  - 我每隔 500000 时间戳保存一次所以有多个模型。
+  - 但如果我们想要最近就选择 `SnowballTarget.onnx` 
 
-👉 What's nice **is to try different models steps to see the improvement of the agent.**
+👉 最好去**尝试不同的模型步骤看智能体的提升。**
 
-And don't hesitate to share the best score your agent gets on discord in #rl-i-made-this channel 🔥
 
-Let's now try a more challenging environment called Pyramids.
+不要犹豫，将你的智能体获得的最佳得分的分享到 Discord 上的 #rl-i-made-this 频道中 🔥
+
+现在让我们尝试更有挑战性的环境叫做 Pyramids。
 
 ## Pyramids 🏆
 
-### Download and move the environment zip file in `./training-envs-executables/linux/`
-- Our environment executable is in a zip file.
-- We need to download it and place it to `./training-envs-executables/linux/`
-- We use a linux executable because we use colab, and colab machines OS is Ubuntu (linux)
+### 下载并移动环境 zip 文件到 `./training-envs-executables/linux/`
+- 我们的环境的可执行文件在一个 zip 文件中。
+- 我们需要下载它并将其放到 `./training-envs-executables/linux/`
+- 因为我们使用 colab 所以我们使用 Liunx 可执行文件，colab 的机器操作系统是 Ubuntu (linux)
 
-Download the file Pyramids.zip from https://drive.google.com/uc?export=download&id=1UiFNdKlsH0NTu32xV-giYUEVKV4-vc7H using `wget`. Check out the full solution to download large files from GDrive [here](https://bcrf.biochem.wisc.edu/2021/02/05/download-google-drive-files-using-wget/)
+使用 `wget` 从 https://drive.google.com/uc?export=download&id=1UiFNdKlsH0NTu32xV-giYUEVKV4-vc7H 中下载 Pyramids.zip 文件。[在这里](https://bcrf.biochem.wisc.edu/2021/02/05/download-google-drive-files-using-wget/)查看从 GDrive 下载大文件的完整解决方案。
 
 ```python
 !wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1UiFNdKlsH0NTu32xV-giYUEVKV4-vc7H' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1UiFNdKlsH0NTu32xV-giYUEVKV4-vc7H" -O ./training-envs-executables/linux/Pyramids.zip && rm -rf /tmp/cookies.txt
 ```
 
-Unzip it
+解压它
 
 ```python
 %%capture
 !unzip -d ./training-envs-executables/linux/ ./training-envs-executables/linux/Pyramids.zip
 ```
 
-Make sure your file is accessible
+确保你的文件可访问
 
 ```python
 !chmod -R 755 ./training-envs-executables/linux/Pyramids/Pyramids
 ```
 
-###  Modify the PyramidsRND config file
-- Contrary to the first environment, which was a custom one, **Pyramids was made by the Unity team**.
-- So the PyramidsRND config file already exists and is in ./content/ml-agents/config/ppo/PyramidsRND.yaml
-- You might ask why "RND" is in PyramidsRND. RND stands for *random network distillation* it's a way to generate curiosity rewards. If you want to know more about that, we wrote an article explaining this technique: https://medium.com/data-from-the-trenches/curiosity-driven-learning-through-random-network-distillation-488ffd8e5938
+### 修改 PyramidsRND 配置文件
+- 与第一个环境不同，Pyramids **是由 Unity 团队制作的**。
+- PyramidsRND 配置文件已经存在于 ./content/ml-agents/config/ppo/PyramidsRND.yaml 中。
+- 你可能会问为什么 PyramidsRND 中有 “RND”。RND 代表*随机网络蒸馏*，这是一种生成好奇心奖励的方法。如果你想了解更多信息，请参阅我们撰写的有关该技术的文章：https://medium.com/data-from-the-trenches/curiosity-driven-learning-through-random-network-distillation-488ffd8e5938
 
-For this training, we’ll modify one thing:
-- The total training steps hyperparameter is too high since we can hit the benchmark (mean reward = 1.75) in only 1M training steps.
-👉 To do that, we go to config/ppo/PyramidsRND.yaml,**and modify these to max_steps to 1000000.**
+对于此次训练，我们将修改一项内容：
+- 总训练步骤超参数太高，因为我们只需要 100 万次训练步骤就可以达到基准(平均奖励=1.75)。
+👉 为此，我们进入 config/ppo/PyramidsRND.yaml，**并将 max_steps 修改为 1000000。**
+
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/pyramids-config.png" alt="Pyramids config"/>
 
-As an experiment, you should also try to modify some other hyperparameters. Unity provides very [good documentation explaining each of them here](https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Training-Configuration-File.md).
+作为实验，尽量优化一些其他超参数。Unity 在这里提供了[非常好的文档去解释每一个超参数](https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Training-Configuration-File.md)。
 
-We’re now ready to train our agent 🔥.
+我们现在准备好训练我们的智能体了 🔥。
 
-### Train the agent
+### 训练智能体
 
-The training will take 30 to 45min depending on your machine, go take a ☕️you deserve it 🤗.
+训练将根据你的配置需要 30 至 45 分钟不等。去享受一杯 ☕️吧，你值得拥有它 🤗。
 
 ```python
 !mlagents-learn ./config/ppo/PyramidsRND.yaml --env=./training-envs-executables/linux/Pyramids/Pyramids --run-id="Pyramids Training" --no-graphics
 ```
 
-### Push the agent to the Hugging Face Hub
+### 将智能体推送到 Hugging Face Hub 
 
-- Now that we trained our agent, we’re **ready to push it to the Hub to be able to visualize it playing on your browser🔥.**
+- 现在我们已经训练了我们的智能体，我们**准备将它推送到 Hub，以便能够在你的浏览器上可视化播放它🔥。**
 
 ```bash
 !mlagents-push-to-hf  --run-id= # Add your run id  --local-dir= # Your local dir  --repo-id= # Your repo id  --commit-message= # Your commit message
 ```
 
-### Watch your agent playing 👀
+### 观看你的智能体👀
 
-The temporary link for the Pyramids demo is: https://singularite.itch.io/pyramids
+Pyramids demo 的临时链接: https://singularite.itch.io/pyramids
 
-### 🎁 Bonus: Why not train on another environment?
-Now that you know how to train an agent using MLAgents, **why not try another environment?**
+### 🎁 奖励内容：为什么不在另一个环境上进行训练？
+现在你知道怎么用 MLAgents 训练一个智能体，**为什么不尝试另一个环境呢？
 
-MLAgents provides 18 different and we’re building some custom ones. The best way to learn is to try things of your own, have fun.
+MLAgents 提供了18种不同的环境，并且我们用的就是最寻常的一个。最好的学习方法是尝试自己的事情，从中获得乐趣。。
 
 ![cover](https://miro.medium.com/max/1400/0*xERdThTRRM2k_U9f.png)
 
-You have the full list of the one currently available on Hugging Face here 👉 https://github.com/huggingface/ml-agents#the-environments
+你有 Hugging Face 上当前可用的完整列表 👉 https://github.com/huggingface/ml-agents#the-environments
 
-For the demos to visualize your agent, the temporary link is: https://singularite.itch.io (temporary because we'll also put the demos on Hugging Face Space)
+对于可视化你的智能体示例，临时链接是：https://singularite.itch.io (临时链接，因为我们还将示例放在 Hugging Face Space 上)
 
-For now we have integrated:
-- [Worm](https://singularite.itch.io/worm) demo where you teach a **worm to crawl**.
-- [Walker](https://singularite.itch.io/walker) demo where you teach an agent **to walk towards a goal**.
+目前我们已经整合了：
+- [Worm](https://singularite.itch.io/worm) 教**蠕虫爬行**的示例。
+- [Walker](https://singularite.itch.io/walker) 教智能体**走向特定目标**的示例。
 
-If you want new demos to be added, please open an issue: https://github.com/huggingface/deep-rl-class 🤗
+如果你想加入一些新的示例，请开一个 issue: https://github.com/huggingface/deep-rl-class 🤗
 
-That’s all for today. Congrats on finishing this tutorial!
+这是今天的全部内容，恭喜完成本章教程！
 
-The best way to learn is to practice and try stuff. Why not try another environment? ML-Agents has 18 different environments, but you can also create your own? Check the documentation and have fun!
+最好的学习方法是练习和尝试。为什么不尝试另一个环境？ML-Agents 有 18 种不同的环境，但你也可以创建自己的环境，查看文档，玩得开心！
 
-See you on Unit 6 🔥,
 
-## Keep Learning, Stay awesome 🤗
+我们第 6 单元见 🔥,
+
+## 保持热爱，奔赴山海 🤗
