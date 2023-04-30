@@ -1,57 +1,59 @@
-# The SnowballTarget Environment
+# 环境 SnowballTarget
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballtarget.gif" alt="SnowballTarget"/>
 
-SnowballTarget is an environment we created at Hugging Face using assets from [Kay Lousberg](https://kaylousberg.com/). We have an optional section at the end of this Unit **if you want to learn to use Unity and create your environments**.
+SnowballTarget 是从 [Kay Lousberg](https://kaylousberg.com/) 在 Hugging Face 上创建的一个环境。**如果你想学习 Unity 去创建你的环境**，我们会在本单元末放置一个选择章节参考。
 
-## The agent's Goal
+## 智能体的目标
 
-The first agent you're going to train is called Julien the bear 🐻. Julien is trained **to hit targets with snowballs**.
+第一个将要训练的智能体叫 Julien the bear 🐻。 其中 Julien 是用来训练**用雪球击打目标的**
 
-The Goal in this environment is that Julien **hits as many targets as possible in the limited time** (1000 timesteps). It will need **to place itself correctly from the target and shoot**to do that.
+在当前环境下的目标是让 Julien **在有限的时间下尽可能的击打目标(1000 时间戳)**。这需要**根据目标正确放置位置并且向目标射击**。
 
-In addition, to avoid "snowball spamming" (aka shooting a snowball every timestep), **Julien has a "cool off" system** (it needs to wait 0.5 seconds after a shoot to be able to shoot again).
+此外，为了避免 “滥发雪球” (也认为每一个时间戳都发射雪球)，** Julien 有一个“冷却”系统**(这需要等 0.5s 才可以发射下一枚雪球)
+
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/cooloffsystem.gif" alt="Cool Off System"/>
 <figcaption>The agent needs to wait 0.5s before being able to shoot a snowball again</figcaption>
 </figure>
 
-## The reward function and the reward engineering problem
+## 奖励函数和奖励工程问题
 
-The reward function is simple. **The environment gives a +1 reward every time the agent's snowball hits a target**. Because the agent's Goal is to maximize the expected cumulative reward, **it will try to hit as many targets as possible**.
+奖励函数很简单，**每当智能体的小球击中目标，环境就会给一个 +1 的奖励**。因为智能体的目标是最大化期望累计奖励，**这会让他去击中尽可能多的目标**。
+
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballtarget_reward.png" alt="Reward system"/>
 
-We could have a more complex reward function (with a penalty to push the agent to go faster, for example). But when you design an environment, you need to avoid the *reward engineering problem*, which is having a too complex reward function to force your agent to behave as you want it to do.
-Why? Because by doing that, **you might miss interesting strategies that the agent will find with a simpler reward function**.
+我们可以有一个更复杂的奖励函数（例如，通过惩罚来推动智能体走得更快）。但是当你设计一个环境时，你需要避免奖励工程问题，它有一个过于复杂的奖励函数来迫使你的智能体按照你想要的方式行事。为什么？因为那样做，你可能会**错过你的智能体通过更简单的奖励函数找到有趣策略**。
 
-In terms of code, it looks like this:
+在代码方面，它看起来像这样：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballtarget-reward-code.png" alt="Reward"/>
 
 
-## The observation space
+## 观察空间
 
-Regarding observations, we don't use normal vision (frame), but **we use raycasts**.
+关于观察，我们不使用普通视觉（框架），而是**使用光线投射**。
 
-Think of raycasts as lasers that will detect if they pass through an object.
+将光线投射想象成激光，可以检测它们是否穿过物体。
+
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit5/raycasts.png" alt="Raycasts"/>
-<figcaption>Source: <a href="https://github.com/Unity-Technologies/ml-agents">ML-Agents documentation</a></figcaption>
+<figcaption>来源: <a href="https://github.com/Unity-Technologies/ml-agents">ML-Agents 文档</a></figcaption>
 </figure>
 
 
-In this environment, our agent has multiple set of raycasts:
+在这个环境中，我们的智能体有多个光线投射集：
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowball_target_raycasts.png" alt="Raycasts"/>
 
-In addition to raycasts, the agent gets a "can I shoot" bool as observation.
+除了光线投射之外，智能体还会得到一个“我可以射击”布尔值作为观察值。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballtarget-obs-code.png" alt="Obs"/>
 
-## The action space
+## 动作空间
 
-The action space is discrete:
+动作空间是离散的：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballtarget_action_space.png" alt="Action Space"/>
