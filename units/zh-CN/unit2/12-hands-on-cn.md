@@ -1,0 +1,1119 @@
+# 实践时间
+
+      <CourseFloatingBanner classNames="absolute z-10 right-0 top-0"
+      notebooks={[
+        {label: "Google Colab", value: "https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit2/unit2.ipynb"}
+        ]}
+        askForHelpUrl="http://hf.co/join/discord" />
+
+
+
+之前我们已经学习了Q-Learning算法，现在我们要从头实现它，并在两个环境中训练Q-Learning智能体：
+
+1. [Frozen-Lake-v1（非滑动和滑动版本）](https://www.gymlibrary.dev/environments/toy_text/frozen_lake/)☃️：智能体需要**从起始状态（S）到达目标状态（G）**，只在冰冻的瓷砖（F）上行走，避免掉入洞穴（H）。
+2. [自动驾驶出租车](https://www.gymlibrary.dev/environments/toy_text/taxi/)🚖：智能体需要**学会在城市中导航**，以便将乘客从A点运输到B点。
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/envs.gif" alt="Environments"/>
+
+在[排行榜](https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard)中你可以比较自己和其他同学的结果，并相互交流探讨最好的实现方法以提高智能体的分数。谁将赢得该挑战？拭目以待！
+
+为了完成这个实践部分的[认证过程](https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process)，你需要将你训练过的出租车模型推送到Hub，并**获得>= 4.5的成绩**。
+
+你可以在[排行榜](https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard)找到你的模型并查看模型评价值，**评价值 = 平均回报 - 回报的标准差**
+
+有关认证过程的更多信息，请查看该部分👉 https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process
+
+你可以在该处检查你的进度👉 https://huggingface.co/spaces/ThomasSimonini/Check-my-progress-Deep-RL-Course
+
+**如果要开始该实践，请单击“在Colab中打开”按钮**👇：
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit2/unit2.ipynb)
+
+
+# Unit 2: 在FrozenLake-v1 ⛄ 和 Taxi-v3 🚕中使用 Q-Learning 
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/thumbnail.jpg" alt="Unit 2 Thumbnail">
+
+在这个笔记本中，**你将从头编写你的第一个强化学习智能体**，使用Q-Learning训练智能体在FrozenLake❄️中玩游戏，并将其分享给社区，可以尝试不同的配置进行训练。
+
+⬇️ 下面是一个例子，你可以在**几分钟内实现它**。⬇️
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/envs.gif" alt="Environments"/>
+
+### 🎮 环境:
+
+- [FrozenLake-v1](https://www.gymlibrary.dev/environments/toy_text/frozen_lake/)
+- [Taxi-v3](https://www.gymlibrary.dev/environments/toy_text/taxi/)
+
+### 📚 RL库:
+
+- Python and NumPy
+- [Gym](https://www.gymlibrary.dev/)
+
+我们致力于改进完善该教程，所以**如果你在该教程中发现了一些问题**，请[在GitHub Repo上提出](https://github.com/huggingface/deep-rl-class/issues)。
+
+## 本单元的目标 🏆
+
+在单元结束时，你将：
+
+- 能够使用**Gym**环境库。
+- 能够从头编写一个Q-Learning智能体。
+- 能够**将你的训练过的智能体及其代码推送到Hub**，并附上精美的视频回放和评估得分🔥。
+
+## 知识前提 🏗️
+
+在深入了解笔记本之前，你需要：
+
+🔲 📚 **通过阅读Unit 2学习[Q-Learning](https://huggingface.co/deep-rl-course/unit2/introduction)** 🤗
+
+## Q-Learning的简要回顾
+
+- Q-Learning算法是**一种强化学习算法**，具有以下主要特点：
+  - 它会训练一个Q函数，这是一种**动作-价值函数**，其内部有一个Q表，用于**存储所有状态-动作对的值**。
+  - 当给定一个状态和动作时，Q函数**会在Q表中查找相应的值**。
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-function-2.jpg" alt="Q function"  width="100%"/>
+
+- 在训练完成后，我们会得到一个**最优的Q函数**，**从而获得一个最优的Q表**。
+- 当我们拥有一个**最优的Q函数**时，我们就能得到一个最优策略，因为我们知道**在每个状态下应该采取什么最佳动作。**
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/link-value-policy.jpg" alt="Link value policy"  width="100%"/>
+
+然而，在一开始，**我们的Q表是没用的**，**因为它为每个状态-动作对提供了任意的值（通常我们会将Q表初始化为全零值）**。但随着我们不断地探索环境并更新Q表，它将为我们提供越来越好的近似值。
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit2/q-learning.jpeg" alt="q-learning.jpeg" width="100%"/>
+
+以下是Q-Learning算法的伪代码：
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-2.jpg" alt="Q-Learning" width="100%"/>
+
+
+
+# 让我们开始编写第一个强化学习算法 🚀
+
+## 安装依赖并创建虚拟显示 🔽
+
+在笔记中，我们需要生成一个回放视频。所以在Colab中，**我们需要一个虚拟屏幕来呈现环境**（从而录制视频帧）。
+
+因此，下面的单元格将安装库并创建并运行一个虚拟屏幕🖥
+
+我们将安装多个库：
+
+- `gym`：包含FrozenLake-v1⛄和Taxi-v3🚕环境。我们使用`gym==0.24`，因为它包含一个漂亮的Taxi-v3 UI版本。
+- `pygame`：用于FrozenLake-v1和Taxi-v3的UI。
+- `numpy`：用于处理我们的Q-table。
+
+Hugging Face Hub 🤗 作为一个中心平台，任何人都可以在此共享和探索模型和数据集。它具有版本控制、度量、可视化等功能，使你可以轻松与他人合作。
+
+你可以在这里查看所有可用的深度强化学习模型（如果它们使用Q-Learning）👉 https://huggingface.co/models?other=q-learning
+
+```bash
+pip install -r https://raw.githubusercontent.com/huggingface/deep-rl-class/main/notebooks/unit2/requirements-unit2.txt
+```
+
+```bash
+sudo apt-get update
+apt install python-opengl ffmpeg xvfb
+pip3 install pyvirtualdisplay
+```
+
+为了确保能够使用新安装的库，**有时我们需要重新启动笔记本的运行时环境**。下一个单元格将强制**运行时环境崩溃，这样你就需要重新连接并从这里开始运行代码**。多亏了这个技巧，**我们才能运行我们的虚拟屏幕**。
+
+```python
+import os
+
+os.kill(os.getpid(), 9)
+```
+
+```python
+# Virtual display
+from pyvirtualdisplay import Display
+
+virtual_display = Display(visible=0, size=(1400, 900))
+virtual_display.start()
+```
+
+## 导入包 📦
+
+除了安装的库之外，我们还使用：
+
+- `random`：生成随机数（对于epsilon-贪婪策略非常有用）。
+- `imageio`：生成回放视频。
+
+```python
+import numpy as np
+import gym
+import random
+import imageio
+import os
+
+import pickle5 as pickle
+from tqdm.notebook import tqdm
+```
+
+接下来我们正式进入Q-Learning算法的代码部分 🔥
+
+# Part 1: Frozen Lake ⛄ (非滑动版本)
+
+## 创建并理解 [FrozenLake 环境⛄](https://www.gymlibrary.dev/environments/toy_text/frozen_lake/)
+
+
+
+💡 开始使用环境时，查看其文档是个好习惯
+
+👉 https://www.gymlibrary.dev/environments/toy_text/frozen_lake/
+
+---
+
+我们将使用Q-Learning算法来训练智能体，使其**仅在冰冻砖块（F）上行走，并避开洞穴（H），从起始状态（S）导航至目标状态（G）**。
+
+我们有两种规格的环境：
+
+- `map_name="4x4"`：一个4x4的网格版本
+- `map_name="8x8"`：一个8x8的网格版本
+
+环境有两种模式：
+
+- `is_slippery=False`：由于冰冻湖面的非滑动性质，智能体总是沿着**预期的方向移动**（确定性）。
+- `is_slippery=True`：由于冰冻湖面的滑动性质，智能体**可能不会总是沿着预期的方向移动**（随机性）。
+
+现在我们先用4x4的地图和非滑动版本来简化问题。
+
+```python
+# 使用正确的参数创建FrozenLake-v1环境，使用4x4地图和非滑动版本
+env = gym.make()  # TODO 使用正确的参数
+```
+
+### 答案
+
+```python
+env = gym.make("FrozenLake-v1", map_name="4x4", is_slippery=False)
+```
+
+你可以像这样创建自己的自定义网格：
+
+```python
+desc=["SFFF", "FHFH", "FFFH", "HFFG"]
+gym.make('FrozenLake-v1', desc=desc, is_slippery=True)
+```
+
+但我们现在将使用默认的环境。
+
+### 让我们看看环境的样子：
+
+
+```python
+# 我们用gym.make("<name_of_the_environment>")创建环境- is_slippery=False：由于冰冻湖面的非滑动性质，智能体总是沿着预期的方向移动（确定性）
+print("_____OBSERVATION SPACE_____ \n")
+print("Observation Space", env.observation_space)
+print("Sample observation", env.observation_space.sample())  # 获得一个随机观测值
+```
+
+我们通过`Observation Space Shape Discrete(16)`可以看到，观测值是一个整数，表示**智能体当前位置为current_row \* nrows + current_col（其中行和列都从0开始）**。
+
+例如，4x4地图中的目标位置可以按以下方式计算：3 * 4 + 3 = 15。可能的观测值数量取决于地图的大小。**例如，4x4地图有16个可能的观测值。**
+
+例如，这是 state = 0 的样子：
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit2/frozenlake.png" alt="FrozenLake">
+
+```python
+print("\n _____ACTION SPACE_____ \n")
+print("Action Space Shape", env.action_space.n)
+print("Action Space Sample", env.action_space.sample())  # 采取一个随机动作
+```
+
+动作空间（智能体可采取的动作集合）是离散的，有4个可用动作🎮：
+
+- 0：向左走
+- 1：向下走
+- 2：向右走
+- 3：向上走
+
+奖励函数💰：
+
+- 到达目标：+1
+- 到达洞穴：0
+- 到达冰冻：0
+
+## 创建并初始化 Q-table 🗄️
+
+(👀 以下是Q-Learning算法的伪代码)
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-2.jpg" alt="Q-Learning" width="100%"/>
+
+现在是初始化我们的Q表的时候了！为了知道要使用多少行（状态）和列（动作），我们需要了解动作和观测空间。虽然我们之前已经知道了动作和观测空间的数值，但是为了算法能够适用于不同的环境，我们在程序中以变量的形式对它们进行存储。Gym 为我们提供了一种方法：`env.action_space.n` 和 `env.observation_space.n`。
+
+
+```python
+state_space =
+print("There are ", state_space, " possible states")
+
+action_space =
+print("There are ", action_space, " possible actions")
+```
+
+```python
+# 创建一个大小为（state_space，action_space）的 Q-table，并使用 np.zeros 将每个值初始化为 0
+def initialize_q_table(state_space, action_space):
+  Qtable =
+  return Qtable
+```
+
+```python
+Qtable_frozenlake = initialize_q_table(state_space, action_space)
+```
+
+### 答案
+
+```python
+state_space = env.observation_space.n
+print("There are ", state_space, " possible states")
+
+action_space = env.action_space.n
+print("There are ", action_space, " possible actions")
+```
+
+```python
+# 创建一个大小为（state_space，action_space）的 Q-table，并使用 np.zeros 将每个值初始化为 0
+def initialize_q_table(state_space, action_space):
+    Qtable = np.zeros((state_space, action_space))
+    return Qtable
+```
+
+```python
+Qtable_frozenlake = initialize_q_table(state_space, action_space)
+```
+
+## 定义贪婪策略 🤖
+
+需要注意的是我们有两个策略，因为 Q-Learning 是一种**离线策略**算法，所以我们**使用不同的策略来更新行动和价值函数**。
+
+- Epsilon 贪婪策略（行动策略）
+- 贪婪策略（更新策略）
+
+贪婪策略也将是使用 Q-Learning 算法训练智能体后的最终策略，贪婪策略用于从 Q-table 中选择动作。
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/off-on-4.jpg" alt="Q-Learning" width="100%"/>
+
+
+```python
+def greedy_policy(Qtable, state):
+  # 利用：选择具有最高状态-动作价值的动作
+  action =
+
+  return action
+```
+
+#### 答案
+
+```python
+def greedy_policy(Qtable, state):
+    # 利用：选择具有最高状态-动作价值的动作
+    action = np.argmax(Qtable[state][:])
+
+    return action
+```
+
+##定义 epsilon 贪婪策略 🤖
+
+Epsilon 贪婪策略是处理探索和利用之间的权衡问题的一种训练策略。
+
+Epsilon 贪婪策略的思想是：
+
+- *概率 1 — ɛ*：智能体进行**利用**（即智能体选择具有最高状态-动作对值的动作）。
+- *概率 ɛ*：**智能体进行探索**（尝试随机动作）。
+
+随着训练的进行，我们逐渐**降低 epsilon 值，因为智能体逐渐不再需要探索，而更多的需要利用**。
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-4.jpg" alt="Q-Learning" width="100%"/>
+
+
+```python
+def epsilon_greedy_policy(Qtable, state, epsilon):
+  # 在 0 和 1 之间随机生成一个数字
+  random_num =
+  # 如果 random_num > epsilon --> 利用
+  if random_num > epsilon:
+    # 采取给定状态下最高值的动作
+    # 这里可以用 np.argmax
+    action =
+  # 否则 --> 探索
+  else:
+    action = # 采取一个随机动作
+
+  return action
+```
+
+#### 答案
+
+```python
+def epsilon_greedy_policy(Qtable, state, epsilon):
+    # 在 0 和 1 之间随机生成一个数字
+    random_int = random.uniform(0, 1)
+    # 如果 random_int > epsilon --> 利用
+    if random_int > epsilon:
+        # 采取给定状态下最高值的动作
+        # 这里可以用 np.argmax
+        action = greedy_policy(Qtable, state)
+    # 否则 --> 探索
+    else:
+        action = env.action_space.sample()
+
+    return action
+```
+
+## 定义超参数 ⚙️
+
+与智能体的探索行动相关的超参数非常重要：
+
+- 我们需要确保智能体能够**充分地探索状态空间**以学习到一个较好的值近似。为了达到这个目标，我们需要逐渐减小epsilon。
+- 但是如果将epsilon减小得太快（衰减率过高），就会**增加智能体陷入困境的风险**，因为它没有充分探索状态空间，所以无法解决问题。
+
+```python
+# 训练参数
+n_training_episodes = 10000  # 训练回合数
+learning_rate = 0.7  # 学习率
+
+# 评估参数
+n_eval_episodes = 100  # 测试回合数
+
+# 环境参数
+env_id = "FrozenLake-v1"  # 环境名称
+max_steps = 99  # 每次尝试的最大步数
+gamma = 0.95  # 折扣率
+eval_seed = []  # 环境的评估种子
+
+# 探索参数
+max_epsilon = 1.0 # 起始探索概率
+min_epsilon = 0.05 # 最小探索概率
+decay_rate = 0.0005 # 探索概率的指数衰减速率
+```
+
+## 创建训练函数
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-2.jpg" alt="Q-Learning" width="100%"/>
+
+训练的过程以如下方式进行：
+
+```
+在所有训练次数的每个循环中：
+
+减少 epsilon（因为智能体逐渐不再需要探索）
+重置环境
+
+    对于每个最大尝试步数：
+      使用 epsilon 贪婪策略选择动作 At
+      执行动作（a）并观察结果状态（s'）和奖励（r）
+      使用贝尔曼方程更新 Q 值 Q(s,a) + lr [R(s,a) + gamma * max Q(s',a') - Q(s,a)]
+      如果完成，结束本回合
+      下一个状态是新状态
+```
+
+```python
+def train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_steps, Qtable):
+  for episode in range(n_training_episodes):
+    # 减小 epsilon（因为智能体逐渐不再需要探索）
+    epsilon = min_epsilon + (max_epsilon - min_epsilon)*np.exp(-decay_rate*episode)
+    # 重置环境
+    state = env.reset()
+    step = 0
+    done = False
+
+    # 重复
+    for step in range(max_steps):
+      # 使用 epsilon 贪婪策略选择动作 At
+      action =
+
+      # 采取动作 At 并观察 Rt+1 和 St+1
+      # 采取动作（a）并观察结果状态（s'）和奖励（r）
+      new_state, reward, done, info =
+
+      # 更新 Q(s,a):= Q(s,a) + lr [R(s,a) + gamma * max Q(s',a') - Q(s,a)]
+      Qtable[state][action] =
+
+      # 如果完成，结束本次尝试
+      if done:
+        break
+
+      # 下一个状态是新状态
+      state = new_state
+  return Qtable
+```
+
+#### 答案
+
+```python
+def train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_steps, Qtable):
+    for episode in tqdm(range(n_training_episodes)):
+        # 减小 epsilon（因为智能体逐渐不再需要探索）
+        epsilon = min_epsilon + (max_epsilon - min_epsilon) * np.exp(-decay_rate * episode)
+        # 重置环境
+        state = env.reset()
+        step = 0
+        done = False
+
+        # 重复
+        for step in range(max_steps):
+            # 使用 epsilon 贪婪策略选择动作 At
+            action = epsilon_greedy_policy(Qtable, state, epsilon)
+
+            # 采取动作 At 并观察 Rt+1 和 St+1
+            # 采取动作（a）并观察结果状态（s'）和奖励（r）
+            new_state, reward, done, info = env.step(action)
+
+            # 更新 Q(s,a):= Q(s,a) + lr [R(s,a) + gamma * max Q(s',a') - Q(s,a)]
+            Qtable[state][action] = Qtable[state][action] + learning_rate * (
+                reward + gamma * np.max(Qtable[new_state]) - Qtable[state][action]
+            )
+
+            # 如果完成，结束本次尝试
+            if done:
+                break
+
+            # 下一个状态是新状态
+            state = new_state
+    return Qtable
+```
+
+## 训练 Q-Learning 智能体 🏃
+
+```python
+Qtable_frozenlake = train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_steps, Qtable_frozenlake)
+```
+
+## 查看Q-table中的值 👀
+
+```python
+Qtable_frozenlake
+```
+
+## 评估函数 📝
+
+- 定义我们要用来测试 Q-Learning 智能体的评估函数
+
+```python
+def evaluate_agent(env, max_steps, n_eval_episodes, Q, seed):
+    """
+    对智能体进行 n_eval_episodes 轮评估，返回平均奖励和奖励的标准差。
+    :param env: 评估环境
+    :param n_eval_episodes: 评估智能体的轮数
+    :param Q: Q-table
+    :param seed: 评估种子数组（用于taxi-v3）
+	"""
+    episode_rewards = []
+    for episode in tqdm(range(n_eval_episodes)):
+        if seed:
+            state = env.reset(seed=seed[episode])
+        else:
+            state = env.reset()
+        step = 0
+        done = False
+        total_rewards_ep = 0
+
+        for step in range(max_steps):
+            # 在给定状态下选择具有最大预期未来奖励的动作（索引）
+            action = greedy_policy(Q, state)
+            new_state, reward, done, info = env.step(action)
+            total_rewards_ep += reward
+
+            if done:
+                break
+            state = new_state
+        episode_rewards.append(total_rewards_ep)
+    mean_reward = np.mean(episode_rewards)
+    std_reward = np.std(episode_rewards)
+
+    return mean_reward, std_reward
+```
+
+## 评估Q-Learning智能体 📈
+
+- 通常应该得到平均奖励为1.0
+- 因为状态空间非常小（16），所以该**环境相对简单**，你可以尝试用[有滑动版本](https://www.gymlibrary.dev/environments/toy_text/frozen_lake/)替换它，这会引入随机性，使环境更加复杂。
+
+```python
+# 评估智能体
+mean_reward, std_reward = evaluate_agent(env, max_steps, n_eval_episodes, Qtable_frozenlake, eval_seed)
+print(f"Mean_reward={mean_reward:.2f} +/- {std_reward:.2f}")
+```
+
+## 将我们的训练模型发布到Hub 🔥
+
+如果在训练后看到了好的结果，**我们可以用一行代码将训练模型发布到Hugging Face Hub🤗**。
+
+这里有一个模型概述卡的例子：
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit2/modelcard.png" alt="Model card" width="100%"/>
+
+在底层，Hub使用基于git的存储库（如果你不知道git是什么，不用担心），这意味着你可以在实验和改进你的智能体时，用新版本更新模型。
+
+#### 请勿修改这段代码
+
+```python
+from huggingface_hub import HfApi, snapshot_download
+from huggingface_hub.repocard import metadata_eval_result, metadata_save
+
+from pathlib import Path
+import datetime
+import json
+```
+
+```python
+def record_video(env, Qtable, out_directory, fps=1):
+    """
+    生成智能体表现的回放视频
+    :param env
+    :param Qtable: 我们智能体的Q表
+    :param out_directory
+    :param fps: 每秒帧数（对于taxi-v3和frozenlake-v1，我们使用1）
+    """
+    images = []
+    done = False
+    state = env.reset(seed=random.randint(0, 500))
+    img = env.render(mode="rgb_array")
+    images.append(img)
+    while not done:
+        # 在给定状态下选择具有最大预期未来奖励的动作（索引）
+        action = np.argmax(Qtable[state][:])
+        state, reward, done, info = env.step(action)  # 直接将next_state = state用于记录逻辑
+        img = env.render(mode="rgb_array")
+        images.append(img)
+    imageio.mimsave(out_directory, [np.array(img) for i, img in enumerate(images)], fps=fps)
+```
+
+```python
+def push_to_hub(repo_id, model, env, video_fps=1, local_repo_path="hub"):
+    """
+    评估、生成视频并将模型上传到Hugging Face Hub。
+    该方法完成整个流程：
+    - 它评估模型
+    - 它生成模型概述卡
+    - 它生成智能体的回放视频
+    - 它将所有内容推送到Hub
+
+    :param repo_id: Hugging Face Hub中的模型存储库ID
+    :param env
+    :param video_fps: 以多少帧每秒录制我们的视频回放
+    (对于taxi-v3和frozenlake-v1，我们使用1)
+    :param local_repo_path: 本地存储库的位置
+    """
+    _, repo_name = repo_id.split("/")
+
+    eval_env = env
+    api = HfApi()
+
+    # 第一步：创建仓库
+    repo_url = api.create_repo(
+        repo_id=repo_id,
+        exist_ok=True,
+    )
+
+    # 第二步：下载文件
+    repo_local_path = Path(snapshot_download(repo_id=repo_id))
+
+    #第三步：保存模型
+    if env.spec.kwargs.get("map_name"):
+        model["map_name"] = env.spec.kwargs.get("map_name")
+        if env.spec.kwargs.get("is_slippery", "") == False:
+            model["slippery"] = False
+
+    # 将模型存储为Pickle文件
+    with open((repo_local_path) / "q-learning.pkl", "wb") as f:
+        pickle.dump(model, f)
+
+    # 第四步：评估模型并构建包含评估指标的JSON文件
+    mean_reward, std_reward = evaluate_agent(
+        eval_env, model["max_steps"], model["n_eval_episodes"], model["qtable"], model["eval_seed"]
+    )
+
+    evaluate_data = {
+        "env_id": model["env_id"],
+        "mean_reward": mean_reward,
+        "n_eval_episodes": model["n_eval_episodes"],
+        "eval_datetime": datetime.datetime.now().isoformat(),
+    }
+
+    # 编写一个名为 "results.json" 的JSON文件，其中将包含评估结果
+    with open(repo_local_path / "results.json", "w") as outfile:
+        json.dump(evaluate_data, outfile)
+
+    # 第五步：创建模型概述概述卡
+    env_name = model["env_id"]
+    if env.spec.kwargs.get("map_name"):
+        env_name += "-" + env.spec.kwargs.get("map_name")
+
+    if env.spec.kwargs.get("is_slippery", "") == False:
+        env_name += "-" + "no_slippery"
+
+    metadata = {}
+    metadata["tags"] = [env_name, "q-learning", "reinforcement-learning", "custom-implementation"]
+
+    # 添加指标
+    eval = metadata_eval_result(
+        model_pretty_name=repo_name,
+        task_pretty_name="reinforcement-learning",
+        task_id="reinforcement-learning",
+        metrics_pretty_name="mean_reward",
+        metrics_id="mean_reward",
+        metrics_value=f"{mean_reward:.2f} +/- {std_reward:.2f}",
+        dataset_pretty_name=env_name,
+        dataset_id=env_name,
+    )
+
+    # 合并两个字典
+    metadata = {**metadata, **eval}
+
+    model_card = f"""
+    # **Q-Learning** 智能体玩 **{env_id}**
+    这是一个受过训练的**Q-Learning**智能体玩 **{env_id}** 的模型。
+
+    ## 用法
+
+    ```python
+
+    model = load_from_hub(repo_id="{repo_id}", filename="q-learning.pkl")
+
+    # 不要忘记检查是否需要添加额外的属性 (is_slippery=False等)
+    env = gym.make(model["env_id"])
+```
+
+    """
+    
+    evaluate_agent(env, model["max_steps"], model["n_eval_episodes"], model["qtable"], model["eval_seed"])
+    
+    readme_path = repo_local_path / "README.md"
+    readme = ""
+    print(readme_path.exists())
+    if readme_path.exists():
+        with readme_path.open("r", encoding="utf8") as f:
+            readme = f.read()
+    else:
+        readme = model_card
+    
+    with readme_path.open("w", encoding="utf-8") as f:
+        f.write(readme)
+    
+    # 将指标保存到Readme元数据
+    metadata_save(readme_path, metadata)
+    
+    # 第六步：录制视频
+    video_path = repo_local_path / "replay.mp4"
+    record_video(env, model["qtable"], video_path, video_fps)
+    
+    # 第七步. 将所有内容推送到Hub
+    api.upload_folder(
+        repo_id=repo_id,
+        folder_path=repo_local_path,
+        path_in_repo=".",
+    )
+    
+    print("Your model is pushed to the Hub. You can view your model here: ", repo_url)
+
+```
+### .
+
+通过使用 push_to_hub，你可以评估、录制回放、生成智能体的模型卡片并将其推送到Hub。
+
+这样：
+
+- 可以展示你的作品 🔥
+- 可以查看智能体的游戏过程 👀
+- 可以与社区分享其他人可以使用的智能体 💾
+- 可以访问排行榜🏆，查看你的智能体与同学相比表现如何 👉 https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard
+
+
+要与社区共享你的模型，还需遵循以下三个步骤：
+
+1️⃣（如果还没有完成）创建HF帐户 ➡ https://huggingface.co/join
+
+2️⃣ 登录后，你需要从Hugging Face网站存储你的认证令牌。
+
+创建一个新令牌（https://huggingface.co/settings/tokens）**具有写权限**
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/create-token.jpg" alt="Create HF Token">
+
+
+```python
+from huggingface_hub import notebook_login
+
+notebook_login()
+```
+
+如果你不想使用Google Colab或Jupyter Notebook，可以使用此命令代替：`huggingface-cli login`（或`login`）
+
+3️⃣ 现在我们准备使用`push_to_hub()`函数将训练好的智能体推送到🤗Hub🔥
+
+- 首先创建**包含超参数和Q_table的模型字典**。
+
+```python
+model = {
+    "env_id": env_id,
+    "max_steps": max_steps,
+    "n_training_episodes": n_training_episodes,
+    "n_eval_episodes": n_eval_episodes,
+    "eval_seed": eval_seed,
+    "learning_rate": learning_rate,
+    "gamma": gamma,
+    "max_epsilon": max_epsilon,
+    "min_epsilon": min_epsilon,
+    "decay_rate": decay_rate,
+    "qtable": Qtable_frozenlake,
+}
+```
+
+填写`push_to_hub`函数：
+
+- `repo_id`：将创建/更新的Hugging Face Hub存储库的名称` (repo_id = {username}/{repo_name})` 
+
+  💡 一个好的`repo_id`是`{username}/q-{env_id}`
+
+- `model`：模型字典，包含超参数和Qtable
+
+- `env`：环境
+
+- `commit_message`：提交信息
+
+```python
+model
+```
+
+```python
+username = ""  # 填写你的用户名
+repo_name = "q-FrozenLake-v1-4x4-noSlippery"
+push_to_hub(repo_id=f"{username}/{repo_name}", model=model, env=env)
+```
+
+恭喜🥳你刚刚从零开始实现、训练并上传了你的第一个强化学习智能体。 
+
+FrozenLake-v1 无滑动版 是一个非常简单的环境，让我们尝试一个更难的环境🔥。
+
+# 第二部分：Taxi-v3 环境🚖
+
+## 创建并理解 [Taxi-v3 环境🚕](https://www.gymlibrary.dev/environments/toy_text/taxi/)
+
+------
+
+💡 开始使用环境时，查看其文档是个好习惯
+
+👉 https://www.gymlibrary.dev/environments/toy_text/taxi/
+
+---
+
+在`Taxi-v3`🚕中，网格环境中有四个指定位置，分别为R(ed)、G(reen)、Y(ellow)和B(lue)。
+
+当回合开始时，**出租车随机出现在一个方格中**，乘客位于一个随机位置。出租车驶向乘客所在位置，**接载乘客**，驶向乘客的目的地（另外四个指定位置中的一个），然后**放下乘客**。一旦乘客被放下，回合结束。
+
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit2/taxi.png" alt="Taxi">
+
+
+```python
+env = gym.make("Taxi-v3")
+```
+
+There are **500 discrete states since there are 25 taxi positions, 5 possible locations of the passenger** (including the case when the passenger is in the taxi), and **4 destination locations.**
+
+该环境有**500个离散状态，因为有25个出租车位置，5个可能的乘客位置**（包括乘客在出租车内的情况），以及**4个目的地位置。**
+
+
+```python
+state_space = env.observation_space.n
+print("There are ", state_space, " possible states")
+```
+
+```python
+action_space = env.action_space.n
+print("There are ", action_space, " possible actions")
+```
+
+动作空间（智能体可以采取的可能动作集合）是离散的，有**6个可用动作🎮**：
+
+- 0：向南移动
+- 1：向北移动
+- 2：向东移动
+- 3：向西移动
+- 4：接载乘客
+- 5：放下乘客
+
+奖励函数💰：
+
+- 每步-1，除非触发其他奖励。
+- 送达乘客+20。
+- 非法执行“接载”和“放下”动作-10。
+
+```python
+# 创建具有state_size行和action_size列（500x6）的Q表
+Qtable_taxi = initialize_q_table(state_space, action_space)
+print(Qtable_taxi)
+print("Q-table shape: ", Qtable_taxi.shape)
+```
+
+## 定义超参数 ⚙️
+
+⚠ 请勿修改EVAL_SEED：eval_seed数组**允许我们使用相同的出租车起始位置评估每个同学的智能体**
+
+```python
+# 训练超参数
+n_training_episodes = 25000  # 训练回合数
+learning_rate = 0.7  # 学习率
+
+# 评估参数
+n_eval_episodes = 100  # 评估回合数
+
+# 请勿修改EVAL_SEED
+eval_seed = [
+    16,
+    54,
+    165,
+    177,
+    191,
+    191,
+    120,
+    80,
+    149,
+    178,
+    48,
+    38,
+    6,
+    125,
+    174,
+    73,
+    50,
+    172,
+    100,
+    148,
+    146,
+    6,
+    25,
+    40,
+    68,
+    148,
+    49,
+    167,
+    9,
+    97,
+    164,
+    176,
+    61,
+    7,
+    54,
+    55,
+    161,
+    131,
+    184,
+    51,
+    170,
+    12,
+    120,
+    113,
+    95,
+    126,
+    51,
+    98,
+    36,
+    135,
+    54,
+    82,
+    45,
+    95,
+    89,
+    59,
+    95,
+    124,
+    9,
+    113,
+    58,
+    85,
+    51,
+    134,
+    121,
+    169,
+    105,
+    21,
+    30,
+    11,
+    50,
+    65,
+    12,
+    43,
+    82,
+    145,
+    152,
+    97,
+    106,
+    55,
+    31,
+    85,
+    38,
+    112,
+    102,
+    168,
+    123,
+    97,
+    21,
+    83,
+    158,
+    26,
+    80,
+    63,
+    5,
+    81,
+    32,
+    11,
+    28,
+    148,
+]  # 评估种子，这确保了所有同学的智能体都在相同的出租车起始位置上进行训练
+# 每个种子都有一个特定的起始状态
+
+# 环境参数
+env_id = "Taxi-v3" # 环境名称
+max_steps = 99 # 每个回合的最大步数
+gamma = 0.95 # 折扣率
+
+# 探索参数
+max_epsilon = 1.0 # 起始探索概率
+min_epsilon = 0.05 # 最小探索概率
+decay_rate = 0.005 # 探索概率的指数衰减率
+```
+
+## 训练 Q-Learning 智能体 🏃
+
+```python
+Qtable_taxi = train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_steps, Qtable_taxi)
+Qtable_taxi
+```
+
+## 创建一个模型字典 💾 并将训练好的模型发布到Hub 🔥
+
+- 我们创建一个模型字典，其中将包含所有可复现的训练超参数和Q-Table。
+
+
+```python
+model = {
+    "env_id": env_id,
+    "max_steps": max_steps,
+    "n_training_episodes": n_training_episodes,
+    "n_eval_episodes": n_eval_episodes,
+    "eval_seed": eval_seed,
+    "learning_rate": learning_rate,
+    "gamma": gamma,
+    "max_epsilon": max_epsilon,
+    "min_epsilon": min_epsilon,
+    "decay_rate": decay_rate,
+    "qtable": Qtable_taxi,
+}
+```
+
+```python
+username = ""  # 填写你的用户名
+repo_name = ""
+push_to_hub(repo_id=f"{username}/{repo_name}", model=model, env=env)
+```
+
+现在已经发布到Hub上，你可以查看排行榜 🏆 👉 https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard 与同学们比较Taxi-v3的结果。
+
+⚠ 若要查看你的排名，你需要在排行榜页面底部**点击刷新** ⚠
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit2/taxi-leaderboard.png" alt="Taxi Leaderboard">
+
+# 第三部分：从Hub加载模型 🔽
+
+通过Hugging Face Hub 🤗你可以轻松地加载社区的强大模型。
+
+从Hub加载保存的模型非常简单：
+
+1. 前往 https://huggingface.co/models?other=q-learning 查看所有q-learning已保存模型的列表。
+2. 选择一个并复制其repo_id
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit2/copy-id.png" alt="Copy id">
+
+3. 然后我们只需使用 `load_from_hub`，参数为：
+
+- repo_id
+
+- filename：存储在repo中的已保存模型文件名。 从Hugging Face Hub下载模型。 
+
+  :param repo_id: 来自Hugging Face Hub的模型存储库的ID 
+
+  :param filename: 存储库中的模型zip文件的名称
+
+#### 请勿修改该部分代码
+
+```python
+from urllib.error import HTTPError
+
+from huggingface_hub import hf_hub_download
+
+
+def load_from_hub(repo_id: str, filename: str) -> str:
+    """
+    从Hugging Face Hub下载模型
+    :param repo_id: 来自Hugging Face Hub的模型存储库的ID
+    :param filename: 存储库中的模型zip文件的名称
+    """
+    # 从Hub中获取模型，下载并将模型缓存到本地磁盘中
+    pickle_model = hf_hub_download(repo_id=repo_id, filename=filename)
+
+    with open(pickle_model, "rb") as f:
+        downloaded_model_file = pickle.load(f)
+
+    return downloaded_model_file
+```
+
+### .
+
+```python
+model = load_from_hub(repo_id="ThomasSimonini/q-Taxi-v3", filename="q-learning.pkl")  # 尝试使用另一个模型
+
+print(model)
+env = gym.make(model["env_id"])
+
+evaluate_agent(env, model["max_steps"], model["n_eval_episodes"], model["qtable"], model["eval_seed"])
+```
+
+```python
+model = load_from_hub(
+    repo_id="ThomasSimonini/q-FrozenLake-v1-no-slippery", filename="q-learning.pkl"
+)  # 尝试使用另一个模型
+
+env = gym.make(model["env_id"], is_slippery=False)
+
+evaluate_agent(env, model["max_steps"], model["n_eval_episodes"], model["qtable"], model["eval_seed"])
+```
+
+## 额外挑战 🏆
+
+最好的学习方法就是**自己去尝试**！目前的智能体表现并不理想，你可以尝试让它训练更多步。我们发现，在1,000,000步的训练中，智能体能取得很好的成果！
+
+在[排行榜](https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard)上，你可以看到你的智能体排名，你能登上榜首吗？
+
+以下是一些建议：
+
+- 训练更多步骤
+- 观察其他同学的模型，尝试不同的超参数
+- 在Hub上**发布你新训练的模型** 🔥
+
+如果觉得在冰面上行走和驾驶出租车太无聊了，可以尝试**更换环境**，如使用FrozenLake-v1滑动版，通过查阅[gym文档](https://www.gymlibrary.dev/)了解它们是如何使用的，并享受其带来的效果吧🎉。
+
+_____________________________________________________________________
+
+恭喜🥳，你刚刚实现、训练并上传了你的第一个强化学习智能体。
+
+理解Q-Learning对于领会基于价值的方法非常重要。
+
+在接下来的单元中，我们将学习深度Q学习。我们会发现，创建和更新Q表的确是个好策略，**但这种方法并不具备扩展性**。
+
+例如，假设你创建了一个能玩《毁灭战士》的智能体。
+
+<img src="https://vizdoom.cs.put.edu.pl/user/pages/01.tutorial/basic.png" alt="Doom"/>
+
+毁灭战士是一个庞大的环境，拥有大量的状态空间（数百万个不同状态）。为这样的环境创建和更新Q表并不高效。
+
+正因如此，我们将在下一单元学习深度Q学习。这是一种算法，**它利用神经网络在给定状态时近似计算每个动作的不同Q值**。
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit4/atari-envs.gif" alt="Environments"/>
+
+期待在第三单元与你相见！🔥
+
+## 继续学习，保持卓越 🤗
