@@ -1,4 +1,4 @@
-# Hands-on: advanced Deep Reinforcement Learning. Using Sample Factory to play Doom from pixels
+# 动手尝试：高级深度强化学习。使用 Sample Factory 框架输入像素玩 Doom
 
 <CourseFloatingBanner classNames="absolute z-10 right-0 top-0"
 notebooks={[
@@ -6,21 +6,22 @@ notebooks={[
   ]}
   askForHelpUrl="http://hf.co/join/discord" />
 
-The colab notebook:
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit8/unit8_part2.ipynb)
+colab notebook:
+[![在 Colab 中打开](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit8/unit8_part2.ipynb)
 
-# Unit 8 Part 2: Advanced Deep Reinforcement Learning. Using Sample Factory to play Doom from pixels
+# 第 8 单元第 2 部分：高级深度强化学习。使用 Sample Factory 框架输入像素玩 Doom
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/thumbnail2.png" alt="Thumbnail"/>
 
-In this notebook, we will learn how to train a Deep Neural Network to collect objects in a 3D environment based on the game of Doom, a video of the resulting policy is shown below. We train this policy using [Sample Factory](https://www.samplefactory.dev/), an asynchronous implementation of the PPO algorithm.
+本 notebook 将介绍如何使用 Doom 游戏的三维环境训练深度神经网络以收集物品，下面是生成的策略的视频。我们使用异步实现的 PPO 算法 [Sample Factory](https://www.samplefactory.dev/) 训练该策略。
 
-Please note the following points:
+请注意以下几点：
 
-*   [Sample Factory](https://www.samplefactory.dev/) is an advanced RL framework and **only functions on Linux and Mac** (not Windows).
+* [Sample Factory](https://www.samplefactory.dev/) 是一个高级的 RL 框架，**仅在 Linux 和 Mac 上运行**（不支持 Windows）。
 
-*  The framework performs best on a **GPU machine with many CPU cores**, where it can achieve speeds of 100k interactions per second. The resources available on a standard Colab notebook **limit the performance of this library**. So the speed in this setting **does not reflect the real-world performance**.
-* Benchmarks for Sample Factory are available in a number of settings, check out the [examples](https://github.com/alex-petrenko/sample-factory/tree/master/sf_examples) if you want to find out more.
+* 该框架在**具有许多 CPU 核心的 GPU 计算机上表现最佳**，在这种设置下它可以达到每秒 10 万个交互的速度。标准的 Colab 笔记本可用的资源**限制了该库的性能**。因此，在这种设置下的速度**不反映实际的性能**。
+
+* 如果您想了解更多信息，请查看[示例](https://github.com/alex-petrenko/sample-factory/tree/master/sf_examples)中的 Sample Factory 基准测试。
 
 
 ```python
@@ -33,19 +34,19 @@ HTML(
 )
 ```
 
-To validate this hands-on for the [certification process](https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process), you need to push one model:
+为了验证本次动手尝试的[认证过程](https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process)，你需要推送一个模型
 
-- `doom_health_gathering_supreme` get a result of >= 5.
+- `doom_health_gathering_supreme` 获得结果 >= 5.
 
-To find your result, go to the [leaderboard](https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard) and find your model, **the result = mean_reward - std of reward**
+找到你的结果 去 [leaderboard](https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard) 找到你的模型,**结果 = 平均奖励 - 标准差奖励**
 
-If you don't find your model, **go to the bottom of the page and click on the refresh button**
+如果你找不到你的模型，**请转到页面底部并点击刷新按钮**
 
-For more information about the certification process, check this section 👉 https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process
+有关认证过程的更多信息，请查看此部分 👉 https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process
 
-## Set the GPU 💪
+## 设置 GPU  💪
 
-- To **accelerate the agent's training, we'll use a GPU**. To do that, go to `Runtime > Change Runtime type`
+- 为了 **加速智能体的训练，我们将使用 GPU**. 点击 `Runtime > Change Runtime type`
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/gpu-step1.jpg" alt="GPU Step 1">
 
@@ -53,89 +54,89 @@ For more information about the certification process, check this section 👉 ht
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/gpu-step2.jpg" alt="GPU Step 2">
 
-Before starting to train our agent, let's **study the library and environments we're going to use**.
+在开始训练我们的智能体之前，让我**学习一下我们将要使用的库与环境**。
 
 ## Sample Factory
 
-[Sample Factory](https://www.samplefactory.dev/) is one of the **fastest RL libraries focused on very efficient synchronous and asynchronous implementations of policy gradients (PPO)**.
+[Sample Factory](https://www.samplefactory.dev/) 是**最快的强化学习库之一，专注于非常高效的同步和异步策略梯度（ PPO ）实现。**
 
-Sample Factory is thoroughly **tested, used by many researchers and practitioners**, and is actively maintained. Our implementation is known to **reach SOTA performance in a variety of domains while minimizing RL experiment training time and hardware requirements**.
+Sample Factory 经过了充分**的测试，被许多研究人员和从业者使用**，并且正在积极维护。我们的实现在**各种领域已知达到了 SOTA 性能，并尽量减少了强化学习实验训练时间和硬件需求。**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/samplefactoryenvs.png" alt="Sample factory"/>
 
-### Key features
+### 关键特征
 
-- Highly optimized algorithm [architecture](https://www.samplefactory.dev/06-architecture/overview/) for maximum learning throughput
-- [Synchronous and asynchronous](https://www.samplefactory.dev/07-advanced-topics/sync-async/) training regimes
-- [Serial (single-process) mode](https://www.samplefactory.dev/07-advanced-topics/serial-mode/) for easy debugging
-- Optimal performance in both CPU-based and [GPU-accelerated environments](https://www.samplefactory.dev/09-environment-integrations/isaacgym/)
-- Single- & multi-agent training, self-play, supports [training multiple policies](https://www.samplefactory.dev/07-advanced-topics/multi-policy-training/) at once on one or many GPUs
-- Population-Based Training ([PBT](https://www.samplefactory.dev/07-advanced-topics/pbt/))
-- Discrete, continuous, hybrid action spaces
-- Vector-based, image-based, dictionary observation spaces
-- Automatically creates a model architecture by parsing action/observation space specification. Supports [custom model architectures](https://www.samplefactory.dev/03-customization/custom-models/)
-- Designed to be imported into other projects, [custom environments](https://www.samplefactory.dev/03-customization/custom-environments/) are first-class citizens
-- Detailed [WandB and Tensorboard summaries](https://www.samplefactory.dev/05-monitoring/metrics-reference/), [custom metrics](https://www.samplefactory.dev/05-monitoring/custom-metrics/)
-- [HuggingFace 🤗 integration](https://www.samplefactory.dev/10-huggingface/huggingface/) (upload trained models and metrics to the Hub)
-- [Multiple](https://www.samplefactory.dev/09-environment-integrations/mujoco/) [example](https://www.samplefactory.dev/09-environment-integrations/atari/) [environment](https://www.samplefactory.dev/09-environment-integrations/vizdoom/) [integrations](https://www.samplefactory.dev/09-environment-integrations/dmlab/) with tuned parameters and trained models
+- 高度优化的算法[架构](https://www.samplefactory.dev/06-architecture/overview/) ，最大程度地提高学习吞吐量 
+- [同步和异步](https://www.samplefactory.dev/07-advanced-topics/sync-async/)的训练模式
+- [串行（单进程）模式](https://www.samplefactory.dev/07-advanced-topics/serial-mode/)，方便调试
+- 在基于 CPU 和[ GPU 加速的环境](https://www.samplefactory.dev/09-environment-integrations/isaacgym/)中均能实现最佳性能
+- 单智能体和多智能体训练、自我对弈，支持在一个或多个 GPU 上同时训练[多个策略](https://www.samplefactory.dev/07-advanced-topics/multi-policy-training/)
+- 基于种群的训练（[PBT](https://www.samplefactory.dev/07-advanced-topics/pbt/)）
+- 离散、连续、混合动作空间
+- 向量、图像、字典观察空间
+- 通过解析动作/观察空间规范自动创建模型架构。支持[自定义模型架构](https://www.samplefactory.dev/03-customization/custom-models/)
+- 设计成可导入其他项目，[自定义环境](https://www.samplefactory.dev/03-customization/custom-environments/)是一等公民
+- 详细的[ WandB 和 Tensorboard 摘要](https://www.samplefactory.dev/05-monitoring/metrics-reference/)、[自定义指标](https://www.samplefactory.dev/05-monitoring/custom-metrics/)
+- [HuggingFace 🤗 集成](https://www.samplefactory.dev/10-huggingface/huggingface/)（上传训练模型和指标到 Hub）
+- 与多个范例环境集成，带有经过调整的参数和训练模型，包括[Mujoco](https://www.samplefactory.dev/09-environment-integrations/mujoco/)、[Atari](https://www.samplefactory.dev/09-environment-integrations/atari/)、[VizDoom](https://www.samplefactory.dev/09-environment-integrations/vizdoom/)、[DMlab](https://www.samplefactory.dev/09-environment-integrations/dmlab/)
 
-All of the above policies are available on the 🤗 hub. Search for the tag [sample-factory](https://huggingface.co/models?library=sample-factory&sort=downloads)
+以上所有策略都可以在🤗 hub上获得。搜索标签[sample-factory](https://huggingface.co/models?library=sample-factory&sort=downloads)。
 
-### How sample-factory works
+### sample-factory 怎么运行
 
-Sample-factory is one of the **most highly optimized RL implementations available to the community**.
+Sample-factory 是社区中**最高度优化的强化学习实现之一**。
 
-It works by **spawning multiple processes that run rollout workers, inference workers and a learner worker**.
+它通过**生成多个进程来运行 rollout worker、inference worker 和 learner worker**。
 
-The *workers* **communicate through shared memory, which lowers the communication cost between processes**.
+*Workers* 通过共享内存进行通信，这降低了进程之间的通信成本。
 
-The *rollout workers* interact with the environment and send observations to the *inference workers*.
+*Rollout workers* 与环境交互，并将观测结果发送给 *inference workers*。
 
-The *inferences workers* query a fixed version of the policy and **send actions back to the rollout worker**.
+*Inferences workers* 查询一个固定版本的策略，并**将动作发送回 rollout worker**。
 
-After *k* steps the rollout works send a trajectory of experience to the learner worker, **which it uses to update the agent’s policy network**.
+在 *k* 步之后，rollout workers 将经验轨迹发送给 learner worker，**它使用该轨迹来更新智能体的策略网络**。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/samplefactory.png" alt="Sample factory"/>
 
-### Actor Critic models in Sample-factory
+### Sample-factory 中的演员评论员模型
 
-Actor Critic models in Sample Factory are composed of three components:
+在 Sample Factory 中，演员评论员模型由三个组件组成：
 
-- **Encoder** - Process input observations (images, vectors) and map them to a vector. This is the part of the model you will most likely want to customize.
-- **Core** - Intergrate vectors from one or more encoders, can optionally include a single- or multi-layer LSTM/GRU in a memory-based agent.
-- **Decoder** - Apply additional layers to the output of the model core before computing the policy and value outputs.
+- **Encoder** - 处理输入观测（图像、向量）并将它们映射到一个向量。这是您最有可能想要自定义的模型部分。
+- **Core** - 将一个或多个编码器的向量集成，可以选择在基于记忆的智能体中包括单层或多层 LSTM/GRU。
+- **Decoder** - 在计算策略和价值输出之前，对模型核心的输出应用额外的层。
 
-The library has been designed to automatically support any observation and action spaces. Users can easily add their custom models. You can find out more in the [documentation](https://www.samplefactory.dev/03-customization/custom-models/#actor-critic-models-in-sample-factory).
+该库已经被设计成自动支持任何观测和动作空间。用户可以轻松添加他们自己的自定义模型。你可以在[文档](https://www.samplefactory.dev/03-customization/custom-models/#actor-critic-models-in-sample-factory)中了解更多信息。
 
 ## ViZDoom
 
-[ViZDoom](https://vizdoom.cs.put.edu.pl/) is an **open-source python interface for the Doom Engine**.
+[ViZDoom](https://vizdoom.cs.put.edu.pl/) 是一个**开源的 Doom 引擎的 python 接口**。
 
-The library was created in 2016 by Marek Wydmuch, Michal Kempka  at the Institute of Computing Science, Poznan University of Technology, Poland.
+这个库是由 Marek Wydmuch 和 Michal Kempka 于 2016 年在波兰波兹南理工大学的计算科学研究所创建的。
 
-The library enables the **training of agents directly from the screen pixels in a number of scenarios**, including team deathmatch, shown in the video below. Because the ViZDoom environment is based on a game the was created in the 90s, it can be run on modern hardware at accelerated speeds, **allowing us to learn complex AI behaviors fairly quickly**.
+该库使得在多种场景下可以**直接从屏幕像素中训练智能体**，包括以下场景，例如在下面的视频中展示的多人模式中的死亡模式。由于 ViZDoom 环境是基于 90 年代创建的游戏，所以它可以在现代硬件上以加速的速度运行，**从而允许我们相当快地学习复杂的 AI 行为。**
 
-The library includes feature such as:
+该库的功能包括：
 
-- Multi-platform (Linux, macOS, Windows),
-- API for Python and C++,
-- [OpenAI Gym](https://www.gymlibrary.dev/) environment wrappers
-- Easy-to-create custom scenarios (visual editors, scripting language, and examples available),
-- Async and sync single-player and multiplayer modes,
-- Lightweight (few MBs) and fast (up to 7000 fps in sync mode, single-threaded),
-- Customizable resolution and rendering parameters,
-- Access to the depth buffer (3D vision),
-- Automatic labeling of game objects visible in the frame,
-- Access to the audio buffer
-- Access to the list of actors/objects and map geometry,
-- Off-screen rendering and episode recording,
-- Time scaling in async mode.
+- 多平台支持（Linux，macOS，Windows）
+- Python 和 C++ 的 API
+- OpenAI Gym 环境封装器
+- 易于创建自定义场景（提供了可视化编辑器、脚本语言和示例）
+- 异步和同步的单人和多人模式
+- 轻量级（仅几 MB）和快速（同步模式下单线程可达到 7000fps）
+- 可自定义的分辨率和渲染参数
+- 可访问深度缓冲区（3D 视觉）
+- 自动标记帧中可见的游戏对象
+- 可访问音频缓冲区
+- 可访问角色/对象和地图几何形状的列表
+- 屏幕外渲染和场景记录
+- 异步模式中的时间缩放。
 
-## We first need to install some dependencies that are required for the ViZDoom environment
+## 我们首先需要安装一些依赖来适配 ViZDoom 环境
 
-Now that our Colab runtime is set up, we can start by installing the dependencies required to run ViZDoom on linux.
+现在我们的 Colab 运行环境已经设置好了，我们可以开始安装在 Linux 上运行 ViZDoom 所需的依赖项。
 
-If you are following on your machine on Mac, you will want to follow the installation instructions on the [github page](https://github.com/Farama-Foundation/ViZDoom/blob/master/doc/Quickstart.md#-quickstart-for-macos-and-anaconda3-python-36).
+如果你正在 Mac 机器上进行操作，你需要按照 [github 页面](https://github.com/Farama-Foundation/ViZDoom/blob/master/doc/Quickstart.md#-quickstart-for-macos-and-anaconda3-python-36)上的安装说明进行安装。
 
 ```python
 # Install ViZDoom deps from
@@ -152,16 +153,16 @@ apt-get install libboost-all-dev
 apt-get install liblua5.1-dev
 ```
 
-## Then we can install Sample Factory and ViZDoom
+## 然后我们安装 Sample Factory 和 ViZDoom
 
-- This can take 7min
+- 这个耗时 7 min 左右
 
 ```bash
 pip install sample-factory
 pip install vizdoom
 ```
 
-## Setting up the Doom Environment in sample-factory
+## 在 sample-factory 中设置 Doom 环境
 
 ```python
 import functools
@@ -206,33 +207,31 @@ def parse_vizdoom_cfg(argv=None, evaluation=False):
     return final_cfg
 ```
 
-Now that the setup if complete, we can train the agent. We have chosen here to learn a ViZDoom task called `Health Gathering Supreme`.
+现在设置已经完成，我们可以开始训练智能体。我们选择学习一个名为 `Health Gathering Supreme` 的 ViZDoom 任务。
 
-### The scenario: Health Gathering Supreme
+### 场景: Health Gathering Supreme
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/Health-Gathering-Supreme.png" alt="Health-Gathering-Supreme"/>
 
 
 
-The objective of this scenario is to **teach the agent how to survive without knowing what makes him survive**. Agent know only that **life is precious** and death is bad so **it must learn what prolongs his existence and that his health is connected with it**.
+该场景的目标是**在不知道什么使它存活下来的条件下教会智能体如何生存**。智能体仅知道**生命宝贵**和死亡是不好的，因此**它必须学习什么可以延长它的生存时间，以及和它的健康息息相关的东西**。
 
-Map is a rectangle containing walls and with a green, acidic floor which **hurts the player periodically**. Initially there are some medkits spread uniformly over the map. A new medkit falls from the skies every now and then. **Medkits heal some portions of player's health** - to survive agent needs to pick them up. Episode finishes after player's death or on timeout.
+地图是一个包含墙壁并有绿色酸性地板的矩形，地板会**定期伤害玩家**。初始时，地图上均匀分布着一些医疗包。每隔一段时间，会有一个新的医疗包从天而降。**医疗包可以恢复玩家的一些健康值**- 为了生存，智能体需要捡起它们。玩家死亡或超时后，该轮游戏结束。
 
-Further configuration:
-- Living_reward = 1
-- 3 available buttons: turn left, turn right, move forward
-- 1 available game variable: HEALTH
-- death penalty = 100
+更多配置信息：
+- 存活奖励 = 1
+- 3个可用按钮：向左转，向右转，向前移动
+- 1个可用游戏变量：HEALTH
+- 死亡惩罚 = 100
 
-You can find out more about the scenarios available in ViZDoom [here](https://github.com/Farama-Foundation/ViZDoom/tree/master/scenarios).
+您可以在 ViZDoom 的 [这里](https://github.com/Farama-Foundation/ViZDoom/tree/master/scenarios) 找到更多可用场景的信息。
 
-There are also a number of more complex scenarios that have been create for ViZDoom, such as the ones detailed on [this github page](https://github.com/edbeeching/3d_control_deep_rl).
+还有一些更复杂的场景已经在 ViZDoom 创建，如[此 GitHub 页面](https://github.com/edbeeching/3d_control_deep_rl)所述。
 
+## 训练智能体
 
-
-## Training the agent
-
-- We're going to train the agent for 4000000 steps it will take approximately 20min
+- 我们将要训练这个智能体大约 4000000 步，这大概会耗费 20min 
 
 ```python
 ## Start the training, this should take around 15 minutes
@@ -248,7 +247,7 @@ cfg = parse_vizdoom_cfg(
 status = run_rl(cfg)
 ```
 
-## Let's take a look at the performance of the trained policy and output a video of the agent.
+## 让我们看一下训练过的策略表现和智能体的视频输出。
 
 ```python
 from sample_factory.enjoy import enjoy
@@ -259,7 +258,7 @@ cfg = parse_vizdoom_cfg(
 status = enjoy(cfg)
 ```
 
-## Now lets visualize the performance of the agent
+## 现在让我们可视化一下智能体的表现
 
 ```python
 from base64 import b64encode
@@ -277,26 +276,26 @@ HTML(
 )
 ```
 
-The agent has learned something, but its performance could be better. We would clearly need to train for longer. But let's upload this model to the Hub.
+这个智能体目前已经学习了一些东西，但是他的表现可以更好。我们明显需要训练更久，但让我们先把这个模型上传到 Hub。
 
-## Now lets upload your checkpoint and video to the Hugging Face Hub
-
-
+## 现在让我们上传你的存档点和视频到 Hugging Face Hub
 
 
-To be able to share your model with the community there are three more steps to follow:
 
-1️⃣ (If it's not already done) create an account to HF ➡ https://huggingface.co/join
 
-2️⃣ Sign in and then, you need to store your authentication token from the Hugging Face website.
-- Create a new token (https://huggingface.co/settings/tokens) **with write role**
+为了能够分享你的模型到社区，你需要遵循以下三个步骤：
+
+1️⃣ (如果没有) 创建一个 HF 账号 ➡ https://huggingface.co/join
+
+2️⃣ 登陆, 从网站中获取认证 token。
+- 创建一个具有**写权限**的新 token (https://huggingface.co/settings/tokens)
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/create-token.jpg" alt="Create HF Token">
 
-- Copy the token
-- Run the cell below and paste the token
+- 复制 token
+- 运行下面单元格代码并粘贴 token
 
-If you don't want to use a Google Colab or a Jupyter Notebook, you need to use this command instead: `huggingface-cli login`
+如果你不想使用 Google Colab 或者 Jupyter Notebook，你需要用这行命令替代：`huggingface-cli login` (or `login`)
 
 ```python
 from huggingface_hub import notebook_login
@@ -325,12 +324,12 @@ cfg = parse_vizdoom_cfg(
 status = enjoy(cfg)
 ```
 
-## Let's load another model
+## 让我们加载模型
 
 
 
 
-This agent's performance was good, but can do better! Let's download and visualize an agent trained for 10B timesteps from the hub.
+这个智能体的表现不错，但还有提升的空间！让我们从 Hub 下载并可视化一个训练了 10B 个时间步的智能体。
 
 ```bash
 #download the agent from the hub
@@ -371,18 +370,18 @@ HTML(
 )
 ```
 
-## Some additional challenges 🏆: Doom Deathmatch
+## 一些额外的挑战 🏆: Doom 多人死亡模式
 
-Training an agent to play a Doom deathmatch **takes many hours on a more beefy machine than is available in Colab**.
+训练一个在 Doom 的多人死亡模式中玩游戏的智能体，需要使用**比 Colab 更高配置的计算机，需要很多小时**。
 
-Fortunately, we have have **already trained an agent in this scenario and it is available in the 🤗 Hub!** Let’s download the model and visualize the agent’s performance.
+幸运的是，我们已经在这个场景中训练过一个智能体，并且它已经可以在 🤗 Hub 上获取！ **让我们下载这个模型并可视化智能体的表现。**
 
 ```python
 # Download the agent from the hub
 python -m sample_factory.huggingface.load_from_hub -r edbeeching/doom_deathmatch_bots_2222 -d ./train_dir
 ```
 
-Given the agent plays for a long time the video generation can take **10 minutes**.
+鉴于智能体长时间进行游戏，视频生成可能需要**10分钟**。
 
 ```python
 from sample_factory.enjoy import enjoy
@@ -415,16 +414,13 @@ HTML(
 ```
 
 
-You **can try to train your agent in this environment** using the code above, but not on colab.
-**Good luck 🤞**
+你**可以尝试使用上面的代码在这个环境中训练你的智能体**，但不能在 Colab 上训练。
+**祝你好运 🤞**
 
-If you prefer an easier scenario, **why not try training in another ViZDoom scenario such as `doom_deadly_corridor` or `doom_defend_the_center`.**
-
-
+如果你喜欢一个更简单的场景，**为什么不尝试在另一个 ViZDoom 场景中训练，例如 `doom_deadly_corridor` 或 `doom_defend_the_center`。**
 
 ---
 
+这就结束了最后一个单元。但我们还没有结束！🤗 下面的 **额外章节包括一些最有趣、最先进和最前沿的深度强化学习工作**。
 
-This concludes the last unit. But we are not finished yet! 🤗 The following **bonus section include some of the most interesting, advanced and cutting edge work in Deep Reinforcement Learning**.
-
-## Keep learning, stay awesome 🤗
+## 保持热爱，奔赴山海 🤗

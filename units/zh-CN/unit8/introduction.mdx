@@ -1,23 +1,23 @@
-# Introduction [[introduction]]
+# 介绍 [[introduction]]
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/thumbnail.png" alt="Unit 8"/>
 
-In Unit 6, we learned about Advantage Actor Critic (A2C), a hybrid architecture combining value-based and policy-based methods that help to stabilize the training by reducing the variance with:
+在第六单元，我们学习了优势演员评论员(A2C),这是一种结合了基于价值和基于策略的方法的混合架构，通过以下方法减少方差来帮助稳定训练：
 
-- *An Actor* that controls **how our agent behaves** (policy-based method).
-- *A Critic* that measures **how good the action taken is** (value-based method).
+- *一个演员*控制你**智能体的怎样行动**(基于策略方法)。
+- *一个评论员*衡量**本次采取的动作的好坏**(基于价值方法)。
 
-Today we'll learn about Proximal Policy Optimization (PPO), an architecture that **improves our agent's training stability by avoiding too large policy updates**. To do that, we use a ratio that indicates the difference between our current and old policy and clip this ratio from a specific range \\( [1 - \epsilon, 1 + \epsilon] \\) .
+今天，我们将要学习近端策略优化(PPO)算法，一种**通过回避大量策略更新来提升我们智能体训练的稳定性**的架构。为了做到此目的，我们使用一个比率来指示我们当前和旧策略之间的差异，并将该比率剪切到特定范围 \\( [1 - \epsilon, 1 + \epsilon] \\) 。
 
-Doing this will ensure **that our policy update will not be too large and that the training is more stable.**
+这样做可以保证**我们的策略更新不会太大，训练更稳定。**
 
-This Unit is in two parts:
-- In this first part, you'll learn the theory behind PPO and code your PPO agent from scratch using [CleanRL](https://github.com/vwxyzjn/cleanrl) implementation. To test its robustness with LunarLander-v2. LunarLander-v2 **is the first environment you used when you started this course**. At that time, you didn't know how PPO worked, and now, **you can code it from scratch and train it. How incredible is that 🤩**.
-- In the second part, we'll get deeper into PPO optimization by using [Sample-Factory](https://samplefactory.dev/) and train an agent playing vizdoom (an open source version of Doom).
+本单元分为两个部分：
+- 在第一部分，你将会学到 PPO 背后的原理以及从头开始用 [CleanRL](https://github.com/vwxyzjn/cleanrl) 执行你的 PPO 智能体。我们用 LunarLander-v2 来测试他的鲁棒性。LunarLander-v2 **就是你第一次开始本课程时的环境**。那个时候，你还不知道 PPO 是怎样运行的，但现在，**你可以从头训练他。真是太不可思议了 🤩**。
+- 在第二部分，我们将会用 [Sample-Factory](https://samplefactory.dev/) 更深入 PPO 的优化并且训练一个智能体玩 vizdoom(一个 Doom 的开源版本)。
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/environments.png" alt="Environment"/>
-<figcaption>These are the environments you're going to use to train your agents: VizDoom environments</figcaption>
+<figcaption>这是你将要训练你智能体的环境： VizDoom 环境</figcaption>
 </figure>
 
-Sounds exciting? Let's get started! 🚀
+听起来不错？那让我们开始把！🚀

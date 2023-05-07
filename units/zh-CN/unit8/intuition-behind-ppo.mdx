@@ -1,16 +1,15 @@
-# The intuition behind PPO [[the-intuition-behind-ppo]]
+# PPO 的直观理解[[the-intuition-behind-ppo]]
 
+近端策略优化( PPO )的理念是通过限制你每一个训练时期你对于策略的改变来提升训练策略的稳定性：**我们想要避免过大的策略更新。**
 
-The idea with Proximal Policy Optimization (PPO) is that we want to improve the training stability of the policy by limiting the change you make to the policy at each training epoch: **we want to avoid having too large policy updates.**
-
-For two reasons:
-- We know empirically that smaller policy updates during training are **more likely to converge to an optimal solution.**
-- A too-big step in a policy update can result in falling “off the cliff” (getting a bad policy) **and having a long time or even no possibility to recover.**
+我们有两个理由：
+- 我们经验上知道，在训练过程中采用更小的策略更新**更有可能收敛到最优解。**
+- 策略更新中过大的步长可能会导致“坠崖”(得到一个糟糕的策略)，**并且需要很长时间去恢复，甚至没有恢复的可能性。**
 
 <figure class="image table text-center m-0 w-full">
   <img class="center" src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/cliff.jpg" alt="Policy Update cliff"/>
-  <figcaption>Taking smaller policy updates to improve the training stability</figcaption>
-  <figcaption>Modified version from RL — Proximal Policy Optimization (PPO) <a href="https://jonathan-hui.medium.com/rl-proximal-policy-optimization-ppo-explained-77f014ec3f12">Explained by Jonathan Hui</a></figcaption>
+  <figcaption>采用较小的策略更新可以提高训练稳定性。</figcaption>
+  <figcaption>这是从强化学习领域的“近端策略优化”（PPO）算法中的修改版本。<a href="https://jonathan-hui.medium.com/rl-proximal-policy-optimization-ppo-explained-77f014ec3f12">由 Jonathan Hui 解释</a></figcaption>
 </figure>
 
-**So with PPO, we update the policy conservatively**. To do so, we need to measure how much the current policy changed compared to the former one using a ratio calculation between the current and former policy. And we clip this ratio in a range \\( [1 - \epsilon, 1 + \epsilon] \\), meaning that we **remove the incentive for the current policy to go too far from the old one (hence the proximal policy term).**
+**所以在使用 PPO 时，我们更新策略非常保守**。为了达到这个目的，我们需要衡量当前策略改变程度比较于前一个的，这里用一个比率计算当下与前一个的策略变化。并且我们把这个范围限制在了 \\( [1 - \epsilon, 1 + \epsilon] \\) 之间，**这意味着我们消除了当前策略离旧策略太远的激励（因此有了近端策略这个术语）。**
