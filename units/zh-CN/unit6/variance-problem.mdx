@@ -1,30 +1,28 @@
-# The Problem of Variance in Reinforce [[the-problem-of-variance-in-reinforce]]
+# 强化中的方差问题 [[the-problem-of-variance-in-reinforce]]
 
-In Reinforce, we want to **increase the probability of actions in a trajectory proportional to how high the return is**.
-
+在 强化 中，我们想要**增加与回报率成正比的轨迹中的动作概率**。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/pg.jpg"  alt="Reinforce"/>
 
-- If the **return is high**, we will **push up** the probabilities of the (state, action) combinations.
-- Else, if the **return is low**, it will **push down** the probabilities of the (state, action) combinations.
+- 如果**回报率高**，我们将**提高**（状态，动作）组合的概率。
+- 否则，如果**回报率低**，它会**压低**（状态、动作）组合的概率。
 
-This return \\(R(\tau)\\) is calculated using a *Monte-Carlo sampling*. We collect a trajectory and calculate the discounted return, **and use this score to increase or decrease the probability of every action taken in that trajectory**. If the return is good, all actions will be “reinforced” by increasing their likelihood of being taken.
+这个回报 \\(R(\tau)\\) 是使用*蒙特卡洛采样*计算的。 我们收集轨迹并计算折扣回报，**并使用该分数来增加或减少在该轨迹中采取的每个动作的概率**。 如果回报良好，所有行动都将通过增加采取行动的可能性来“加强”。
 
 \\(R(\tau) = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + ...\\)
 
-The advantage of this method is that **it’s unbiased. Since we’re not estimating the return**, we use only the true return we obtain.
+这种方法的优点是**它是无偏的， 由于我们没有估算回报**，因此我们仅使用我们获得的真实回报。
 
-Given the stochasticity of the environment (random events during an episode) and stochasticity of the policy, **trajectories can lead to different returns, which can lead to high variance**. Consequently, the same starting state can lead to very different returns.
-Because of this, **the return starting at the same state can vary significantly across episodes**.
+鉴于环境的随机性(事件中的随机事件)和政策的随机性，**轨迹可能导致不同的回报，这可能导致高方差。**因此，相同的起始状态可能导致非常不同的回报。
+正因为如此，**从同一状态开始的回归在不同的时期之间可能会有很大的不同。**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/variance.jpg" alt="variance"/>
 
-The solution is to mitigate the variance by **using a large number of trajectories, hoping that the variance introduced in any one trajectory will be reduced in aggregate and provide a "true" estimation of the return.**
+解决方案是通过**使用大量轨迹来减轻方差，希望在任何一个轨迹中引入的方差将总体减少，并提供对回报的“真实”估计。**
 
-However, increasing the batch size significantly **reduces sample efficiency**. So we need to find additional mechanisms to reduce the variance.
+然而，增加 batch size 大小会显着**降低样本效率**。 所以我们需要找到额外的机制来减少方差。
 
----
-If you want to dive deeper into the question of variance and bias tradeoff in Deep Reinforcement Learning, you can check these two articles:
+如果你想更深入地研究深度强化学习中的方差和偏差权衡问题，你可以查看这两篇文章：
+
 - [Making Sense of the Bias / Variance Trade-off in (Deep) Reinforcement Learning](https://blog.mlreview.com/making-sense-of-the-bias-variance-trade-off-in-deep-reinforcement-learning-79cf1e83d565)
 - [Bias-variance Tradeoff in Reinforcement Learning](https://www.endtoend.ai/blog/bias-variance-tradeoff-in-reinforcement-learning/)
----
