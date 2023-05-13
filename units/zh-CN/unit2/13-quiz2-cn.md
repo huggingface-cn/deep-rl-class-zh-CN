@@ -1,0 +1,107 @@
+# 第二个测验
+
+想要获得最佳的学习效果并[避免产生自以为是的幻觉](https://www.coursera.org/lecture/learning-how-to-learn/illusions-of-competence-BuFzf)，**对自己进行测试**是非常重要的。这会帮助你找到**需要加强知识的领域**。
+
+
+### 问题一：什么是Q-Learning？
+
+<Question
+	choices={[
+		{
+			text: "一个用来训练Q函数的算法",
+			explain: "",
+      correct: true
+		},
+		{
+			text: "一个价值函数",
+			explain: "一个动作价值函数，因为它决定了在特定状态下采取特定动作的价值",
+		},
+    {
+			text: "一个用于确定在特定状态下采取特定动作的价值的算法",
+			explain: "",
+      correct: true
+		},
+		{
+			text: "一个表格",
+      explain: "Q函数不是Q-table，它是一个用于填充Q-table的算法"
+		}
+	]}
+/>
+
+### 问题二：什么是Q-table？
+
+<Question
+	choices={[
+		{
+			text: "Q-table是一个在Q-Learning中使用的算法",
+			explain: "",
+		},
+		{
+			text: "Q-table是智能体的内部记忆",
+			explain: "",
+      correct: true
+		},
+    {
+			text: "Q-table中每一个单元都对应一个状态价值",
+			explain: "每一个单元都对应一个状态价值对的价值，而非一个状态价值",
+		}
+	]}
+/>
+
+### 问题三：为什么有了最优Q函数 Q * 就意味着有了最优的策略？
+
+<details>
+<summary>答案</summary>
+
+
+
+因为有了最优的Q函数， 我们就知道了在每个状态下应该采取的最优动作，所以这意味着我们有了最优的策略。
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/link-value-policy.jpg" alt="link value policy"/>
+
+</details>
+
+### 问题四：解释一下什么是Epsilon贪心策略？
+
+<details>
+<summary>答案</summary>
+Epsilon贪心策略是一种处理探索和利用平衡问题的方法。
+
+
+
+该方法思想为我们定义epsilon ε = 1.0：
+
+- 当概率为*1 — ɛ*时：让智能体进行利用（即智能体选择一个具有最高状态动作对价值的动作）
+
+- 当概率为*ɛ*时：让智能体进行探索（尝试随机动作）
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-4.jpg" alt="Epsilon Greedy"/>
+
+
+</details>
+
+### 问题五：怎么更新一个状态动作对的Q值？
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/q-update-ex.jpg" alt="Q Update exercise"/>
+
+<details>
+<summary>答案</summary>
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/q-update-solution.jpg" alt="Q Update exercise"/>
+
+
+
+</details>
+
+
+
+### 问题六：在线学习和离线学习的区别是什么？
+
+<details>
+<summary>答案</summary>
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/off-on-4.jpg" alt="On/off policy"/>
+</details>
+
+
+
+恭喜完成了以上的测验🥳，如果你对以上的内容还没有完全掌握，可以进行回顾以加强你的知识掌握程度(😏) 。
+

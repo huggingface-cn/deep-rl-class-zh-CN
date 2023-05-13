@@ -1,0 +1,25 @@
+# Q-learning算法介绍
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/thumbnail.jpg" alt="Unit 2 thumbnail" width="100%">
+
+在本节课程的第一单元中，我们已经学习了强化学习、强化学习训练过程以及不同的解决强化学习的方法。我们还**训练了第一个智能体并将其上传到了HuggingFace社区**。
+
+在本单元，我们将**更深入的学习一种强化学习的方法：基于价值的方法**，并开始学习第一个强化学习算法：**Q-Learning算法**。
+
+我们还会**从零开始实现第一个Q-learning强化学习智能体**，并在两个环境中训练它。
+
+1. Frozen-Lake-v1 (不打滑的版本): 在这里我们的智能体需要通过在冰面(F)上行走并躲避冰坑(H)，**使其从初始状态(S)到目标状态(G)**。
+2. 自动摩的：在这里我们的智能体需要**学习在城市中行驶**从而**把乘客从点A送到点B**。
+
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/envs.gif" alt="Environments"/>
+
+我们具体要学习以下内容：
+
+- 学习**基于价值的方法**。
+- 了解**蒙特卡洛和时序差分学习之间的区别**。
+- 理解并实现我们的**第一个强化学习算法**：Q-learning。
+
+**如果你想要进一步学习Deep Q-learning算法，那一定要重视本单元的基础学习**。Deep Q-learning是第一个在部分Atari游戏上（如breakout, 太空入侵者等）表现超过人类的深度强化学习算法。
+
+现在让我们开始吧！🚀
+
