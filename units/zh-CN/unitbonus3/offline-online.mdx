@@ -1,37 +1,38 @@
-# Offline vs. Online Reinforcement Learning
+# 离线与在线强化学习
 
-Deep Reinforcement Learning (RL) is a framework **to build decision-making agents**. These agents aim to learn optimal behavior (policy) by interacting with the environment through **trial and error and receiving rewards as unique feedback**.
+深度强化学习（RL）是一个**构建决策智能体的框架**。这些智能体旨在通过与环境的互动和接收奖励作为唯一的反馈，**通过试错来学习最佳行为（策略）**。
 
-The agent’s goal **is to maximize its cumulative reward**, called return. Because RL is based on the *reward hypothesis*: all goals can be described as the **maximization of the expected cumulative reward**.
+智能体的目标是**最大化其累积奖励**，即回报。因为强化学习基于*奖励假设*：所有目标都可以描述为**期望累积奖励的最大化**。
 
-Deep Reinforcement Learning agents **learn with batches of experience**. The question is, how do they collect it?:
+深度强化学习智能体使用**经验的批次进行学习**。问题是，它们如何收集经验？
+
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit12/offlinevsonlinerl.gif" alt="Unit bonus 3 thumbnail">
-<figcaption>A comparison between Reinforcement Learning in an Online and Offline setting, figure taken from <a href="https://offline-rl.github.io/">this post</a></figcaption>
+<figcaption>离线与在线强化学习设置对比<a href="https://offline-rl.github.io/">图</a></figcaption>
 </figure>
 
-- In *online reinforcement learning*, which is what we've learned during this course, the agent **gathers data directly**: it collects a batch of experience by **interacting with the environment**. Then, it uses this experience immediately (or via some replay buffer) to learn from it (update its policy).
+- 在*在线强化学习中*，也就是我们在本课程中学到的内容，智能体**直接收集数据**：通过与环境的交互，它收集一批经验数据。然后，它立即（或通过某个重放缓冲区）利用这些经验数据进行学习（更新策略）。
 
-But this implies that either you **train your agent directly in the real world or have a simulator**. If you don’t have one, you need to build it, which can be very complex (how to reflect the complex reality of the real world in an environment?), expensive, and insecure (if the simulator has flaws that may provide a competitive advantage, the agent will exploit them).
+但这意味着**你要么直接在真实世界中训练智能体，要么拥有一个模拟器**。如果没有模拟器，你需要构建一个，这可能非常复杂（如何在环境中反映现实世界的复杂性？）、昂贵且不安全（如果模拟器存在缺陷，可能提供竞争优势，智能体将利用这些缺陷）。
 
-- On the other hand, in *offline reinforcement learning*, the agent only **uses data collected from other agents or human demonstrations**. It does **not interact with the environment**.
+- 另一方面，在*离线强化学习*中，智能体**只使用从其他智能体或人类演示中收集的数据**。它**不与环境进行交互。**
 
-The process is as follows:
-- **Create a dataset** using one or more policies and/or human interactions.
-- Run **offline RL on this dataset** to learn a policy
+该过程如下：
+- 使用一个或多个策略和/或人类交互来**创建数据集**。
+- 在**此数据集上运行离线强化学习**以学习一种策略。
 
-This method has one drawback: the *counterfactual queries problem*. What do we do if our agent **decides to do something for which we don’t have the data?** For instance, turning right on an intersection but we don’t have this trajectory.
+这种方法有一个缺点：*反事实查询问题*。如果我们的智能体**决定做某件我们没有数据的事情**，我们该怎么办？例如，在交叉口右转，但我们没有这样的轨迹。
 
-There exist some solutions on this topic, but if you want to know more about offline reinforcement learning, you can [watch this video](https://www.youtube.com/watch?v=k08N5a0gG0A)
+关于这个问题存在一些解决方案，如果想要了解更多关于离线强化学习的内容，可以观看[这个视频](https://www.youtube.com/watch?v=k08N5a0gG0A)。
 
-## Further reading
+## 补充阅读
 
-For more information, we recommend you check out the following resources:
+如需了解更多信息，我们建议你查阅以下资源：
 
-- [Offline Reinforcement Learning, Talk by Sergei Levine](https://www.youtube.com/watch?v=qgZPZREor5I)
-- [Offline Reinforcement Learning: Tutorial, Review, and Perspectives on Open Problems](https://arxiv.org/abs/2005.01643)
+- [离线强化学习，Sergei Levine 的讲座](https://www.youtube.com/watch?v=qgZPZREor5I)
+- [离线强化学习：教程、综述和对未解决问题的展望](https://arxiv.org/abs/2005.01643)
 
-## Author
+## 作者
 
-This section was written by <a href="https://twitter.com/ThomasSimonini"> Thomas Simonini</a>
+本节内容由<a href="https://twitter.com/ThomasSimonini"> Thomas Simonini </a>撰写。

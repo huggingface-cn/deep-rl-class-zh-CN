@@ -1,85 +1,85 @@
-# Godot RL Agents
+# Godot RL 智能体
 
-[Godot RL Agents](https://github.com/edbeeching/godot_rl_agents) is an Open Source package that allows video game creators, AI researchers and hobbyists the opportunity **to learn complex behaviors for their Non Player Characters or agents**.
+[Godot RL 智能体](https://github.com/edbeeching/godot_rl_agents)是一个开源软件包，为视频游戏开发者、人工智能研究人员和爱好者提供了学习其非玩家角色（NPC）或智能体的复杂行为的机会。
 
-The library provides:
+该库提供了以下功能：
 
-- An interface between games created in the [Godot Engine](https://godotengine.org/) and Machine Learning algorithms running in Python
-- Wrappers for four well known rl frameworks: [StableBaselines3](https://stable-baselines3.readthedocs.io/en/master/), [CleanRL](https://docs.cleanrl.dev/), [Sample Factory](https://www.samplefactory.dev/) and [Ray RLLib](https://docs.ray.io/en/latest/rllib-algorithms.html)
-- Support for memory-based agents with LSTM or attention based interfaces
-- Support for *2D and 3D games*
-- A suite of *AI sensors* to augment your agent's capacity to observe the game world
-- Godot and Godot RL Agents are **completely free and open source under a very permissive MIT license**. No strings attached, no royalties, nothing.
+- 在[ Godot 引擎](https://godotengine.org/)中创建的游戏与在 Python 中运行的机器学习算法之间的接口
+- 对四个著名的强化学习框架进行包装：[StableBaselines3](https://stable-baselines3.readthedocs.io/en/master/)、[CleanRL](https://docs.cleanrl.dev/)、[Sample Factory](https://www.samplefactory.dev/) 和 [Ray RLLib](https://docs.ray.io/en/latest/rllib-algorithms.html)
+- 支持基于内存的智能体，具有 LSTM 或注意力机制的接口
+- 支持 *2D 和 3D 游戏*
+- 一套 *AI 传感器*，增强智能体观察游戏世界的能力
+- Godot 和 Godot RL 智能体完全免费，并采用非常宽松的 **MIT 许可证开放源代码**。没有任何附加条件，没有版税，没有其他限制。
 
-You can find out more about Godot RL agents on their [GitHub page](https://github.com/edbeeching/godot_rl_agents) or their AAAI-2022 Workshop [paper](https://arxiv.org/abs/2112.03636). The library's creator, [Ed Beeching](https://edbeeching.github.io/), is a Research Scientist here at Hugging Face.
+你可以在他们的[ GitHub 页面](https://github.com/edbeeching/godot_rl_agents)或他们的 AAAI-2022 研讨会[论文](https://arxiv.org/abs/2112.03636)上了解更多关于 Godot RL 智能体的信息。该库的创建者[Ed Beeching](https://edbeeching.github.io/)是 Hugging Face 的研究员。
 
-Installation of the library is simple: `pip install godot-rl`
+安装该库非常简单：`pip install godot-rl`
 
-## Create a custom RL environment with Godot RL Agents
+## 使用 Godot RL 智能体创建自定义 RL 环境
 
-In this section, you will **learn how to create a custom environment in the Godot Game Engine** and then implement an AI controller that learns to play with Deep Reinforcement Learning.
+在本节中，你将学习**如何在 Godot 游戏引擎中创建自定义环境**，然后实现一个深度强化学习的 AI 控制器。
 
-The example game we create today is simple, **but shows off many of the features of the Godot Engine and the Godot RL Agents library**.You can then dive into the examples for more complex environments and behaviors.
+我们今天创建的示例游戏很简单，但**展示了 Godot 引擎和 Godot RL 智能体库的许多功能**。你随后可以深入研究更复杂的环境和行为示例。
 
-The environment we will be building today is called Ring Pong, the game of pong but the pitch is a ring and the paddle moves around the ring. The **objective is to keep the ball bouncing inside the ring**.
+我们今天要构建的环境称为 Ring Pong，它是乒乓球游戏，但球场是一个环形，球拍在环上移动。**目标是让球在环内持续弹跳**。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/ringpong.gif" alt="Ring Pong">
 
-### Installing the Godot Game Engine
+### 安装 Godot 游戏引擎
 
-The [Godot game engine](https://godotengine.org/) is an open source tool for the **creation of video games, tools and user interfaces**.
+[Godot 游戏引擎](https://godotengine.org/)是一个用于**创建视频游戏、工具和用户界面的开源工具。**
 
-Godot Engine is a feature-packed, cross-platform game engine designed to create 2D and 3D games from a unified interface. It provides a comprehensive set of common tools, so users **can focus on making games without having to reinvent the wheel**. Games can be exported in one click to a number of platforms, including the major desktop platforms (Linux, macOS, Windows) as well as mobile (Android, iOS) and web-based (HTML5) platforms.
+Godot 引擎是一个功能齐全的跨平台游戏引擎，旨在通过统一的界面创建 2D 和 3D 游戏。它提供了一套全面的常用工具，使用户可以专注于制作游戏，而无需重新造轮子。游戏可以一键导出到多个平台，包括主要的桌面平台（Linux、macOS、Windows），以及移动（Android、iOS）和基于 Web 的（HTML5）平台。
 
-While we will guide you through the steps to implement your agent, you may wish to learn more about the Godot Game Engine. Their [documentation](https://docs.godotengine.org/en/latest/index.html) is thorough, there are many tutorials on YouTube we would also recommend [GDQuest](https://www.gdquest.com/), [KidsCanCode](https://kidscancode.org/godot_recipes/4.x/) and [Bramwell](https://www.youtube.com/channel/UCczi7Aq_dTKrQPF5ZV5J3gg) as sources of information.
+虽然我们将指导你实现智能体的步骤，但你可能希望了解更多关于 Godot 游戏引擎的信息。他们的[文档](https://docs.godotengine.org/en/latest/index.html)非常详尽，YouTube 上也有许多教程，我们推荐 [GDQuest](https://www.gdquest.com/)、[KidsCanCode](https://kidscancode.org/godot_recipes/4.x/) 和 [Bramwell](https://www.youtube.com/channel/UCczi7Aq_dTKrQPF5ZV5J3gg) 作为信息来源。
 
-In order to create games in Godot, **you must first download the editor**. Godot RL Agents supports the latest version of Godot, Godot 4.0.
+要在 Godot 中创建游戏，**你首先必须下载编辑器**。Godot RL 智能体支持最新版本的Godot，即Godot 4.0。
 
-Which can be downloaded at the following links:
+可以在以下链接处下载：
 
 - [Windows](https://downloads.tuxfamily.org/godotengine/4.0.1/Godot_v4.0.1-stable_win64.exe.zip)
 - [Mac](https://downloads.tuxfamily.org/godotengine/4.0.1/Godot_v4.0.1-stable_macos.universal.zip)
 - [Linux](https://downloads.tuxfamily.org/godotengine/4.0.1/Godot_v4.0.1-stable_linux.x86_64.zip)
 
-### Loading the starter project
+### 加载初始项目
 
-We provide two versions of the codebase:
-- [A starter project, to download and follow along for this tutorial](https://drive.google.com/file/d/1C7xd3TibJHlxFEJPBgBLpksgxrFZ3D8e/view?usp=share_link)
-- [A final version of the project, for comparison and debugging.](https://drive.google.com/file/d/1k-b2Bu7uIA6poApbouX4c3sq98xqogpZ/view?usp=share_link)
+我们提供了两个版本的代码库：
+- [初始项目，可下载并跟随本教程进行学习](https://drive.google.com/file/d/1C7xd3TibJHlxFEJPBgBLpksgxrFZ3D8e/view?usp=share_link)
+- [项目的最终版本，用于比较和调试。](https://drive.google.com/file/d/1k-b2Bu7uIA6poApbouX4c3sq98xqogpZ/view?usp=share_link)
 
-To load the project, in the Godot Project Manager click **Import**, navigate to where the files are located and load the **project.godot** file.
+要加载项目，在Godot项目管理器中点击**导入**，导航到文件所在位置，并加载 **project.godot** 文件。
 
-If you press F5 or play in the editor, you should be able to play the game in human mode. There are several instances of the game running, this is because we want to speed up training our AI agent with many parallel environments.
+如果按下 F5 或在编辑器中播放，你应该能够以人类模式玩游戏。游戏有多个实例运行，这是因为我们希望通过许多并行环境加快训练AI智能体的速度。
 
-### Installing the Godot RL Agents plugin
+### 安装 Godot RL 智能体插件
 
-The Godot RL Agents plugin can be installed from the Github repo or with the Godot Asset Lib in the editor.
 
-First click on the AssetLib and search for “rl”
+可以从 Github 仓库或使用 Godot 编辑器中的 Godot Asset Lib 安装 Godot RL 智能体插件。
+
+首先点击 AssetLib，然后搜索 “rl”。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/godot1.png" alt="Godot">
 
-Then click on Godot RL Agents, click Download and unselect the LICIENSE and [README.md](http://README.md) files. Then click install.
+然后点开 Godot RL 智能体， 点击下载并筛除 LICENSE 和 [README.md](http://README.md) 文件，再安装。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/godot2.png" alt="Godot">
 
-
-The Godot RL Agents plugin is now downloaded to your machine your machine. Now click on Project → Project settings and enable the addon:
+Godot RL 智能体插件现在已经下载到你的机器上了。再点击 Project → Project settings 确保添加：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/godot3.png" alt="Godot">
 
 
-### Adding the AI controller
+### 加入 AI 控制器
 
-We now want to add an AI controller to our game. Open the player.tscn scene, on the left you should see a hierarchy of nodes that looks like this:
+现在我们想要在游戏中添加一个 AI 控制器。打开 `player.tscn` 场景，你会看到左侧有一个节点层级，类似于这样：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/godot4.png" alt="Godot">
 
-Right click the **Player** node and click **Add Child Node.** There are many nodes listed here, search for AIController3D and create it.
+右键点击 **Player** 节点，然后点击 **Add Child Node** 。这里列出了许多节点，搜索 `AIController3D` 并创建它。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/godot5.png" alt="Godot">
 
-The AI Controller Node should have been added to the scene tree, next to it is a scroll. Click on it to open the script that is attached to the AIController. The Godot game engine uses a scripting language called GDScript, which is syntactically similar to python. The script contains methods that need to be implemented in order to get our AI controller working.
+AI 控制器节点应该已经添加到场景树中，在其旁边有一个滚动条。点击它以打开附加到 AI 控制器的脚本。Godot 游戏引擎使用一种名为 GDScript 的脚本语言，它在语法上类似于 Python。该脚本包含需要实现的方法，以使我们的 AI 控制器正常工作。
 
 ```python
 #-- Methods that need implementing using the "extend script" option in Godot --#
@@ -109,9 +109,9 @@ func set_action(action) -> void:
 # -----------------------------------------------------------------------------#
 ```
 
-In order to implement these methods, we will need to create a class that inherits from AIController3D. This is easy to do in Godot, and is called “extending” a class.
+为了实现这些方法，我们需要创建一个继承自 AIController3D 的类。在 Godot 中，这很容易做到，被称为“扩展”一个类。
 
-Right click the AIController3D Node and click “Extend Script” and call the new script `controller.gd`. You should now have an almost empty script file that looks like this:
+右键单击 AIController3D 节点，然后单击“扩展脚本”，将新脚本命名为 `controller.gd`。现在你应该有一个几乎为空的脚本文件，看起来像这样：
 
 ```python
 extends AIController3D
@@ -125,7 +125,7 @@ func _process(delta):
 	pass
 ```
 
-We will now implement the 4 missing methods, delete this code and replace it with the following:
+我们现在将实现这 4 个缺失的方法，请删除这段代码并用以下代码替换：
 
 ```python
 extends AIController3D
@@ -156,9 +156,9 @@ func set_action(action) -> void:
 	move_action = clamp(action["move_action"][0], -1.0, 1.0)
 ```
 
-We have now defined the agent’s observation, which is the position and velocity of the ball in its local cooridinate space. We have also defined the action space of the agent, which is a single contuninous value ranging from -1 to +1.
+我们现在定义了智能体的观测，即球在其本地坐标空间中的位置和速度。我们还定义了智能体的动作空间，这是一个从 -1 到 +1 的单一连续值范围。
 
-The next step is to update the Player’s script to use the actions from the AIController, edit the Player’s script by clicking on the scroll next to the player node, update the code in `Player.gd` to the following the following:
+下一步是更新播放器的脚本，以使用 AIController 的动作。通过点击播放器节点旁边的滚动条，编辑播放器的脚本，将代码更新为以下内容：
 
 ```python
 extends Node3D
@@ -191,20 +191,20 @@ func _on_area_3d_body_entered(body):
 	ai_controller.reward += 1.0
 ```
 
-We now need to synchronize between the game running in Godot and the neural network being trained in Python. Godot RL agents provides a node that does just that. Open the train.tscn scene, right click on the root node and click “Add child node”. Then, search for “sync” and add a Godot RL Agents Sync node. This node handles the communication between Python and Godot over TCP.
+现在我们需要在 Godot 中运行的游戏和 Python 中正在训练的神经网络之间进行同步。Godot RL Agents 提供了一个节点来完成这个任务。打开 train.tscn 场景，在根节点上右键单击，然后选择“添加子节点”。然后，在搜索框中搜索 “sync”，添加一个 Godot RL Agents Sync 节点。这个节点负责在 TCP 上处理 Python 和 Godot 之间的通信。
 
-You can run training live in the the editor, by first launching the python training with `gdrl`
+您可以在编辑器中实时运行训练，首先使用 `gdrl` 启动 Python 训练。
 
-In this simple example, a reasonable policy is learned in several minutes. You may wish to speed up training, click on the Sync node in the train scene and you will see there is a “Speed Up” property exposed in the editor:
+在这个简单的示例中，合理的策略可以在几分钟内学到。你可能希望加快训练速度，点击训练场景中的 Sync 节点，你会看到编辑器中暴露了一个名为 "Speed Up" 的属性：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/godot6.png" alt="Godot">
 
-Try setting this property up to 8 to speed up training. This can be a great benefit on more complex environments, like the multi-player FPS we will learn about in the next chapter.
+尝试将此属性设置为 8 以加快训练速度。这在更复杂的环境中会带来很大的好处，比如我们将在下一章学习的多人射击游戏。
 
-### There’s more!
+### 更多信息0!
 
-We have only scratched the surface of what can be achieved with Godot RL Agents, the library includes custom sensors and cameras to enrich the information available to the agent. Take a look at the [examples](https://github.com/edbeeching/godot_rl_agents_examples) to find out more!
+这只是 Godot RL Agents 可以实现的一小部分。该库还包括自定义传感器和摄像头，以丰富代理可用的信息。请查看[示例](https://github.com/edbeeching/godot_rl_agents_examples)以获取更多信息！
 
-## Author
+## 作者
 
-This section was written by <a href="https://twitter.com/edwardbeeching">Edward Beeching</a>
+本节由<a href="https://twitter.com/ClementRomac"> Edward Beeching </a>撰写

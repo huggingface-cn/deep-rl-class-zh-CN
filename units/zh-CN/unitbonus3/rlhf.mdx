@@ -1,50 +1,49 @@
 # RLHF
 
-Reinforcement learning from human feedback (RLHF) is a **methodology for integrating human data labels into a RL-based optimization process**.
-It is motivated by the **challenge of modeling human preferences**.
 
-For many questions, even if you could try and write down an equation for one ideal, humans differ on their preferences.
+基于人类反馈的强化学习(Reinforcement Learning from Human Feedback，RLHF)是一种**将人类数据标签融入基于强化学习的优化过程的方法论**。它的动机来自于**对建模人类偏好的挑战**。
 
-Updating models **based on measured data is an avenue to try and alleviate these inherently human ML problems**.
+对于许多问题而言，即使你可以尝试编写一个理想解的方程，人们对偏好的看法也会有所不同。
 
-## Start Learning about RLHF
+**基于测量数据来更新模型是尝试缓解这些固有的人类机器学习问题的途径之一**。
 
-To start learning about RLHF:
+## 开始学习 RLHF
 
-1. Read this introduction: [Illustrating Reinforcement Learning from Human Feedback (RLHF)](https://huggingface.co/blog/rlhf).
+要开始学习 RLHF，请按照以下步骤进行：
 
-2. Watch the recorded live we did some weeks ago, where Nathan covered the basics of Reinforcement Learning from Human Feedback (RLHF) and how this technology is being used to enable state-of-the-art ML tools like ChatGPT.
-Most of the talk is an overview of the interconnected ML models. It covers the basics of Natural Language Processing and RL and how RLHF is used on large language models. We then conclude with the open question in RLHF.
+1. 阅读这篇介绍：[Illustrating Reinforcement Learning from Human Feedback (RLHF)](https://huggingface.co/blog/rlhf)。
+
+2. 观看我们几周前的一次直播录像，其中 Nathan 介绍了强化学习从人类反馈中学习（RLHF）的基础知识，以及这项技术如何被用于实现像 ChatGPT 这样的最先进机器学习工具。这次讲座主要是关于相互关联的机器学习模型的概述。它涵盖了自然语言处理和强化学习的基础知识，以及如何在大型语言模型上使用 RLHF。最后，我们讨论了 RLHF 中的开放问题。
 
 <Youtube id="2MBJOuVq380" />
 
-3. Read other blogs on this topic, such as [Closed-API vs Open-source continues: RLHF, ChatGPT, data moats](https://robotic.substack.com/p/rlhf-chatgpt-data-moats). Let us know if there are more you like!
+3. 阅读关于这个主题的其他博客文章，例如 [Closed-API vs Open-source continues: RLHF, ChatGPT, data moats](https://robotic.substack.com/p/rlhf-chatgpt-data-moats)。如果还有其他你喜欢的资源，请告诉我们！
+
+## 补充阅读
+
+*请注意，这是从上面的 Illustrating RLHF 博客文章中复制的内容。*
+以下是迄今为止关于 RLHF 的最重要的论文列表。该领域在 DeepRL 的出现（大约在 2017 年左右）后近年来受到关注，并发展成为许多大型科技公司应用 LLM 的广泛研究。下面是一些早于 LM 关注点的 RLHF 论文：
+
+- [TAMER: 通过评估强化手动训练智能体](https://www.cs.utexas.edu/~pstone/Papers/bib2html-links/ICDL08-knox.pdf)（Knox 和 Stone，2008 年）：提出了一种学习智能体的方法，其中人类迭代地为采取的行动提供评分以学习奖励模型。
+- [基于策略依赖的人类反馈的交互式学习](http://proceedings.mlr.press/v70/macglashan17a/macglashan17a.pdf)（MacGlashan 等，2017 年）：提出了一种演员-评论员算法 COACH，其中利用人类反馈（包括积极和消极反馈）来调整优势函数。
+- [基于人类偏好的深度强化学习](https://proceedings.neurips.cc/paper/2017/hash/d5e2c0adad503c91f91df240d0cd4e49-Abstract.html)（Christiano 等，2017 年）：在 Atari 轨迹偏好之间应用 RLHF 的方法。
+- [Deep TAMER：在高维状态空间中进行交互式智能体塑形](https://ojs.aaai.org/index.php/AAAI/article/view/11485)（Warnell 等，2018 年）：扩展了 TAMER 框架，使用深度神经网络来建模奖励预测。
 
 
-## Additional readings
+以下是一组不断增长的论文快照，展示了 RLHF 在 LM 领域的表现：
+- [从人们偏好中进行微调语言模型](https://arxiv.org/abs/1909.08593) (Zieglar 等人，2019 年)：一篇早期的论文，研究了奖励学习对四个特定任务的影响。
+- [通过人类反馈来学习总结](https://proceedings.neurips.cc/paper/2020/hash/1f89885d556929e98d3ef9b86448f951-Abstract.html) (Stiennon 等人，2020 年)：将 RLHF 应用于文本摘要任务。此外，[Recursively Summarizing Books with Human Feedback](https://arxiv.org/abs/2109.10862) (OpenAI Alignment Team 2021) 是对书籍进行摘要的后续工作。
+- [WebGPT: 通过浏览器辅助的人类反馈进行问答](https://arxiv.org/abs/2112.09332) (OpenAI，2021 年)：使用 RLHF 训练智能体程序浏览网页。
+- InstructGPT: [使用人类反馈来训练语言模型遵循指令](https://arxiv.org/abs/2203.02155) (OpenAI Alignment Team 2022)：将 RLHF 应用于通用语言模型[[InstructGPT 的博客文章](https://openai.com/blog/instruction-following/)]。
+- GopherCite: [教授语言模型使用经过验证的引用来支持回答](https://www.deepmind.com/publications/gophercite-teaching-language-models-to-support-answers-with-verified-quotes) (Menick等人，2022年)：使用RLHF训练LM以返回带有特定引文的答案。
+- Sparrow: [通过有针对性的人类判断改善对话智能体的对齐性](https://arxiv.org/abs/2209.14375) (Glaese 等人，2022 年)：使用 RLHF 对对话智能体进行微调，以提高其对齐性。
+- [ChatGPT: 优化用于对话的语言模型](https://openai.com/blog/chatgpt/) (OpenAI，2022 年)：使用 RLHF 训练 LM，以适合作为通用聊天机器人使用。
+- [奖励模型过度优化的规模定律](https://arxiv.org/abs/2210.10760) (Gao 等人，2022 年)：研究了 RLHF 中学习的偏好模型的缩放特性。
+- [使用来自人类反馈的强化学习训练一个有用且无害的助手](https://arxiv.org/abs/2204.05862) (Anthropic，2022年)：详细记录了使用 RLHF 训练 LM 助手的过程。
+- [对语言模型进行红队测试以减少伤害：方法、规模行为和经验教训](https://arxiv.org/abs/2209.07858) (Ganguli 等人，2022 年)：详细记录了努力“发现、衡量和尝试减少[语言模型]潜在有害输出”的过程。
+- [使用强化学习进行开放式对话的动态规划](https://arxiv.org/abs/2208.02294) (Cohen 等人，2022 年)：使用 RL 来增强开放式对话智能体的交流能力。
+- [强化学习在自然语言处理中的适用性：基准、基线和自然语言策略优化的构建模块](https://arxiv.org/abs/2210.01241) (Ramamurthy 和 Ammanabrolu 等人，2022 年)：讨论了 RLHF 中开源工具的设计空间，并提出了一种新的算法 NLPO（Natural Language Policy Optimization）作为 PPO 的替代方案。
 
-*Note, this is copied from the Illustrating RLHF blog post above*.
-Here is a list of the most prevalent papers on RLHF to date. The field was recently popularized with the emergence of DeepRL (around 2017) and has grown into a broader study of the applications of LLMs from many large technology companies.
-Here are some papers on RLHF that pre-date the LM focus:
-- [TAMER: Training an Agent Manually via Evaluative Reinforcement](https://www.cs.utexas.edu/~pstone/Papers/bib2html-links/ICDL08-knox.pdf) (Knox and Stone 2008): Proposed a learned agent where humans provided scores on the actions taken iteratively to learn a reward model.
-- [Interactive Learning from Policy-Dependent Human Feedback](http://proceedings.mlr.press/v70/macglashan17a/macglashan17a.pdf) (MacGlashan et al. 2017): Proposed an actor-critic algorithm, COACH, where human feedback (both positive and negative) is used to tune the advantage function.
-- [Deep Reinforcement Learning from Human Preferences](https://proceedings.neurips.cc/paper/2017/hash/d5e2c0adad503c91f91df240d0cd4e49-Abstract.html) (Christiano et al. 2017): RLHF applied on preferences between Atari trajectories.
-- [Deep TAMER: Interactive Agent Shaping in High-Dimensional State Spaces](https://ojs.aaai.org/index.php/AAAI/article/view/11485) (Warnell et al. 2018): Extends the TAMER framework where a deep neural network is used to model the reward prediction.
+## 作者
 
-And here is a snapshot of the growing set of papers that show RLHF's performance for LMs:
-- [Fine-Tuning Language Models from Human Preferences](https://arxiv.org/abs/1909.08593) (Zieglar et al. 2019): An early paper that studies the impact of reward learning on four specific tasks.
-- [Learning to summarize with human feedback](https://proceedings.neurips.cc/paper/2020/hash/1f89885d556929e98d3ef9b86448f951-Abstract.html) (Stiennon et al., 2020): RLHF applied to the task of summarizing text. Also, [Recursively Summarizing Books with Human Feedback](https://arxiv.org/abs/2109.10862) (OpenAI Alignment Team 2021), follow on work summarizing books.
-- [WebGPT: Browser-assisted question-answering with human feedback](https://arxiv.org/abs/2112.09332) (OpenAI, 2021): Using RLHF to train an agent to navigate the web.
-- InstructGPT: [Training language models to follow instructions with human feedback](https://arxiv.org/abs/2203.02155) (OpenAI Alignment Team 2022): RLHF applied to a general language model [[Blog post](https://openai.com/blog/instruction-following/) on InstructGPT].
-- GopherCite: [Teaching language models to support answers with verified quotes](https://www.deepmind.com/publications/gophercite-teaching-language-models-to-support-answers-with-verified-quotes) (Menick et al. 2022): Train a LM with RLHF to return answers with specific citations.
-- Sparrow: [Improving alignment of dialogue agents via targeted human judgements](https://arxiv.org/abs/2209.14375) (Glaese et al. 2022): Fine-tuning a dialogue agent with RLHF
-- [ChatGPT: Optimizing Language Models for Dialogue](https://openai.com/blog/chatgpt/) (OpenAI 2022): Training a LM with RLHF for suitable use as an all-purpose chat bot.
-- [Scaling Laws for Reward Model Overoptimization](https://arxiv.org/abs/2210.10760) (Gao et al. 2022): studies the scaling properties of the learned preference model in RLHF.
-- [Training a Helpful and Harmless Assistant with Reinforcement Learning from Human Feedback](https://arxiv.org/abs/2204.05862) (Anthropic, 2022): A detailed documentation of training a LM assistant with RLHF.
-- [Red Teaming Language Models to Reduce Harms: Methods, Scaling Behaviors, and Lessons Learned](https://arxiv.org/abs/2209.07858) (Ganguli et al. 2022): A detailed documentation of efforts to “discover, measure, and attempt to reduce [language models] potentially harmful outputs.”
-- [Dynamic Planning in Open-Ended Dialogue using Reinforcement Learning](https://arxiv.org/abs/2208.02294) (Cohen at al. 2022): Using RL to enhance the conversational skill of an open-ended dialogue agent.
-- [Is Reinforcement Learning (Not) for Natural Language Processing?: Benchmarks, Baselines, and Building Blocks for Natural Language Policy Optimization](https://arxiv.org/abs/2210.01241) (Ramamurthy and Ammanabrolu et al. 2022): Discusses the design space of open-source tools in RLHF and proposes a new algorithm NLPO (Natural Language Policy Optimization) as an alternative to PPO.
-
-## Author
-
-This section was written by <a href="https://twitter.com/natolambert"> Nathan Lambert </a>
+本节内容由 [Nathan Lambert](https://twitter.com/natolambert) 撰写。
