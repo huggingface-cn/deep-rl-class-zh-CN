@@ -1,137 +1,135 @@
-# Self-Play: a classic technique to train competitive agents in adversarial games
+# 自我对弈：在对抗性游戏中训练竞争智能体的经典技术
 
-Now that we studied the basics of multi-agents. We're ready to go deeper. As mentioned in the introduction, we're going **to train agents in an adversarial game with SoccerTwos, a 2vs2 game**.
+现在我们已经学习了多智能体的基础知识，我们准备深入研究。正如在介绍中提到的，我们将**在一个对抗性的游戏中训练智能体，使用 SoccerTwos 这个 2 对 2 的游戏**。
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/soccertwos.gif" alt="SoccerTwos"/>
 
-<figcaption>This environment was made by the <a href="https://github.com/Unity-Technologies/ml-agents">Unity MLAgents Team</a></figcaption>
+<figcaption>环境由<a href="https://github.com/Unity-Technologies/ml-agents">Unity MLAgents 团队创建</a></figcaption>
 
 </figure>
 
-## What is Self-Play?
+## 什么是自我对弈 ?
 
-Training agents correctly in an adversarial game can be **quite complex**.
+在对抗性游戏中正确训练智能体可能会变得**相当复杂**。
 
-On the one hand, we need to find how to get a well-trained opponent to play against your training agent. And on the other hand, even if you have a very good trained opponent, it's not a good solution since how your agent is going to improve its policy when the opponent is too strong?
+一方面，我们需要找到一个经过良好训练的对手来与训练中的智能体对战。另一方面，即使你有一个非常好的训练对手，这也不是一个好的解决方案，因为当对手太强时，你的智能体如何改进其策略呢？
 
-Think of a child that just started to learn soccer. Playing against a very good soccer player will be useless since it will be too hard to win or at least get the ball from time to time. So the child will continuously lose without having time to learn a good policy.
+想象一下一个刚开始学习足球的孩子。与一位非常优秀的足球运动员比赛是没有意义的，因为赢得比赛或者至少偶尔得到球将会非常困难。所以这个孩子会不断地输掉比赛，没有时间学习一个好的策略。
 
-The best solution would be **to have an opponent that is on the same level as the agent and will upgrade its level as the agent upgrades its own**. Because if the opponent is too strong, we’ll learn nothing; if it is too weak, we’ll overlearn useless behavior against a stronger opponent then.
+最好的解决方案是**找一个与智能体水平相当的对手，并且随着智能体提升自己的水平来提升对手的水平**。因为如果对手太强，我们将一无所获；如果对手太弱，我们将学到与更强对手对抗时无用的行为。
 
-This solution is called *self-play*. In self-play, **the agent uses former copies of itself (of its policy) as an opponent**. This way, the agent will play against an agent of the same level (challenging but not too much), have opportunities to gradually improve its policy, and then update its opponent as it becomes better. It’s a way to bootstrap an opponent and progressively increase the opponent's complexity.
+这个解决方案被称为*自我对弈*。在自我对弈中，**智能体将其之前的策略副本作为对手**。这样，智能体将与一个相同水平的对手进行对战（具有一定挑战性但不过于困难），有机会逐渐改进其策略，并在自身提升时更新对手。这是一种逐步提升对手复杂性的方法。
 
-It’s the same way humans learn in competition:
+这与人类在竞争中学习的方式相同：
 
-- We start to train against an opponent of similar level
-- Then we learn from it, and when we acquired some skills, we can move further with stronger opponents.
+- 我们开始与一个水平相近的对手进行训练
+- 然后我们从对手那里学习，当我们掌握了一些技巧后，我们可以挑战更强的对手。
 
-We do the same with self-play:
+我们在自我对弈中也是这样做的：
 
-- We **start with a copy of our agent as an opponent** this way, this opponent is on a similar level.
-- We **learn from it**, and when we acquire some skills, we **update our opponent with a more recent copy of our training policy**.
+- 我们**以我们的智能体副本作为对手**开始，这样对手的水平就与我们相当。
+- 我们**从对手那里学习**，当我们掌握了一些技巧后，我们**用最新的训练策略副本更新对手**。
 
-The theory behind self-play is not something new. It was already used by Arthur Samuel’s checker player system in the fifties and by Gerald Tesauro’s TD-Gammon in 1995. If you want to learn more about the history of self-play [check this very good blogpost by Andrew Cohen](https://blog.unity.com/technology/training-intelligent-adversaries-using-self-play-with-ml-agents)
+自我对弈的理论并不是什么新鲜事物。早在上世纪五十年代，Arthur Samuel 的跳棋程序和 1995 年 Gerald Tesauro 的 TD-Gammon 就已经使用了自我对弈。如果你想了解更多关于自我对弈的历史，请参阅 Andrew Cohen 的这篇[非常好的博客文章](https://blog.unity.com/technology/training-intelligent-adversaries-using-self-play-with-ml-agents)
 
-## Self-Play in MLAgents
+## MLAgents 中的自我对弈
 
-Self-Play is integrated into the MLAgents library and is managed by multiple hyperparameters that we’re going to study. But the main focus as explained in the documentation is the **tradeoff between the skill level and generality of the final policy and the stability of learning**.
+自我对弈已经整合到了 MLAgents 库中，并由多个超参数进行管理，我们将对这些超参数进行研究。但正如文档中所解释的那样，主要关注点是**在最终策略的技能水平和广泛性以及学习的稳定性之间的权衡**。
 
-Training against a set of slowly changing or unchanging adversaries with low diversity **results in more stable training. But a risk to overfit if the change is too slow.**
+与一组变化缓慢或不变的对手进行训练，且多样性较低，**会导致更稳定的训练。但如果变化过慢，存在过拟合的风险。**
 
-We need then to control:
+因此，我们需要控制：
 
-- How **often do we change opponents** with `swap_steps` and `team_change` parameters.
-- The **number of opponents saved** with `window` parameter. A larger value of `window`
- means that an agent's pool of opponents will contain a larger diversity of behaviors since it will contain policies from earlier in the training run.
-- **Probability of playing against the current self vs opponent** sampled in the pool with `play_against_latest_model_ratio`. A larger value of `play_against_latest_model_ratio`
- indicates that an agent will be playing against the current opponent more often.
-- The **number of training steps before saving a new opponent** with `save_steps` parameters. A larger value of `save_steps`
- will yield a set of opponents that cover a wider range of skill levels and possibly play styles since the policy receives more training.
+- 通过 `swap_steps` 和 `team_change` 参数控制**更换对手的频率**。
+- 通过 `window` 参数控制**保存的对手数量**。较大的 `window` 值意味着智能体的对手池中包含了更多的行为多样性，因为它包含了训练过程中较早期的策略。
+- 通过 `play_against_latest_model_ratio` 参数控制从池中采样时与**当前自身对战和对手对战的概率**。较大的 `play_against_latest_model_ratio` 值表示智能体将更频繁地与当前对手对战。
+- 通过 `save_steps` 参数控制**在保存新对手之前的训练步数**。较大的 `save_steps` 值将产生一组覆盖更广泛的技能水平和可能的游戏风格的对手，因为策略接受了更多的训练。
 
-To get more details about these hyperparameters, you definitely need [to check this part of the documentation](https://github.com/Unity-Technologies/ml-agents/blob/develop/docs/Training-Configuration-File.md#self-play)
+要获取有关这些超参数的更多详细信息，你肯定需要[查看文档的这一部分](https://github.com/Unity-Technologies/ml-agents/blob/develop/docs/Training-Configuration-File.md#self-play)。
 
 
-## The ELO Score to evaluate our agent
+## 用 ELO 分数评估我们的智能体
 
-### What is ELO Score?
+### 什么是 ELO 分数？
 
-In adversarial games, tracking the **cumulative reward is not always a meaningful metric to track the learning progress:** because this metric is **dependent only on the skill of the opponent.**
+在对抗性游戏中，追踪累积奖励并不总是一个有意义的衡量学习进度的指标：因为这个指标仅仅取决于对手的技能水平。
 
-Instead, we’re using an ***ELO rating system*** (named after Arpad Elo) that calculates the **relative skill level** between 2 players from a given population in a zero-sum game.
+相反，我们使用了一个名为*** ELO 评分系统***（以 Arpad Elo 命名），它可以计算在零和游戏中给定人群中两个玩家之间的**相对技能水平**。
 
-In a zero-sum game: one agent wins, and the other agent loses. It’s a mathematical representation of a situation in which each participant’s gain or loss of utility **is exactly balanced by the gain or loss of the utility of the other participants.** We talk about zero-sum games because the sum of utility is equal to zero.
+在零和游戏中：一个智能体获胜，另一个智能体失败。这是一种数学表示，其中每个参与者的效用增益或损失**恰好被其他参与者的效用增益或损失所平衡**。我们之所以谈论零和游戏，是因为效用的总和等于零。
 
-This ELO (starting at a specific score: frequently 1200) can decrease initially but should increase progressively during the training.
+这个 ELO 分数（通常从一个特定的分数开始，比如 1200）可能一开始会降低，但在训练过程中应该逐渐增加。
 
-The Elo system is **inferred from the losses and draws against other players.** It means that player ratings depend **on the ratings of their opponents and the results scored against them.**
+Elo 系统是通过与其他玩家的失败和平局**进行推断得出的**。这意味着玩家的评级**取决于他们的对手以及对手得分的结果**。
 
-Elo defines an Elo score that is the relative skills of a player in a zero-sum game. **We say relative because it depends on the performance of opponents.**
+Elo 定义了一个Elo 分数，它表示在零和游戏中的玩家相对技能水平。我们之所以说相对技能，**是因为它取决于对手的表现**。
 
-The central idea is to think of the performance of a player **as a random variable that is normally distributed.**
+中心思想是将玩家的表现视为一个**正态分布的随机变量**。
 
-The difference in rating between 2 players serves as **the predictor of the outcomes of a match.** If the player wins, but the probability of winning is high, it will only win a few points from its opponent since it means that it is much stronger than it.
+两个玩家之间的评级差异被视为**预测比赛结果的指标**。如果玩家获胜，但获胜的概率很高，那么它只会从对手那里获得少量分数，因为这意味着它比对手强得多。
 
-After every game:
+每场比赛之后：
 
-- The winning player takes **points from the losing one.**
-- The number of points is determined **by the difference in the 2 players ratings (hence relative).**
-    - If the higher-rated player wins → few points will be taken from the lower-rated player.
-    - If the lower-rated player wins → a lot of points will be taken from the high-rated player.
-    - If it’s a draw → the lower-rated player gains a few points from the higher.
+- 获胜的玩家从失败的玩家**夺取分数**。
+- 分数的数量由两个玩家的**评级差异决定（因此是相对的）**。
+    - 如果评级较高的玩家获胜→从评级较低的玩家那里获得少量分数。
+    - 如果评级较低的玩家获胜→从评级较高的玩家那里获得很多分数。
+    - 如果是平局→评级较低的玩家从评级较高的玩家那里获得少量分数。
 
-So if A and B have rating Ra, and Rb, then the **expected scores are** given by:
+所以如果 A 和 B 的评级分别为 Ra 和 Rb，那么**预期得分如下**：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/elo1.png" alt="ELO Score"/>
 
-Then, at the end of the game, we need to update the player’s actual Elo score. We use a linear adjustment **proportional to the amount by which the player over-performed or under-performed.**
+然后，在比赛结束时，我们需要更新玩家的实际 Elo 分数。我们**使用一个与玩家表现超出或低于预期的程度成比例的线性调整**。
 
-We also define a maximum adjustment rating per game: K-factor.
+我们还定义了每场比赛的最大调整等级：K 因子。
 
-- K=16 for master.
-- K=32 for weaker players.
+- 对于高手，K=16。
+- 对于较弱的玩家，K=32。
 
-If Player A has Ea points but scored Sa points, then the player’s rating is updated using the formula:
+如果玩家 A 拥有 Ea 分，但获得了 Sa 分，那么玩家的评级将使用以下公式进行更新：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/elo2.png" alt="ELO Score"/>
 
-### Example
+### 示例
 
-If we take an example:
+如果我们举个例子：
 
-Player A has a rating of 2600
+玩家 A 的评级为 2600
 
-Player B has a rating of 2300
+玩家 B 的评级为 2300
 
-- We first calculate the expected score:
+- 我们首先计算预期得分：
 
 \\(E_{A} = \frac{1}{1+10^{(2300-2600)/400}} = 0.849 \\)
 
 \\(E_{B} = \frac{1}{1+10^{(2600-2300)/400}} = 0.151 \\)
 
-- If the organizers determined that K=16 and A wins, the new rating would be:
+- 如果组织者确定 K=16，并且 A 获胜，新的评级将为：
 
 \\(ELO_A = 2600 + 16*(1-0.849) = 2602 \\)
 
 \\(ELO_B = 2300 + 16*(0-0.151) = 2298 \\)
 
-- If the organizers determined that K=16 and B wins, the new rating would be:
+- 如果组织者确定 K=16，并且 B 获胜，新的评级将为：
 
 \\(ELO_A = 2600 + 16*(0-0.849) = 2586 \\)
 
 \\(ELO_B = 2300 + 16 *(1-0.151) = 2314 \\)
 
 
-### The Advantages
+### 优点
 
-Using ELO score has multiple advantages:
+使用 ELO 评分具有多个优点：
 
-- Points are **always balanced** (more points are exchanged when there is an unexpected outcome, but the sum is always the same).
-- It is a **self-corrected system** since if a player wins against a weak player, you will only win a few points.
-- If **works with team games**: we calculate the average for each team and use it in Elo.
+- 点数始终保持**平衡**（当出现意外结果时，交换的点数更多，但总和始终保持相同）。
+- 这是一个**自我校正的系统**，因为如果一个玩家赢得了与一个弱对手的比赛，你只会赢得一些分数。
+- 适用于**团队游戏**：我们计算每个团队的平均分数，并在 Elo 中使用它。
 
-### The Disadvantages
+### 缺点
 
-- ELO **does not take the individual contribution** of each people in the team.
-- Rating deflation: **good rating require skill over time to get the same rating**.
-- **Can’t compare rating in history**.
+- ELO **不考虑每个人在团队中的个体贡献**。
+- 评分通货紧缩：**为了获得相同的评分，需要随着时间的推移不断提升技能**。
+- **无法比较历史上的评分**。
+
