@@ -1,82 +1,81 @@
-# Hands-on
+# 动手尝试
 
-Now that you learned the bases of multi-agents. You're ready to train our first agents in a multi-agent system: **a 2vs2 soccer team that needs to beat the opponent team**.
+现在你已经了解了多智能体系统的基础知识。你可以开始训练我们的第一个多智能体系统：**一个 2 对 2 的足球队，需要击败对手队伍**。
 
-And you’re going to participate in AI vs. AI challenges where your trained agent will compete against other classmates’ **agents every day and be ranked on a new leaderboard.**
+你将参加 AI 对抗 AI 的挑战，你的训练智能体将每天与其他同学的智能体进行竞争，并在新的排行榜上排名。
 
-To validate this hands-on for the certification process, you just need to push a trained model. There **are no minimal results to attain to validate it.**
+为了验证这个动手尝试项目，你只需要提交一个经过训练的模型。**没有达到最低结果要求来验证它**。
 
-For more information about the certification process, check this section 👉 [https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process](https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process)
+有关认证流程的更多信息，请查看此部分👉 [https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process](https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process)
 
-This hands-on will be different since to get correct results **you need to train your agents from 4 hours to 8 hours**. And given the risk of timeout in Colab, we advise you to train on your computer. You don’t need a supercomputer: a simple laptop is good enough for this exercise.
+这个动手尝试项目将会有所不同，因为为了获得正确的结果，**你需要将智能体训练时间设置为 4 小时到 8 小时**。鉴于在 Colab 中可能会超时，我们建议你在自己的计算机上进行训练。你不需要超级计算机：一台普通的笔记本电脑就足够完成这个练习。
 
-Let's get started! 🔥
+让我们开始吧！🔥
 
-## What is AI vs. AI?
+## 什么是 AI vs. AI？
 
-AI vs. AI is an open-source tool we developed at Hugging Face to compete agents on the Hub against one another in a multi-agent setting. These models are then ranked in a leaderboard.
+AI vs. AI 是我们在 Hugging Face 开发的一个开源工具，用于在 Hub 上让智能体之间在多智能体环境中进行竞争。这些模型将在排行榜上进行排名。
 
-The idea of this tool is to have a robust evaluation tool: **by evaluating your agent with a lot of others, you’ll get a good idea of the quality of your policy.**
+这个工具的想法是为了有一个强大的评估工具：**通过与其他许多智能体进行评估，你将对自己策略的质量有一个很好的了解。**
 
-More precisely, AI vs. AI is three tools:
+具体来说，AI vs. AI 是三个工具：
 
-- A *matchmaking process* defining the matches (which model against which) and running the model fights using a background task in the Space.
-- A *leaderboard* getting the match history results and displaying the models’ ELO ratings: [https://huggingface.co/spaces/huggingface-projects/AIvsAI-SoccerTwos](https://huggingface.co/spaces/huggingface-projects/AIvsAI-SoccerTwos)
-- A *Space demo* to visualize your agents playing against others: [https://huggingface.co/spaces/unity/ML-Agents-SoccerTwos](https://huggingface.co/spaces/unity/ML-Agents-SoccerTwos)
+- 一个*匹配过程*，用于定义比赛（哪个模型对战哪个模型）并在 Space 中使用后台任务运行模型对战。
+- 一个*排行榜*，获取比赛历史结果并显示模型的 ELO 评分：[https://huggingface.co/spaces/huggingface-projects/AIvsAI-SoccerTwos](https://huggingface.co/spaces/huggingface-projects/AIvsAI-SoccerTwos)
+- 一个*Space 演示*，用于可视化你的智能体与其他智能体的对战：[https://huggingface.co/spaces/unity/ML-Agents-SoccerTwos](https://huggingface.co/spaces/unity/ML-Agents-SoccerTwos)
 
-In addition to these three tools, your classmate cyllum created a 🤗 SoccerTwos Challenge Analytics where you can check the detailed match results of a model: [https://huggingface.co/spaces/cyllum/soccertwos-analytics](https://huggingface.co/spaces/cyllum/soccertwos-analytics)
+除了这三个工具，你的同学 cyllum 还创建了一个 🤗 SoccerTwos Challenge Analytics，你可以在其中查看模型的详细比赛结果：[https://huggingface.co/spaces/cyllum/soccertwos-analytics](https://huggingface.co/spaces/cyllum/soccertwos-analytics)
 
-We're going to write a blog post to explain this AI vs. AI tool in detail, but to give you the big picture it works this way:
+我们将撰写一篇博文详细介绍这个 AI vs. AI 工具，但为了给你一个大致的概念，它的工作原理如下：
 
-- Every four hours, our algorithm **fetches all the available models for a given environment (in our case ML-Agents-SoccerTwos).**
-- It creates a **queue of matches with the matchmaking algorithm.**
-- We simulate the match in a Unity headless process and **gather the match result** (1 if the first model won, 0.5 if it’s a draw, 0 if the second model won) in a Dataset.
-- Then, when all matches from the matches queue are done, **we update the ELO score for each model and update the leaderboard.**
+- 每隔四个小时，我们的算法**获取给定环境（在我们的情况下是 ML-Agents-SoccerTwos）的所有可用模型**。
+- 它使用匹配算法创建一个**匹配队列**。
+- 我们在一个 Unity 无头进程中模拟比赛，**并将比赛结果（如果第一个模型赢，则为 1，如果是平局，则为 0.5，如果第二个模型赢，则为 0）收集到一个数据集中**。
+- 当匹配队列中的所有比赛都完成后，**我们更新每个模型的 ELO 分数并更新排行榜**。
 
-### Competition Rules
+### 竞赛规则
 
-This first AI vs. AI competition **is an experiment**: the goal is to improve the tool in the future with your feedback. So some **breakups can happen during the challenge**. But don't worry
-**all the results are saved in a dataset so we can always restart the calculation correctly without losing information**.
+这次的 AI 对战 AI 竞赛是**一个实验**：目标是根据你们的反馈意见在将来改进这个工具。所以在竞赛期间**可能会发生一些中断情况**。但不用担心，**所有的结果都会保存在一个数据集中，这样我们就可以始终正确地重新计算，不会丢失信息**。
 
-In order that your model to get correctly evaluated against others you need to follow these rules:
+为了确保你的模型能够正确地与其他模型进行评估，请遵守以下规则：
 
-1. **You can't change the observation space or action space of the agent.** By doing that your model will not work during evaluation.
-2. You **can't use a custom trainer for now,** you need to use Unity MLAgents ones.
-3. We provide executables to train your agents. You can also use the Unity Editor if you prefer **, but to avoid bugs, we advise you to use our executables**.
+1. **你不能更改智能体程序的观察空间或动作空间。**如果这样做，你的模型在评估过程中将无法正常工作。
+2. 目前你不能**使用自定义训练器**，你需要使用 Unity MLAgents。
+3. 我们提供了可执行文件来训练你的智能体程序。你也可以使用 Unity 编辑器，**但为了避免错误，我们建议你使用我们的可执行文件**。
 
-What will make the difference during this challenge are **the hyperparameters you choose**.
+在这次竞赛中，决定胜负的将是你选择的超参数。
 
-The AI vs AI algorithm will run until April the 30th, 2023.
+AI 对战 AI 算法将持续运行直到 2023 年 4 月 30 日。
 
-We're constantly trying to improve our tutorials, so **if you find some issues in this notebook**, please [open an issue on the GitHub Repo](https://github.com/huggingface/deep-rl-class/issues).
+我们一直在努力改进我们的教程，如果你在这个 Notebook 中发现了一些问题，请在[GitHub 仓库上提出问题](https://github.com/huggingface/deep-rl-class/issues)。
 
-### Exchange with your classmates, share advice and ask questions on Discord
+### 在 Discord 上与你的同学交流，分享建议和提问
 
-- We created a new channel called `ai-vs-ai-challenge` to exchange advice and ask questions.
-- If you didn’t joined yet the discord server you can [join here](https://discord.gg/ydHrjt3WP5)
+- 我们创建了一个名为 `ai-vs-ai-challenge` 的新频道，用于交流建议和提问。
+- 如果你还没有加入 Discord ，你可以[在这里加入](https://discord.gg/ydHrjt3WP5)。
 
-## Step 0: Install MLAgents and download the correct executable
+## 步骤 0：安装 MLAgents 并下载正确的可执行文件
 
-⚠ We're going to use an experimental version of ML-Agents which allows you to push and load your models to/from the Hub. **You need to install the same version.**
+⚠ 我们将使用一个实验版本的 ML-Agents，它允许你将模型从 Hub 中上传和下载到 / 。** 你需要安装相同的版本。**
 
-⚠ ⚠ ⚠  We’re not going to use the same version than for the Unit 5: Introduction to ML-Agents ⚠ ⚠ ⚠
+⚠ ⚠ ⚠ 我们将不使用与第5单元相同的版本：ML-Agents 入门 ⚠ ⚠ ⚠
 
-We advise you to use [conda](https://docs.conda.io/en/latest/) as a package manager and create a new environment.
+我们建议使用 [conda](https://docs.conda.io/en/latest/) 作为包管理器，并创建一个新的环境。
 
-With conda, we create a new environment called rl with **Python 3.9**:
+使用 conda，我们创建一个名为 rl 的新环境，使用 **Python 3.9**：
 
 ```bash
 conda create --name rl python=3.9
 conda activate rl
 ```
 
-To be able to train correctly our agents and push to the Hub, we need to install an experimental version of ML-Agents (the branch aivsai from Hugging Face ML-Agents fork)
+为了能够正确训练我们的智能体并推送到 Hub，我们需要安装一个实验版本的 ML-Agents（Hugging Face ML-Agents 分支中的 aivsai）
 
 ```bash
 git clone --branch aivsai https://github.com/huggingface/ml-agents
 ```
 
-When the cloning is done (it takes 2.63 GB), we go inside the repository and install the package
+当克隆完成（需要 2.63 GB）后，我们进入仓库并安装该软件包。
 
 ```bash
 cd ml-agents
@@ -84,99 +83,101 @@ pip install -e ./ml-agents-envs
 pip install -e ./ml-agents
 ```
 
-We also need to install pytorch with:
+我们同样需要用以下命令安装 pytorch:
 
 ```bash
 pip install torch
 ```
 
-Finally, you need to install git-lfs: https://git-lfs.com/
+最后，你需要安装 git-lfs：https://git-lfs.com/
 
-Now that it’s installed, we need to add the environment training executable. Based on your operating system you need to download one of them, unzip it and place it in a new folder inside `ml-agents` that you call `training-envs-executables`
+安装完成后，我们需要添加环境训练可执行文件。根据你的操作系统，你需要下载其中一个可执行文件，并解压缩并放置在 `ml-agents` 目录下的一个名为 `training-envs-executables` 的新文件夹中。
 
-At the end your executable should be in `mlagents/training-envs-executables/SoccerTwos`
+最终，你的可执行文件应位于 `mlagents/training-envs-executables/SoccerTwos` 中。
 
-Windows: Download [this executable](https://drive.google.com/file/d/1sqFxbEdTMubjVktnV4C6ICjp89wLhUcP/view?usp=sharing)
+Windows：下载[此可执行文件](https://drive.google.com/file/d/1sqFxbEdTMubjVktnV4C6ICjp89wLhUcP/view?usp=sharing)
 
-Linux (Ubuntu): Download [this executable](https://drive.google.com/file/d/1KuqBKYiXiIcU4kNMqEzhgypuFP5_45CL/view?usp=sharing)
+Linux（Ubuntu）：下载[此可执行文件](https://drive.google.com/file/d/1KuqBKYiXiIcU4kNMqEzhgypuFP5_45CL/view?usp=sharing)
 
-Mac: Download [this executable](https://drive.google.com/drive/folders/1h7YB0qwjoxxghApQdEUQmk95ZwIDxrPG?usp=share_link)
-⚠ For Mac you need also to call this `xattr -cr training-envs-executables/SoccerTwos/SoccerTwos.app` to be able to run SoccerTwos
+Mac：下载[此可执行文件](https://drive.google.com/drive/folders/1h7YB0qwjoxxghApQdEUQmk95ZwIDxrPG?usp=share_link)
 
-## Step 1: Understand the environment
+⚠ 对于 Mac，你还需要运行以下命令  `xattr -cr training-envs-executables/SoccerTwos/SoccerTwos.app`  以使 SoccerTwos 能够运行。
 
-The environment is called `SoccerTwos`. The Unity MLAgents Team made it. You can find its documentation [here](https://github.com/Unity-Technologies/ml-agents/blob/develop/docs/Learning-Environment-Examples.md#soccer-twos)
+## 第一步：了解环境
 
-The goal in this environment **is to get the ball into the opponent's goal while preventing the ball from entering its own goal.**
+该环境称为 *SoccerTwos*。这是由 Unity MLAgents 团队制作的。你可以在[这里](https://github.com/Unity-Technologies/ml-agents/blob/develop/docs/Learning-Environment-Examples.md#soccer-twos)找到它的文档。
+
+在这个环境中，目标是**将球送入对手的球门，同时防止球进入自己的球门**。
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/soccertwos.gif" alt="SoccerTwos"/>
 
-<figcaption>This environment was made by the <a href="https://github.com/Unity-Technologies/ml-agents"> Unity MLAgents Team</a></figcaption>
+<figcaption>环境由 <a href="https://github.com/Unity-Technologies/ml-agents"> Unity MLAgents 团队创建</a></figcaption>
 
 </figure>
 
-### The reward function
+### 奖励函数
 
-The reward function is:
+奖励函数如下所示：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/soccerreward.png" alt="SoccerTwos Reward"/>
 
-### The observation space
+### 观察空间
 
-The observation space is composed vector size of 336:
+观察空间由大小为 336 的向量组成：
 
-- 11 ray-casts forward distributed over 120 degrees (264 state dimensions)
-- 3 ray-casts backward distributed over 90 degrees (72 state dimensions)
-- Both of these ray-casts can detect 6 objects:
-    - Ball
-    - Blue Goal
-    - Purple Goal
-    - Wall
-    - Blue Agent
-    - Purple Agent
+- 11 个向前分布在 120 度范围内的射线（264 个状态维度）
+- 3 个向后分布在 90 度范围内的射线（72 个状态维度）
+- 这些射线可以检测到 6 个物体：
+    - 球
+    - 蓝色球门
+    - 紫色球门
+    - 墙壁
+    - 蓝色智能体
+    - 紫色智能体
 
-### The action space
+### 动作空间
 
-The action space is three discrete branches:
+动作空间有三个离散分支：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/socceraction.png" alt="SoccerTwos Action"/>
 
-## Step 2: Understand MA-POCA
+## 第2步：了解 MA-POCA
 
-We know how to train agents to play against others: **we can use self-play.** This is a perfect technique for a 1vs1.
+我们知道如何训练智能体程序以与其他智能体程序对抗：我们可以使用自我对抗（self-play）的技术。这是一种适用于 1 对 1 情况的完美技术。
 
-But in our case we’re 2vs2, and each team has 2 agents. How then we can **train cooperative behavior for groups of agents?**
+但在我们的情况下，我们是 2 对 2 的比赛，每个队有 2 个智能体程序。那么，我们如何能够训练智能体程序之间的协作行为呢？
 
-As explained in the [Unity Blog](https://blog.unity.com/technology/ml-agents-v20-release-now-supports-training-complex-cooperative-behaviors), agents typically receive a reward as a group (+1 - penalty) when the team scores a goal. This implies that **every agent on the team is rewarded even if each agent didn’t contribute the same to the win**, which makes it difficult to learn what to do independently.
+正如在[ Unity 博客](https://blog.unity.com/technology/ml-agents-v20-release-now-supports-training-complex-cooperative-behaviors)中所解释的那样，智能体程序通常作为一个团队获得奖励（+1-惩罚），当团队进球时。这意味着**即使每个智能体程序的贡献不同，团队中的每个智能体程序都会获得奖励**，这使得独立学习变得困难。
 
-The Unity MLAgents team developed the solution in a new multi-agent trainer called *MA-POCA (Multi-Agent POsthumous Credit Assignment)*.
+Unity MLAgents 团队在一个名为 *MA-POCA（Multi-Agent POsthumous Credit Assignment）* 的新的多智能体程序训练器中开发了解决方案。
 
-The idea is simple but powerful: a centralized critic **processes the states of all agents in the team to estimate how well each agent is doing**. Think of this critic as a coach.
+这个想法简单而强大：一个集中化的评论家**处理团队中所有智能体程序的状态，以估计每个智能体程序的表现如何**。可以将这个评论家看作是一名教练。
 
-This allows each agent to **make decisions based only on what it perceives locally**, and **simultaneously evaluate how good its behavior is in the context of the whole group**.
+这使得每个智能体程序可以**仅根据其局部感知做出决策**，并**同时评估其行为在整个团队环境中的优劣**。
 
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/mapoca.png" alt="MA POCA"/>
 
-<figcaption>This illustrates MA-POCA’s centralized learning and decentralized execution. Source: <a href="https://blog.unity.com/technology/ml-agents-plays-dodgeball">MLAgents Plays Dodgeball</a>
+<figcaption>这说明了 MA-POCA 的集中式学习和分布式执行。来源：<a href="https://blog.unity.com/technology/ml-agents-plays-dodgeball">MLAgents Plays Dodgeball</a>
 </figcaption>
 
 </figure>
 
 
-The solution then is to use Self-Play with an MA-POCA trainer (called poca). The poca trainer will help us to train cooperative behavior and self-play to get an opponent team.
 
-If you want to dive deeper into this MA-POCA algorithm, you need to read the paper they published [here](https://arxiv.org/pdf/2111.05992.pdf) and the sources we put on the additional readings section.
+解决方案是使用带有 MA-POCA 训练器（称为 poca）的自我对抗。poca 训练器将帮助我们训练协同行为并进行自我对抗以获得对手团队。
 
-## Step 3: Define the config file
+如果你想深入了解 MA-POCA 算法，你需要阅读他们发表的论文[这里](https://arxiv.org/pdf/2111.05992.pdf)以及我们在补充阅读部分提供的资料。
 
-We already learned in [Unit 5](https://huggingface.co/deep-rl-course/unit5/introduction) that in ML-Agents, you define **the training hyperparameters into `config.yaml` files.**
+## 第三步：定义配置文件
 
-There are multiple hyperparameters. To know them better, you should check for each explanation with **[the documentation](https://github.com/Unity-Technologies/ml-agents/blob/release_20_docs/docs/Training-Configuration-File.md)**
+我们已经在[第 5 单元](https://huggingface.co/deep-rl-course/unit5/introduction)中学习了，在 ML-Agents 中，你将**训练超参数定义在`config.yaml`文件中**。
 
-The config file we’re going to use here is in  `./config/poca/SoccerTwos.yaml` it looks like this:
+有多个超参数。要更好地了解它们，你应该查看**[文档](https://github.com/Unity-Technologies/ml-agents/blob/release_20_docs/docs/Training-Configuration-File.md)**中的每个解释。
+
+我们要在这里使用的配置文件位于 `./config/poca/SoccerTwos.yaml` ，它的内容如下：
 
 ```csharp
 behaviors:
@@ -213,68 +214,68 @@ behaviors:
       initial_elo: 1200.0
 ```
 
-Compared to Pyramids or SnowballTarget, we have new hyperparameters with a self-play part. How you modify them can be critical in getting good results.
+与 Pyramids 或 SnowballTarget 相比，我们有了一个包含自我对抗部分的新超参数。你如何修改它们对于获得良好结果至关重要。
 
-The advice I can give you here is to check the explanation and recommended value for each parameters (especially self-play ones) with **[the documentation](https://github.com/Unity-Technologies/ml-agents/blob/release_20_docs/docs/Training-Configuration-File.md).**
+我在这里可以给你的建议是，使用**[文档](https://github.com/Unity-Technologies/ml-agents/blob/release_20_docs/docs/Training-Configuration-File.md)**检查每个参数（特别是自我对抗参数）的解释和推荐值。
 
-Now that you’ve modified our config file, you’re ready to train your agents.
+现在，你已经修改了我们的配置文件，准备好训练你的智能体了。
 
-## Step 4: Start the training
+## 第四步：开始训练
 
-To train the agents, we need to **launch mlagents-learn and select the executable containing the environment.**
+要训练智能体，我们需要**启动 mlagents-learn 并选择包含环境的可执行文件**。
 
-We define four parameters:
+我们定义了四个参数：
 
-1. `mlagents-learn <config>`: the path where the hyperparameter config file is.
-2. `-env`: where the environment executable is.
-3. `-run_id`: the name you want to give to your training run id.
-4. `-no-graphics`: to not launch the visualization during the training.
+1. `mlagents-learn <config>`：超参数配置文件的路径。
+2. `-env`：环境可执行文件的路径。
+3. `-run_id`：你要为训练运行分配的名称。
+4. `-no-graphics`：在训练过程中不启动可视化。
 
-Depending on your hardware, 5M timesteps (the recommended value but you can also try 10M) will take 5 to 8 hours of training. You can continue using your computer in the meantime, but I advise deactivating the computer standby mode to prevent the training from being stopped.
+根据你的硬件配置，训练 500 万个时间步（建议值，但你也可以尝试1000万）需要 5 到 8 小时。在此期间，你可以继续使用计算机，但我建议停用计算机的待机模式，以防止训练中止。
 
-Depending on the executable you use (windows, ubuntu, mac) the training command will look like this (your executable path can be different so don’t hesitate to check before running).
+根据你使用的可执行文件（Windows、Ubuntu、Mac），训练命令将如下所示（你的可执行文件路径可能不同，因此在运行之前请务必进行检查）。
 
 ```bash
 mlagents-learn ./config/poca/SoccerTwos.yaml --env=./training-envs-executables/SoccerTwos.exe --run-id="SoccerTwos" --no-graphics
 ```
 
-The executable contains 8 copies of SoccerTwos.
+可执行文件中包含 8 个 SoccerTwos 的副本。
 
-⚠️ It’s normal if you don’t see a big increase of ELO score (and even a decrease below 1200) before 2M timesteps, since your agents will spend most of their time moving randomly on the field before being able to goal.
+⚠️ 如果在 200 万个时间步之前你没有看到 ELO 分数的显著增长（甚至可能下降到 1200 以下），这是正常的，因为你的智能体将在能够进球之前大部分时间都在场地上随机移动。
 
-⚠️ You can stop the training with Ctrl + C but beware of typing only once this command to stop the training since MLAgents needs to generate a final .onnx file before closing the run.
+⚠️ 你可以使用 Ctrl + C 停止训练，但请注意仅键入此命令一次来停止训练，因为 MLAgents 在关闭运行之前需要生成一个最终的 .onnx 文件。
 
-## Step 5: **Push the agent to the Hugging Face Hub**
+## 步骤 5: **将智能体推送到 Hugging Face Hub **
 
-Now that we trained our agents, we’re **ready to push them to the Hub to be able to participate in the AI vs. AI challenge and visualize them playing on your browser🔥.**
+现在我们已经训练好了我们的智能体，我们准备将它们推送到 Hub 上，以便参加 AI 对抗赛并在浏览器上观看它们的比赛🔥。
 
-To be able to share your model with the community, there are three more steps to follow:
+为了能够分享你的模型到社区，你需要遵循以下三个步骤：
 
-1️⃣ (If it’s not already done) create an account to HF ➡ https://huggingface.co/join](https://huggingface.co/join
 
-2️⃣ Sign in and store your authentication token from the Hugging Face website.
+1️⃣ (如果没有) 创建一个 HF 账号 ➡ https://huggingface.co/join
 
-Create a new token (https://huggingface.co/settings/tokens)) **with write role**
+2️⃣ 登陆, 从网站中获取认证 token。
+
+创建一个具有**写权限**的新 token (https://huggingface.co/settings/tokens)
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/create-token.jpg" alt="Create HF Token">
 
-Copy the token, run this, and paste the token
+复制 token 运行下面单元格代码并粘贴 token
 
 ```bash
 huggingface-cli login
 ```
 
-Then, we need to run `mlagents-push-to-hf`.
+然后，我们需要运行 `mlagents-push-to-hf` 命令。
 
-And we define four parameters:
+我们定义了四个参数：
 
-1. `-run-id`: the name of the training run id.
-2. `-local-dir`: where the agent was saved, it’s results/<run_id name>, so in my case results/First Training.
-3. `-repo-id`: the name of the Hugging Face repo you want to create or update. It’s always <your huggingface username>/<the repo name>
-If the repo does not exist **it will be created automatically**
-4. `--commit-message`: since HF repos are git repository you need to define a commit message.
+1. `-run-id`：训练运行的名称。
+2. `-local-dir`：智能体所保存的位置，即results/<run_id名称>，在我的例子中是results/First Training。
+3. `-repo-id`：你想要创建或更新的Hugging Face repo的名称。它的格式是<你的Huggingface用户名>/<repo名称>。如果该repo不存在，**它将被自动创建**。
+4. `--commit-message`：由于HF repos是git存储库，你需要定义一个提交消息。
 
-In my case
+在我的情况中，命令如下：
 
 ```bash
 mlagents-push-to-hf  --run-id="SoccerTwos" --local-dir="./results/SoccerTwos" --repo-id="ThomasSimonini/poca-SoccerTwos" --commit-message="First Push"`
@@ -284,41 +285,42 @@ mlagents-push-to-hf  --run-id="SoccerTwos" --local-dir="./results/SoccerTwos" --
 mlagents-push-to-hf  --run-id= # Add your run id  --local-dir= # Your local dir  --repo-id= # Your repo id --commit-message="First Push"
 ```
 
-If everything worked you should have this at the end of the process(but with a different url 😆) :
+如果一切顺利，你应该在过程结束时看到以下内容（但 URL 会不同 😆）：
 
-Your model is pushed to the Hub. You can view your model here: https://huggingface.co/ThomasSimonini/poca-SoccerTwos
+你的模型已推送到 Hub。你可以在此处查看你的模型：https://huggingface.co/ThomasSimonini/poca-SoccerTwos
 
-It's the link to your model. It contains a model card that explains how to use it, your Tensorboard, and your config file. **What's awesome is that it's a git repository, which means you can have different commits, update your repository with a new push, etc.**
+这是指向你模型的链接。它包含一个模型卡片，其中解释了如何使用模型，你的 Tensorboard 和配置文件。**令人惊奇的是，这是一个 git 存储库，这意味着你可以拥有不同的提交，通过新的推送更新你的存储库等等。**
 
-## Step 6: Verify that your model is ready for AI vs AI Challenge
+## 步骤 6：验证你的模型是否准备参加 AI vs AI 挑战
 
-Now that your model is pushed to the Hub, **it’s going to be added automatically to the AI vs AI Challenge model pool.** It can take a little bit of time before your model is added to the leaderboard given we do a run of matches every 4h.
+既然你的模型已推送到Hub，**它将自动添加到 AI vs AI 挑战模型池中。**在你的模型被添加到排行榜之前可能需要一些时间，因为我们每 4 小时进行一次比赛。
 
-But in order that everything works perfectly you need to check:
+但是，为了确保一切运行正常，你需要检查以下内容：
 
-1. That you have this tag in your model: ML-Agents-SoccerTwos. This is the tag we use to select models to be added to the challenge pool. To do that go to your model and check the tags
+1. 你的模型是否具有此标签：ML-Agents-SoccerTwos。这是我们用于选择要添加到挑战池的模型的标签。要执行此操作，请转到你的模型并检查标签
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/verify1.png" alt="Verify"/>
 
 
-If it’s not the case you just need to modify readme and add it
+如果不是这种情况，你只需要修改自述文件并添加该标签即可。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/verify2.png" alt="Verify"/>
 
-2. That you have a `SoccerTwos.onnx` file
+2. 现在你有了 `SoccerTwos.onnx` 文件
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/verify3.png" alt="Verify"/>
 
-We strongly suggest that you create a new model when you push to the Hub if you want to train it again or train a new version.
+我们强烈建议在将模型推送到 Hub 时创建一个新的模型，如果你想要重新训练它或训练一个新版本。
 
-## Step 7: Visualize some match in our demo
+## 步骤7：在我们的演示中可视化一些对战
 
-Now that your model is part of AI vs AI Challenge, **you can visualize how good it is compared to others**: https://huggingface.co/spaces/unity/ML-Agents-SoccerTwos
+现在，你的模型已经成为 AI vs AI 挑战赛的一部分，**你可以通过以下链接可视化它与其他模型的对战结果**：https://huggingface.co/spaces/unity/ML-Agents-SoccerTwos
 
-In order to do that, you just need to go on this demo:
+为了实现这一点，你只需按照以下步骤操作：
 
-- Select your model as team blue (or team purple if you prefer) and another. The best to compare your model is either with the one who’s on top of the leaderboard. Or use the [baseline model as opponent](https://huggingface.co/unity/MLAgents-SoccerTwos)
+- 在演示页面中选择你的模型作为蓝队（或者如果你更喜欢，选择紫队）以及另一个模型。为了与排行榜上的模型进行比较，你可以选择排行榜上排名靠前的模型，或者使用[基准模型作为对手](https://huggingface.co/unity/MLAgents-SoccerTwos)。
 
-This matches you see live are not used to the calculation of your result **but are good way to visualize how good your agent is**.
+请注意，这些实时观看的比赛结果不会用于计算你的最终结果，它们仅用于可视化你的智能体性能。
 
-And don't hesitate to share the best score your agent gets on discord in #rl-i-made-this channel 🔥
+同时，请随时在 Discord 的 #rl-i-made-this 频道中分享你的智能体所获得的最佳分数🔥。
+

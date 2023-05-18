@@ -1,10 +1,10 @@
-# Introduction [[introduction]]
+# 介绍 [[introduction]]
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit0/thumbnail.png" alt="Thumbnail"/>
 
-Since the beginning of this course, we learned to train agents in a *single-agent system*  where our agent was alone in its environment: it was **not cooperating or collaborating with other agents**.
+自从课程开始以来，我们学习了在一个*单智能体系统*中训练智能体，其中我们的智能体在其环境中是独自存在的：它**不与其他智能体合作或协作**。
 
-This worked great, and the single-agent system is useful for many applications.
+这种方法非常有效，并且单智能体系统在许多应用中非常有用。
 
 
 <figure>
@@ -12,25 +12,25 @@ This worked great, and the single-agent system is useful for many applications.
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/patchwork.jpg" alt="Patchwork"/>
 
 <figcaption>
-A patchwork of all the environments you’ve trained your agents on since the beginning of the course
+自从课程开始以来，你训练智能体的所有环境的集合如下：
 </figcaption>
 </figure>
 
-But, as humans, **we live in a multi-agent world**. Our intelligence comes from interaction with other agents. And so, our **goal is to create agents that can interact with other humans and other agents**.
+但是，作为人类，**我们生活在一个多智能体的世界中**。我们的智能来自与其他智能体的互动。因此，**我们的目标是创建可以与其他人类和智能体互动的智能体**。
 
-Consequently, we must study how to train deep reinforcement learning agents in a *multi-agents system* to build robust agents that can adapt, collaborate, or compete.
+因此，我们必须研究如何在*多智能体系统*中训练深度强化学习智能体，以构建能够适应、合作或竞争的强大智能体。
 
-So today, we’re going to **learn the basics of this fascinating topic of multi-agents reinforcement learning (MARL)**.
+因此，今天我们将学习这个**引人入胜的多智能体强化学习（MARL）的基础知识**。
 
-And the most exciting part is that during this unit, you’re going to train your first agents in a multi-agents system: **a 2vs2 soccer team that needs to beat the opponent team**.
+最令人兴奋的部分是，在本单元期间，你将在多智能体系统中训练你的第一个智能体：**一个需要击败对方团队的2对2足球队**。
 
-And you’re going to participate in **AI vs. AI challenge** where your trained agent will compete against other classmates’ agents every day and be ranked on a [new leaderboard](https://huggingface.co/spaces/huggingface-projects/AIvsAI-SoccerTwos).
+并且您将参与 **AI 对 AI 的挑战**，在这个挑战中，你训练的智能体将每天与其他同学的智能体进行竞争，并在一个新的排行榜上排名：[新的排行榜](https://huggingface.co/spaces/huggingface-projects/AIvsAI-SoccerTwos)。
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/soccertwos.gif" alt="SoccerTwos"/>
 
-<figcaption>This environment was made by the <a href="https://github.com/Unity-Technologies/ml-agents">Unity MLAgents Team</a></figcaption>
+<figcaption>这个环境由 <a href="https://github.com/Unity-Technologies/ml-agents">Unity MLAgents 团队创建</a></figcaption>
 
 </figure>
 
-So let’s get started!
+让我们开始吧!

@@ -1,56 +1,46 @@
-# Brief introduction to RL documentation
+# RL 文档介绍
 
-In this advanced topic, we address the question: **how should we monitor and keep track of powerful reinforcement learning agents that we are training in the real world and
-interfacing with humans?**
+在这个高级主题中，我们讨论一个问题：**我们应该如何监控和跟踪我们在现实世界中训练并与人类交互的强化学习智能体？**
 
-As machine learning systems have increasingly impacted modern life, **call for documentation of these systems has grown**.
+随着机器学习系统对现代生活产生越来越大的影响，对这些系统进行文档化的需求也越来越大。
 
-Such documentation can cover aspects such as the training data used — where it is stored, when it was collected, who was involved, etc.
-— or the model optimization framework — the architecture, evaluation metrics, relevant papers, etc. — and more.
+这样的文档可以涵盖诸如使用的训练数据 - 存储位置、收集时间、参与者等方面，或者模型优化框架 - 架构、评估指标、相关论文等方面，等等。
 
-Today, model cards and datasheets are becoming increasingly available. For example, on the Hub
-(see documentation [here](https://huggingface.co/docs/hub/model-cards)).
+如今，模型卡片和数据表格越来越多地被提供。例如，在 Hub 上（参见文档[这里](https://huggingface.co/docs/hub/model-cards)）。
 
-If you click on a [popular model on the Hub](https://huggingface.co/models), you can learn about its creation process.
+如果你点击 Hub 上的一个[热门模型](https://huggingface.co/models)，你可以了解它的创建过程。
 
-These model and data specific logs are designed to be completed when the model or dataset are created, leaving them to go un-updated when these models are built into evolving systems in the future.
-​
-## Motivating Reward Reports
+这些模型和数据特定的日志是在创建模型或数据集时填写的，当这些模型被构建成未来的演进系统时，它们通常不会更新。
 
-Reinforcement learning systems are fundamentally designed to optimize based on measurements of reward and time.
-While the notion of a reward function can be mapped nicely to many well-understood fields of supervised learning (via a loss function),
-understanding how machine learning systems evolve over time is limited.
+## 激励奖励报告的动机
 
-To that end, the authors introduce [*Reward Reports for Reinforcement Learning*](https://www.notion.so/Brief-introduction-to-RL-documentation-b8cbda5a6f5242338e0756e6bef72af4) (the pithy naming is designed to mirror the popular papers *Model Cards for Model Reporting* and *Datasheets for Datasets*).
-The goal is to propose a type of documentation focused on the **human factors of reward** and **time-varying feedback systems**.
+强化学习系统的设计基于奖励和时间的测量进行优化。虽然奖励函数的概念可以很好地映射到许多熟悉的监督学习领域（通过损失函数），但对机器学习系统如何随时间演变的理解是有限的。
 
-Building on the documentation frameworks for [model cards](https://arxiv.org/abs/1810.03993) and [datasheets](https://arxiv.org/abs/1803.09010) proposed by Mitchell et al. and Gebru et al., we argue the need for Reward Reports for AI systems.
+为此，作者介绍了[*强化学习的激励奖励报告*](https://www.notion.so/Brief-introduction-to-RL-documentation-b8cbda5a6f5242338e0756e6bef72af4)（这个简洁的命名旨在与流行的论文*模型报告的模型卡*和*数据集的数据表*相呼应）。
+目标是提出一种以**奖励的人为因素**和**随时间变化的反馈系统**为重点的文档类型。
 
-**Reward Reports** are living documents for proposed RL deployments that demarcate design choices.
+在 Mitchell 等人和 Gebru 等人提出的[模型卡](https://arxiv.org/abs/1810.03993)和[数据表](https://arxiv.org/abs/1803.09010)的文档框架基础上，我们认为有必要为人工智能系统提供激励奖励报告。
 
-However, many questions remain about the applicability of this framework to different RL applications, roadblocks to system interpretability,
-and the resonances between deployed supervised machine learning systems and the sequential decision-making utilized in RL.
+**激励奖励报告**是针对提议的强化学习部署的动态文档，用于界定设计选择。
 
-At a minimum, Reward Reports are an opportunity for RL practitioners to deliberate on these questions and begin the work of deciding how to resolve them in practice.
-​
-## Capturing temporal behavior with documentation
+然而，关于这一框架在不同强化学习应用中的适用性、系统可解释性的障碍以及部署的监督机器学习系统与强化学习中使用的序贯决策之间的共鸣，还有许多问题有待回答。
 
-The core piece specific to documentation designed for RL and feedback-driven ML systems is a *change-log*. The change-log updates information
-from the designer (changed training parameters, data, etc.) along with noticed changes from the user (harmful behavior, unexpected responses, etc.).
+至少，激励奖励报告为强化学习从业者提供了一个讨论这些问题并开始解决实践中如何解决这些问题的工作的机会。
 
-The change log is accompanied by update triggers that encourage monitoring these effects.
+## 使用文档捕捉时间行为
 
-## Contributing
+针对强化学习和反馈驱动的机器学习系统设计的文档的核心部分是一个*变更日志*（change-log）。变更日志更新来自设计者的信息（如改变的训练参数、数据等），以及用户的反馈变化（如有害行为、意外响应等）。
 
-Some of the most impactful RL-driven systems are multi-stakeholder in nature and behind closed doors of private corporations.
-These corporations are largely without regulation, so the burden of documentation falls on the public.
+变更日志配合更新触发器，鼓励监测这些效果。
 
-If you are interested in contributing, we are building Reward Reports for popular machine learning systems on a public
-record on [GitHub](https://github.com/RewardReports/reward-reports).
-​
-For further reading, you can visit the Reward Reports [paper](https://arxiv.org/abs/2204.10817)
-or look [an example report](https://github.com/RewardReports/reward-reports/tree/main/examples).
+## 贡献
 
-## Author
+一些最具影响力的强化学习驱动系统具有多利益相关者的性质，并且位于私营公司的封闭门后。这些公司很大程度上没有受到监管，因此文档的负担落在公众身上。
 
-This section was written by <a href="https://twitter.com/natolambert"> Nathan Lambert </a>
+如果您有兴趣做出贡献，我们正在在[Github](https://github.com/RewardReports/reward-reports)上为流行的机器学习系统构建激励奖励报告的公共记录。
+
+想要了解更多信息，请访问激励奖励报告的[论文](https://arxiv.org/abs/2204.10817)，或查看[示例报告](https://github.com/RewardReports/reward-reports/tree/main/examples)。
+
+## 作者
+
+本节由<a href="https://twitter.com/natolambert"> Nathan Lambert </a>撰写。

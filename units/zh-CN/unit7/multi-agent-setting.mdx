@@ -1,57 +1,54 @@
-# Designing Multi-Agents systems
+# 设计多智能体系统
 
-For this section, you're going to watch this excellent introduction to multi-agents made by <a href="https://www.youtube.com/channel/UCq0imsn84ShAe9PBOFnoIrg"> Brian Douglas </a>.
+在本节中，你将观看由 Brian Douglas 制作的关于多智能体的优秀介绍视频。你可以在<a href="https://www.youtube.com/channel/UCq0imsn84ShAe9PBOFnoIrg">这里</a>找到视频。
 
 <Youtube id="qgb0gyrpiGk" />
 
 
-In this video, Brian talked about how to design multi-agent systems. He specifically took a vacuum cleaner multi-agents setting and asked how they **can cooperate with each other**?
+在这个视频中，Brian 讲解了如何设计多智能体系统。他特别以一个吸尘器多智能体场景为例，探讨了它们如何相互合作。
 
-We have two solutions to design this multi-agent reinforcement learning system (MARL).
+我们有两种设计多智能体强化学习系统（MARL）的解决方案。
 
-## Decentralized system
+## 分布式系统
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/decentralized.png" alt="Decentralized"/>
 <figcaption>
-Source: <a href="https://www.youtube.com/watch?v=qgb0gyrpiGk"> Introduction to Multi-Agent Reinforcement Learning </a>
+来源： <a href="https://www.youtube.com/watch?v=qgb0gyrpiGk"> 多智能体强化学习介绍 </a>
 </figcaption>
 </figure>
 
-In decentralized learning, **each agent is trained independently from others**. In the example given, each vacuum learns to clean as many places as it can **without caring about what other vacuums (agents) are doing**.
+在分布式学习中，**每个智能体都独立地进行训练，不受其他智能体的影响**。在给定的示例中，每个吸尘器学习尽可能清洁尽可能多的地方，**而不关心其他吸尘器（智能体）的行为**。
 
-The benefit is that **since no information is shared between agents, these vacuums can be designed and trained like we train single agents**.
+好处在于，**由于智能体之间不共享信息，这些吸尘器可以像训练单个智能体一样进行设计和训练。**
 
-The idea here is that **our training agent will consider other agents as part of the environment dynamics**. Not as agents.
+这里的思想是，**我们的训练智能体将其他智能体视为环境动态的一部分**，而不是智能体。
 
-However, the big drawback of this technique is that it will **make the environment non-stationary** since the underlying Markov decision process changes over time as other agents are also interacting in the environment.
-And this is problematic for many Reinforcement Learning algorithms **that can't reach a global optimum with a non-stationary environment**.
+然而，这种技术的一个重大缺点是它将**使环境非稳态**，因为随着其他智能体也在环境中进行交互，底层的马尔可夫决策过程会随时间改变。这对于许多强化学习算法是有问题的，因为它们**无法在非稳态环境中达到全局最优**。
 
-## Centralized approach
+## 集中式方法
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/centralized.png" alt="Centralized"/>
 <figcaption>
-Source: <a href="https://www.youtube.com/watch?v=qgb0gyrpiGk"> Introduction to Multi-Agent Reinforcement Learning </a>
+来源： <a href="https://www.youtube.com/watch?v=qgb0gyrpiGk"> 多智能体强化学习介绍</a>
 </figcaption>
 </figure>
 
-In this architecture, **we have a high-level process that collects agents' experiences**: experience buffer. And we'll use these experiences **to learn a common policy**.
+在这种架构中，**我们有一个高级过程来收集智能体的经验**，即经验缓冲区。我们将利用这些经验来**学习一个共同的策略**。
 
-For instance, in the vacuum cleaner, the observation will be:
-- The coverage map of the vacuums.
-- The position of all the vacuums.
+例如，在吸尘器系统中，观察将包括：
+- 吸尘器的覆盖地图。
+- 所有吸尘器的位置。
 
-We use that collective experience **to train a policy that will move all three robots in the most beneficial way as a whole**. So each robot is learning from the common experience.
-And we have a stationary environment since all the agents are treated as a larger entity, and they know the change of other agents' policies (since it's the same as theirs).
+我们利用这些共同的经验来**训练一个策略，以整体上以最有益的方式移动所有三个机器人**。因此，每个机器人都从共同的经验中学习。而且，由于所有智能体被视为一个更大的整体，它们知道其他智能体策略的变化（因为它与它们的策略相同），所以我们拥有一个稳态的环境。
 
-If we recap:
+如果我们回顾一下：
+- 在分布式方法中，我们将**所有智能体独立地对待，不考虑其他智能体的存在**。
+  - 在这种情况下，**所有智能体将其他智能体视为环境的一部分**。
+  - **这是一个非稳态环境条件**，所以无法保证收敛。
 
-- In *decentralized approach*, we **treat all agents independently without considering the existence of the other agents.**
-  - In this case, all agents **consider others agents as part of the environment**.
-  - **It’s a non-stationarity environment condition**, so non-guaranty of convergence.
-
-- In centralized approach:
-  - A **single policy is learned from all the agents**.
-  - Takes as input the present state of an environment and the policy output joint actions.
-  - The reward is global.
+- 在集中式方法中：
+  - **从所有智能体中学习一个单一策略**。
+  - 输入为环境的当前状态和策略输出的联合动作。
+  - 奖励是全局的。

@@ -1,45 +1,47 @@
-# Language models in RL
-## LMs encode useful knowledge for agents
+# RL 中的语言模型
+## 语言模型为智能体编码有用的知识
 
-**Language models** (LMs) can exhibit impressive abilities when manipulating text such as question-answering or even step-by-step reasoning. Additionally, their training on massive text corpora allowed them to **encode various knowledge including abstract ones about the physical rules of our world** (for instance what is possible to do with an object, what happens when one rotates an object…).
+**语言模型**（LM）在操作文本方面展示了令人印象深刻的能力，例如问答或甚至逐步推理。此外，它们对大规模文本语料库的训练使它们能够**编码各种知识，包括有关我们世界的物理规则的抽象知识**（例如对象可做什么，旋转对象时会发生什么等）。
 
-A natural question recently studied was could such knowledge benefit agents such as robots when trying to solve everyday tasks. And while these works showed interesting results, the proposed agents lacked of any learning method. **This limitation prevents these agent from adapting to the environment (e.g. fixing wrong knowledge) or learning new skills.**
+最近研究的一个常规问题是，这种知识是否可以使机器人等智能体在解决日常任务时受益。虽然这些工作展示了有趣的结果，但所提出的智能体缺乏任何学习方法。这种限制**阻止了这些智能体适应环境（例如纠正错误的知识）或学习新技能。**
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit12/language.png" alt="Language">
-<figcaption>Source: <a href="https://ai.googleblog.com/2022/08/towards-helpful-robots-grounding.html">Towards Helpful Robots: Grounding Language in Robotic Affordances</a></figcaption>
+<figcaption>来源：<a href="https://ai.googleblog.com/2022/08/towards-helpful-robots-grounding.html">朝着有用的机器人前进：将语言与机器人的可行动性相结合</a></figcaption>
 </figure>
 
-## LMs and RL
+## LMs 和 RL
 
-There is therefore a potential synergy between LMs which can bring knowledge about the world, and RL which can align and correct these knowledge by interacting with an environment. It is especially interesting from a RL point-of-view as the RL field mostly relies on the **Tabula-rasa** setup where everything is learned from scratch by agent leading to:
 
-1) Sample inefficiency
+因此，语言模型可以提供关于世界的知识，而强化学习可以通过与环境的交互来调整和纠正这些知识，因此两者之间存在潜在的协同作用。从强化学习的角度来看，这尤其有趣，因为强化学习领域主要依赖于 **Tabula-rasa** 设置，即智能体从零开始学习所有知识，导致：
 
-2) Unexpected behaviors from humans’ eyes
+1) 采样效率低下
 
-As a first attempt, the paper [“Grounding Large Language Models with Online Reinforcement Learning”](https://arxiv.org/abs/2302.02662v1) tackled the problem of **adapting or aligning a LM to a textual environment using PPO**. They showed that the knowledge encoded in the LM lead to a fast adaptation to the environment (opening avenue for sample efficiency RL agents) but also that such knowledge allowed the LM to better generalize to new tasks once aligned.
+2) 从人的角度来看，出现了意想不到的行为 
+
+作为首次尝试，论文["Grounding Large Language Models with Online Reinforcement Learning"](https://arxiv.org/abs/2302.02662v1) 解决了**使用 PPO (Proximal Policy Optimization) 将 LM 适应或对齐到文本环境**的问题。他们展示了，LM 中编码的知识导致了对环境的快速适应（高效采样的 RL 智能体开辟了途径），而且这样的知识使得 LM 在对齐后更好地推广到新任务。
 
 <video src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit12/papier_v4.mp4" type="video/mp4" controls />
 
-Another direction studied in [“Guiding Pretraining in Reinforcement Learning with Large Language Models”](https://arxiv.org/abs/2302.06692) was to keep the LM frozen but leverage its knowledge to **guide an RL agent’s exploration**. Such method allows the RL agent to be guided towards human-meaningful and plausibly useful behaviors without requiring a human in the loop during training.
+在[“Guiding Pretraining in Reinforcement Learning with Large Language Models”](https://arxiv.org/abs/2302.06692)中研究的另一个方向是冻结语言模型（LM），但利用其知识来**指导强化学习智能体的探索**。这种方法使得强化学习智能体能够朝着对人类有意义和合理有用的行为方向进行引导，而无需在训练过程中需要人类参与。
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit12/language2.png" alt="Language">
-<figcaption> Source: <a href="https://ai.googleblog.com/2022/08/towards-helpful-robots-grounding.html"> Towards Helpful Robots: Grounding Language in Robotic Affordances</a>  </figcaption>
+<figcaption> 来源： <a href="https://ai.googleblog.com/2022/08/towards-helpful-robots-grounding.html"> 朝着有用的机器人前进：将语言与机器人的可行动性相结</a>  </figcaption>
 </figure>
 
-Several limitations make these works still very preliminary such as the need to convert the agent's observation to text before giving it to a LM as well as the compute cost of interacting with very large LMs.
 
-## Further reading
+这些工作还存在一些限制，使得它们仍然非常初步，例如需要将智能体的观察转换为文本，然后将其输入到语言模型中，以及与非常大的语言模型进行交互的计算成本。
 
-For more information we recommend you check out the following resources:
+## 补充阅读
 
-- [Google Research, 2022 & beyond: Robotics](https://ai.googleblog.com/2023/02/google-research-2022-beyond-robotics.html)
-- [Pre-Trained Language Models for Interactive Decision-Making](https://arxiv.org/abs/2202.01771)
-- [Grounding Large Language Models with Online Reinforcement Learning](https://arxiv.org/abs/2302.02662v1)
-- [Guiding Pretraining in Reinforcement Learning with Large Language Models](https://arxiv.org/abs/2302.06692)
+如需了解更多信息，推荐查阅以下资源：
 
-## Author
+- [Google Research, 2022及以后：机器人技术](https://ai.googleblog.com/2023/02/google-research-2022-beyond-robotics.html)
+- [为互动决策制定预训练语言模型](https://arxiv.org/abs/2202.01771)
+- [使用在线强化学习对大型语言模型进行基于现实情境的建立](https://arxiv.org/abs/2302.02662v1)
+- [利用大型语言模型指导强化学习中的预训练](https://arxiv.org/abs/2302.06692)
 
-This section was written by <a href="https://twitter.com/ClementRomac"> Clément Romac </a>
+## 作者
+
+本节由<a href="https://twitter.com/ClementRomac"> Clément Romac </a>撰写

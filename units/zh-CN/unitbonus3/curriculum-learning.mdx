@@ -1,9 +1,11 @@
-# (Automatic) Curriculum Learning for RL
+# （自动）强化学习的课程学习
 
-While most of the RL methods seen in this course work well in practice, there are some cases where using them alone fails. It is for instance the case where:
+虽然本课程中介绍的大部分强化学习方法在实践中表现良好，但在某些情况下，仅使用这些方法可能会失败。例如，在以下情况下可能会出现这种情况：
 
-- the task to learn is hard and requires an **incremental acquisition of skills** (for instance when one wants to make a bipedal agent learn to go through hard obstacles, it must first learn to stand, then walk, then maybe jump…)
-- there are variations in the environment (that affect the difficulty) and one wants its agent to be **robust** to them
+- 学习任务很困难，需要**逐步获取技能**（例如，当希望使双足机器人学会穿过困难的障碍时，它必须先学会站立，然后行走，然后可能跳跃...）
+- 环境存在变化（影响难度），而希望自己的智能体能够**对其鲁棒性优化**。
+
+在这些情况下，采用（自动）课程学习的方法可能是有益的。
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/bipedal.gif" alt="Bipedal"/>
@@ -11,22 +13,21 @@ While most of the RL methods seen in this course work well in practice, there ar
 <figcaption> <a href="https://developmentalsystems.org/TeachMyAgent/">TeachMyAgent</a> </figcaption>
 </figure>
 
-In such cases, it seems needed to propose different tasks to our RL agent and organize them such that it allows the agent to progressively acquire skills. This approach is called **Curriculum Learning** and usually implies a hand-designed curriculum (or set of tasks organized in a specific order). In practice, one can for instance control the generation of the environment, the initial states, or use Self-Play an control the level of opponents proposed to the RL agent.
+在这种情况下，似乎需要向我们的强化学习智能体提供不同的任务，并将它们组织起来，以使智能体逐步习得技能。这种方法被称为**课程学习**，通常涉及手动设计的课程（或按照特定顺序组织的任务集合）。在实践中，我们可以控制环境的生成、初始状态，或者使用自我对抗（Self-Play）来控制提供给强化学习智能体的对手水平。
 
-As designing such a curriculum is not always trivial, the field of **Automatic Curriculum Learning (ACL) proposes to design approaches that learn to create such and organization of tasks in order to maximize the RL agent’s performances**. Portelas et al. proposed to define ACL as:
+由于设计这样的课程并不总是简单明了的，**自动课程学习（Automatic Curriculum Learning，ACL）**领域提出了一种学习如何创建任务组织的方法，以最大化强化学习智能体的性能。Portelas 等人将 ACL 定义为：
 
-> … a family of mechanisms that automatically adapt the distribution of training data by learning to adjust the selection of learning situations to the capabilities of RL agents.
+> ...一种机制的集合，通过学习调整学习情境的选择，自动调整训练数据的分布，以适应强化学习智能体的能力。
 >
 
-As an example, OpenAI used **Domain Randomization** (they applied random variations on the environment) to make a robot hand solve Rubik’s Cubes.
-
+以 OpenAI 为例，他们使用了**域随机化**（对环境进行随机变化）来让机械手解决魔方问题。
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/dr.jpg" alt="Dr"/>
-<figcaption> <a href="https://openai.com/blog/solving-rubiks-cube/">OpenAI - Solving Rubik’s Cube with a Robot Hand</a></figcaption>
+<figcaption> <a href="https://openai.com/blog/solving-rubiks-cube/">OpenAI - 用机械手解决 Rubik 魔方</a></figcaption>
 </figure>
 
-Finally, you can play with the robustness of agents trained in the <a href="https://huggingface.co/spaces/flowers-team/Interactive_DeepRL_Demo">TeachMyAgent</a> benchmark by controlling environment variations or even drawing the terrain 👇
+最后，你可以通过控制环境变化或甚至绘制地形来调整在 TeachMyAgent 基准测试中训练的智能体的鲁棒性。你可以在<a href="https://huggingface.co/spaces/flowers-team/Interactive_DeepRL_Demo">这里</a>进行操作。👇
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/demo.png" alt="Demo"/>
@@ -34,21 +35,21 @@ Finally, you can play with the robustness of agents trained in the <a href="http
 </figure>
 
 
-## Further reading
+## 补充阅读
 
-For more information, we recommend you check out the following resources:
+欲了解更多信息，建议你查阅以下资源：
 
-### Overview of the field
+### 领域概述
 
-- [Automatic Curriculum Learning For Deep RL: A Short Survey](https://arxiv.org/pdf/2003.04664.pdf)
-- [Curriculum for Reinforcement Learning](https://lilianweng.github.io/posts/2020-01-29-curriculum-rl/)
+- [自动课程学习用于深度强化学习：简要综述](https://arxiv.org/pdf/2003.04664.pdf)
+- [自动课程学习](https://lilianweng.github.io/posts/2020-01-29-curriculum-rl/)
 
-### Recent methods
+### 最近的理论
 
-- [Evolving Curricula with Regret-Based Environment Design](https://arxiv.org/abs/2203.01302)
-- [Curriculum Reinforcement Learning via Constrained Optimal Transport](https://proceedings.mlr.press/v162/klink22a.html)
-- [Prioritized Level Replay](https://arxiv.org/abs/2010.03934)
+- [基于遗憾的环境设计演化课程](https://arxiv.org/abs/2203.01302)
+- [通过约束最优传输实现课程强化学习](https://proceedings.mlr.press/v162/klink22a.html)
+- [优先级层次回放](https://arxiv.org/abs/2010.03934)
 
-## Author
+## 作者
 
-This section was written by <a href="https://twitter.com/ClementRomac"> Clément Romac </a>
+本节由 <a href="https://twitter.com/ClementRomac"> Clément Romac </a> 撰写。
