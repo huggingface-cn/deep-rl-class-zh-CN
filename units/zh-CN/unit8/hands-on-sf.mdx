@@ -19,9 +19,9 @@ colab notebook:
 
 * [Sample Factory](https://www.samplefactory.dev/) 是一个高级的 RL 框架，**仅在 Linux 和 Mac 上运行**（不支持 Windows）。
 
-* 该框架在**具有许多 CPU 核心的 GPU 计算机上表现最佳**，在这种设置下它可以达到每秒 10 万个交互的速度。标准的 Colab 笔记本可用的资源**限制了该库的性能**。因此，在这种设置下的速度**不反映实际的性能**。
+* 该框架在**具有许多 CPU 核心的 GPU 计算机上表现最佳**，在这种设置下他可以达到每秒 10 万个交互的速度。标准的 Colab  Notebook 可用的资源**限制了该库的性能**。因此，在这种设置下的速度**不反映实际的性能**。
 
-* 如果您想了解更多信息，请查看[示例](https://github.com/alex-petrenko/sample-factory/tree/master/sf_examples)中的 Sample Factory 基准测试。
+* 如果你想了解更多信息，请查看[示例](https://github.com/alex-petrenko/sample-factory/tree/master/sf_examples)中的 Sample Factory 基准测试。
 
 
 ```python
@@ -86,7 +86,7 @@ Sample Factory 经过了充分**的测试，被许多研究人员和从业者使
 
 Sample-factory 是社区中**最高度优化的强化学习实现之一**。
 
-它通过**生成多个进程来运行 rollout worker、inference worker 和 learner worker**。
+他通过**生成多个进程来运行 rollout worker、inference worker 和 learner worker**。
 
 *Workers* 通过共享内存进行通信，这降低了进程之间的通信成本。
 
@@ -94,7 +94,7 @@ Sample-factory 是社区中**最高度优化的强化学习实现之一**。
 
 *Inferences workers* 查询一个固定版本的策略，并**将动作发送回 rollout worker**。
 
-在 *k* 步之后，rollout workers 将经验轨迹发送给 learner worker，**它使用该轨迹来更新智能体的策略网络**。
+在 *k* 步之后，rollout workers 将经验轨迹发送给 learner worker，**他使用该轨迹来更新智能体的策略网络**。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/samplefactory.png" alt="Sample factory"/>
 
@@ -102,7 +102,7 @@ Sample-factory 是社区中**最高度优化的强化学习实现之一**。
 
 在 Sample Factory 中，演员评论员模型由三个组件组成：
 
-- **Encoder** - 处理输入观测（图像、向量）并将它们映射到一个向量。这是您最有可能想要自定义的模型部分。
+- **Encoder** - 处理输入观测（图像、向量）并将他们映射到一个向量。这是你最有可能想要自定义的模型部分。
 - **Core** - 将一个或多个编码器的向量集成，可以选择在基于记忆的智能体中包括单层或多层 LSTM/GRU。
 - **Decoder** - 在计算策略和价值输出之前，对模型核心的输出应用额外的层。
 
@@ -114,7 +114,7 @@ Sample-factory 是社区中**最高度优化的强化学习实现之一**。
 
 这个库是由 Marek Wydmuch 和 Michal Kempka 于 2016 年在波兰波兹南理工大学的计算科学研究所创建的。
 
-该库使得在多种场景下可以**直接从屏幕像素中训练智能体**，包括以下场景，例如在下面的视频中展示的多人模式中的死亡模式。由于 ViZDoom 环境是基于 90 年代创建的游戏，所以它可以在现代硬件上以加速的速度运行，**从而允许我们相当快地学习复杂的 AI 行为。**
+该库使得在多种场景下可以**直接从屏幕像素中训练智能体**，包括以下场景，例如在下面的视频中展示的多人模式中的死亡模式。由于 ViZDoom 环境是基于 90 年代创建的游戏，所以他可以在现代硬件上以加速的速度运行，**从而允许我们相当快地学习复杂的 AI 行为。**
 
 该库的功能包括：
 
@@ -215,9 +215,9 @@ def parse_vizdoom_cfg(argv=None, evaluation=False):
 
 
 
-该场景的目标是**在不知道什么使它存活下来的条件下教会智能体如何生存**。智能体仅知道**生命宝贵**和死亡是不好的，因此**它必须学习什么可以延长它的生存时间，以及和它的健康息息相关的东西**。
+该场景的目标是**在不知道什么使他存活下来的条件下教会智能体如何生存**。智能体仅知道**生命宝贵**和死亡是不好的，因此**他必须学习什么可以延长他的生存时间，以及和他的健康息息相关的东西**。
 
-地图是一个包含墙壁并有绿色酸性地板的矩形，地板会**定期伤害玩家**。初始时，地图上均匀分布着一些医疗包。每隔一段时间，会有一个新的医疗包从天而降。**医疗包可以恢复玩家的一些健康值**- 为了生存，智能体需要捡起它们。玩家死亡或超时后，该轮游戏结束。
+地图是一个包含墙壁并有绿色酸性地板的矩形，地板会**定期伤害玩家**。初始时，地图上均匀分布着一些医疗包。每隔一段时间，会有一个新的医疗包从天而降。**医疗包可以恢复玩家的一些健康值**- 为了生存，智能体需要捡起他们。玩家死亡或超时后，该轮游戏结束。
 
 更多配置信息：
 - 存活奖励 = 1
@@ -225,7 +225,7 @@ def parse_vizdoom_cfg(argv=None, evaluation=False):
 - 1个可用游戏变量：HEALTH
 - 死亡惩罚 = 100
 
-您可以在 ViZDoom 的 [这里](https://github.com/Farama-Foundation/ViZDoom/tree/master/scenarios) 找到更多可用场景的信息。
+你可以在 ViZDoom 的 [这里](https://github.com/Farama-Foundation/ViZDoom/tree/master/scenarios) 找到更多可用场景的信息。
 
 还有一些更复杂的场景已经在 ViZDoom 创建，如[此 GitHub 页面](https://github.com/edbeeching/3d_control_deep_rl)所述。
 
@@ -374,7 +374,7 @@ HTML(
 
 训练一个在 Doom 的多人死亡模式中玩游戏的智能体，需要使用**比 Colab 更高配置的计算机，需要很多小时**。
 
-幸运的是，我们已经在这个场景中训练过一个智能体，并且它已经可以在 🤗 Hub 上获取！ **让我们下载这个模型并可视化智能体的表现。**
+幸运的是，我们已经在这个场景中训练过一个智能体，并且他已经可以在 🤗 Hub 上获取！ **让我们下载这个模型并可视化智能体的表现。**
 
 ```python
 # Download the agent from the hub

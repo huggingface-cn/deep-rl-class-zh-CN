@@ -88,7 +88,7 @@
 
 ## 建议 💡
 
-最好将这个 colab 复制到你的 Google Drive 中运行，这样如果**它超时了**，你仍然可以在你的 Google Drive 中保存已保存的笔记本，而不需要重新开始。
+最好将这个 colab 复制到你的 Google Drive 中运行，这样如果**他超时了**，你仍然可以在你的 Google Drive 中保存已保存的 Notebook ，而不需要重新开始。
 
 要做到这一点，你可以使用 `Ctrl + S` 或 `File > Save a copy in Google Drive`。
 
@@ -104,7 +104,7 @@
 
 ## 创建一个虚拟显示 🖥
 
-在 Notebook 中, 我们需要生成一个回放视频。在 colab 中，**我们需要一个虚拟屏幕去渲染环境**（并记录帧）。
+在 notebook 中, 我们需要生成一个回放视频。在 colab 中，**我们需要一个虚拟屏幕去渲染环境**（并记录帧）。
 
 所以参照下面单元格安装相关库并运行虚拟屏幕 🖥
 
@@ -131,7 +131,7 @@ virtual_display.start()
 
 - `gym`
 - `gym-games`: 使用 PyGame 制作的额外 gym 环境。
-- `huggingface_hub`: Hub 是一个中心化的平台，任何人都可以在其中分享和探索模型和数据集。它提供版本控制、度量、可视化等功能，使你能够轻松地与他人合作。
+- `huggingface_hub`: Hub 是一个中心化的平台，任何人都可以在其中分享和探索模型和数据集。他提供版本控制、度量、可视化等功能，使你能够轻松地与他人合作。
 
 你可以在这里看到所有的可用的强化学习模型 👉 https://huggingface.co/models?other=reinforce
 
@@ -191,13 +191,13 @@ print(device)
 
 # 第一个智能体：使用 CartPole-v1 🤖
 
-## 创建 CartPole 环境并理解它怎么运行的
+## 创建 CartPole 环境并理解他怎么运行的
 
 ### [环境 🎮](https://www.gymlibrary.dev/environments/classic_control/cart_pole/)
 
 ### 为什么使用像 CartPole-v1 这样简单的环境?
 
-如 [强化学习技巧和技巧](https://stable-baselines3.readthedocs.io/en/master/guide/rl_tips.html) 中所述，当你从头开始实现你的智能体时，你需要确保它**在简单环境中可以正确工作并找到易于出错的地方，然后再深入进行**。因为在简单环境中发现错误将更容易。
+如 [强化学习技巧和技巧](https://stable-baselines3.readthedocs.io/en/master/guide/rl_tips.html) 中所述，当你从头开始实现你的智能体时，你需要确保他**在简单环境中可以正确工作并找到易于出错的地方，然后再深入进行**。因为在简单环境中发现错误将更容易。
 
 > 尝试在玩具问题上有一些“生命的迹象”
 
@@ -316,7 +316,7 @@ debug_policy.act(env.reset())
 
 - 这里我们看到错误显示为 `ValueError: The value argument to log_prob must be a Tensor`
 
-- 这意味着 `m.log_prob(action)` 中的 `action` 必须是一个 Tensor **但它不是。**
+- 这意味着 `m.log_prob(action)` 中的 `action` 必须是一个 Tensor **但他不是。**
 
 - 你知道为什么吗？检查 act 函数并尝试找出原因。
 
@@ -359,7 +359,7 @@ class Policy(nn.Module):
 
 - 当我们计算回报 Gt（第 6 行）时，我们可以看到我们计算了**从时间步 t 开始的折扣奖励总和**。
 
-- 为什么？因为我们的策略应该只基于后果强化行动：因此，在执行行动之前获得的奖励是无用的（因为它们不是因为行动而获得的），**只有在行动之后获得的奖励才是有意义的**。
+- 为什么？因为我们的策略应该只基于后果强化行动：因此，在执行行动之前获得的奖励是无用的（因为他们不是因为行动而获得的），**只有在行动之后获得的奖励才是有意义的**。
 
 - 在编码之前，你应该阅读本节[不要让过去分散你的注意力](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html#don-t-let-the-past-distract-you)，其中解释了为什么我们使用回报逐步策略梯度。
 
@@ -815,7 +815,7 @@ def push_to_hub(repo_id,
 notebook_login()
 ```
 
-如果你不想使用 Google Colab 或者 Jupyter Notebook，你需要用这行命令替代：`huggingface-cli login` (or `login`)
+如果你不想使用 Google Colab 或者 Jupyter notebook，你需要用这行命令替代：`huggingface-cli login` (or `login`)
 
 3️⃣ 我们现在准备用 `package_to_hub()` 函数推送我们训练好的智能体到 🤗 Hub 🔥 上。
 
@@ -875,7 +875,7 @@ print("Action Space Sample", env.action_space.sample())  # Take a random action
 - 下
 
 奖励函数 💰:
-- 每穿过一个垂直的方块，它获得一个 +1 的正奖励。每当到达终止状态时，它会获得一个 -1 的负奖励。
+- 每穿过一个垂直的方块，他获得一个 +1 的正奖励。每当到达终止状态时，他会获得一个 -1 的负奖励。
 
 ### 定义新策略 🧠
 - 因为环境更复杂我们需要一个更深的神经网络
@@ -940,7 +940,7 @@ pixelcopter_hyperparameters = {
 }
 ```
 
-###  训练它
+###  训练他
 - 我们现在准备好训练我们的智能体了 🔥.
 
 ```python
@@ -992,7 +992,7 @@ push_to_hub(
 
 ________________________________________________________________________
 
-**恭喜你完成了本单元的学习**！这是非常多信息的一个单元。祝贺您成功地使用 PyTorch 从头开始编写了你的第一个深度强化学习智能体，并分享到了 Hub 🥳。
+**恭喜你完成了本单元的学习**！这是非常多信息的一个单元。祝贺你成功地使用 PyTorch 从头开始编写了你的第一个深度强化学习智能体，并分享到了 Hub 🥳。
 
 如果你想进一步**改进实现以处理更复杂的环境**（例如将网络更改为卷积神经网络以处理观察帧），请随时迭代此单元。
 

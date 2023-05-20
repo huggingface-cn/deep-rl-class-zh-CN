@@ -4,7 +4,7 @@
 
 你将参加 AI 对抗 AI 的挑战，你的训练智能体将每天与其他同学的智能体进行竞争，并在新的排行榜上排名。
 
-为了验证这个动手尝试项目，你只需要提交一个经过训练的模型。**没有达到最低结果要求来验证它**。
+为了验证这个动手尝试项目，你只需要提交一个经过训练的模型。**没有达到最低结果要求来验证他**。
 
 有关认证流程的更多信息，请查看此部分👉 [https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process](https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process)
 
@@ -26,10 +26,10 @@ AI vs. AI 是我们在 Hugging Face 开发的一个开源工具，用于在 Hub 
 
 除了这三个工具，你的同学 cyllum 还创建了一个 🤗 SoccerTwos Challenge Analytics，你可以在其中查看模型的详细比赛结果：[https://huggingface.co/spaces/cyllum/soccertwos-analytics](https://huggingface.co/spaces/cyllum/soccertwos-analytics)
 
-我们将撰写一篇博文详细介绍这个 AI vs. AI 工具，但为了给你一个大致的概念，它的工作原理如下：
+我们将撰写一篇博文详细介绍这个 AI vs. AI 工具，但为了给你一个大致的概念，他的工作原理如下：
 
 - 每隔四个小时，我们的算法**获取给定环境（在我们的情况下是 ML-Agents-SoccerTwos）的所有可用模型**。
-- 它使用匹配算法创建一个**匹配队列**。
+- 他使用匹配算法创建一个**匹配队列**。
 - 我们在一个 Unity 无头进程中模拟比赛，**并将比赛结果（如果第一个模型赢，则为 1，如果是平局，则为 0.5，如果第二个模型赢，则为 0）收集到一个数据集中**。
 - 当匹配队列中的所有比赛都完成后，**我们更新每个模型的 ELO 分数并更新排行榜**。
 
@@ -47,7 +47,7 @@ AI vs. AI 是我们在 Hugging Face 开发的一个开源工具，用于在 Hub 
 
 AI 对战 AI 算法将持续运行直到 2023 年 4 月 30 日。
 
-我们一直在努力改进我们的教程，如果你在这个 Notebook 中发现了一些问题，请在[GitHub 仓库上提出问题](https://github.com/huggingface/deep-rl-class/issues)。
+我们一直在努力改进我们的教程，如果你在这个 notebook 中发现了一些问题，请在[GitHub 仓库上提出问题](https://github.com/huggingface/deep-rl-class/issues)。
 
 ### 在 Discord 上与你的同学交流，分享建议和提问
 
@@ -56,7 +56,7 @@ AI 对战 AI 算法将持续运行直到 2023 年 4 月 30 日。
 
 ## 步骤 0：安装 MLAgents 并下载正确的可执行文件
 
-⚠ 我们将使用一个实验版本的 ML-Agents，它允许你将模型从 Hub 中上传和下载到 / 。** 你需要安装相同的版本。**
+⚠ 我们将使用一个实验版本的 ML-Agents，他允许你将模型从 Hub 中上传和下载到 / 。** 你需要安装相同的版本。**
 
 ⚠ ⚠ ⚠ 我们将不使用与第5单元相同的版本：ML-Agents 入门 ⚠ ⚠ ⚠
 
@@ -105,7 +105,7 @@ Mac：下载[此可执行文件](https://drive.google.com/drive/folders/1h7YB0qw
 
 ## 第一步：了解环境
 
-该环境称为 *SoccerTwos*。这是由 Unity MLAgents 团队制作的。你可以在[这里](https://github.com/Unity-Technologies/ml-agents/blob/develop/docs/Learning-Environment-Examples.md#soccer-twos)找到它的文档。
+该环境称为 *SoccerTwos*。这是由 Unity MLAgents 团队制作的。你可以在[这里](https://github.com/Unity-Technologies/ml-agents/blob/develop/docs/Learning-Environment-Examples.md#soccer-twos)找到他的文档。
 
 在这个环境中，目标是**将球送入对手的球门，同时防止球进入自己的球门**。
 
@@ -175,9 +175,9 @@ Unity MLAgents 团队在一个名为 *MA-POCA（Multi-Agent POsthumous Credit As
 
 我们已经在[第 5 单元](https://huggingface.co/deep-rl-course/unit5/introduction)中学习了，在 ML-Agents 中，你将**训练超参数定义在`config.yaml`文件中**。
 
-有多个超参数。要更好地了解它们，你应该查看**[文档](https://github.com/Unity-Technologies/ml-agents/blob/release_20_docs/docs/Training-Configuration-File.md)**中的每个解释。
+有多个超参数。要更好地了解他们，你应该查看**[文档](https://github.com/Unity-Technologies/ml-agents/blob/release_20_docs/docs/Training-Configuration-File.md)**中的每个解释。
 
-我们要在这里使用的配置文件位于 `./config/poca/SoccerTwos.yaml` ，它的内容如下：
+我们要在这里使用的配置文件位于 `./config/poca/SoccerTwos.yaml` ，他的内容如下：
 
 ```csharp
 behaviors:
@@ -214,7 +214,7 @@ behaviors:
       initial_elo: 1200.0
 ```
 
-与 Pyramids 或 SnowballTarget 相比，我们有了一个包含自我对抗部分的新超参数。你如何修改它们对于获得良好结果至关重要。
+与 Pyramids 或 SnowballTarget 相比，我们有了一个包含自我对抗部分的新超参数。你如何修改他们对于获得良好结果至关重要。
 
 我在这里可以给你的建议是，使用**[文档](https://github.com/Unity-Technologies/ml-agents/blob/release_20_docs/docs/Training-Configuration-File.md)**检查每个参数（特别是自我对抗参数）的解释和推荐值。
 
@@ -247,7 +247,7 @@ mlagents-learn ./config/poca/SoccerTwos.yaml --env=./training-envs-executables/S
 
 ## 步骤 5: **将智能体推送到 Hugging Face Hub **
 
-现在我们已经训练好了我们的智能体，我们准备将它们推送到 Hub 上，以便参加 AI 对抗赛并在浏览器上观看它们的比赛🔥。
+现在我们已经训练好了我们的智能体，我们准备将他们推送到 Hub 上，以便参加 AI 对抗赛并在浏览器上观看他们的比赛🔥。
 
 为了能够分享你的模型到社区，你需要遵循以下三个步骤：
 
@@ -272,7 +272,7 @@ huggingface-cli login
 
 1. `-run-id`：训练运行的名称。
 2. `-local-dir`：智能体所保存的位置，即results/<run_id名称>，在我的例子中是results/First Training。
-3. `-repo-id`：你想要创建或更新的Hugging Face repo的名称。它的格式是<你的Huggingface用户名>/<repo名称>。如果该repo不存在，**它将被自动创建**。
+3. `-repo-id`：你想要创建或更新的Hugging Face repo的名称。他的格式是<你的Huggingface用户名>/<repo名称>。如果该repo不存在，**他将被自动创建**。
 4. `--commit-message`：由于HF repos是git存储库，你需要定义一个提交消息。
 
 在我的情况中，命令如下：
@@ -289,11 +289,11 @@ mlagents-push-to-hf  --run-id= # Add your run id  --local-dir= # Your local dir 
 
 你的模型已推送到 Hub。你可以在此处查看你的模型：https://huggingface.co/ThomasSimonini/poca-SoccerTwos
 
-这是指向你模型的链接。它包含一个模型卡片，其中解释了如何使用模型，你的 Tensorboard 和配置文件。**令人惊奇的是，这是一个 git 存储库，这意味着你可以拥有不同的提交，通过新的推送更新你的存储库等等。**
+这是指向你模型的链接。他包含一个模型卡片，其中解释了如何使用模型，你的 Tensorboard 和配置文件。**令人惊奇的是，这是一个 git 存储库，这意味着你可以拥有不同的提交，通过新的推送更新你的存储库等等。**
 
 ## 步骤 6：验证你的模型是否准备参加 AI vs AI 挑战
 
-既然你的模型已推送到Hub，**它将自动添加到 AI vs AI 挑战模型池中。**在你的模型被添加到排行榜之前可能需要一些时间，因为我们每 4 小时进行一次比赛。
+既然你的模型已推送到Hub，**他将自动添加到 AI vs AI 挑战模型池中。**在你的模型被添加到排行榜之前可能需要一些时间，因为我们每 4 小时进行一次比赛。
 
 但是，为了确保一切运行正常，你需要检查以下内容：
 
@@ -310,17 +310,17 @@ mlagents-push-to-hf  --run-id= # Add your run id  --local-dir= # Your local dir 
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/verify3.png" alt="Verify"/>
 
-我们强烈建议在将模型推送到 Hub 时创建一个新的模型，如果你想要重新训练它或训练一个新版本。
+我们强烈建议在将模型推送到 Hub 时创建一个新的模型，如果你想要重新训练他或训练一个新版本。
 
 ## 步骤7：在我们的演示中可视化一些对战
 
-现在，你的模型已经成为 AI vs AI 挑战赛的一部分，**你可以通过以下链接可视化它与其他模型的对战结果**：https://huggingface.co/spaces/unity/ML-Agents-SoccerTwos
+现在，你的模型已经成为 AI vs AI 挑战赛的一部分，**你可以通过以下链接可视化他与其他模型的对战结果**：https://huggingface.co/spaces/unity/ML-Agents-SoccerTwos
 
 为了实现这一点，你只需按照以下步骤操作：
 
 - 在演示页面中选择你的模型作为蓝队（或者如果你更喜欢，选择紫队）以及另一个模型。为了与排行榜上的模型进行比较，你可以选择排行榜上排名靠前的模型，或者使用[基准模型作为对手](https://huggingface.co/unity/MLAgents-SoccerTwos)。
 
-请注意，这些实时观看的比赛结果不会用于计算你的最终结果，它们仅用于可视化你的智能体性能。
+请注意，这些实时观看的比赛结果不会用于计算你的最终结果，他们仅用于可视化你的智能体性能。
 
 同时，请随时在 Discord 的 #rl-i-made-this 频道中分享你的智能体所获得的最佳分数🔥。
 

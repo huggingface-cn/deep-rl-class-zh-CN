@@ -1,7 +1,7 @@
 # Huggy 的工作原理 [[how-huggy-works]]
 
 Huggy 是由 Hugging Face 制作的深度强化学习环境，基于 [Unity MLAgents 团队的项目 Puppo the Corgi](https://blog.unity.com/technology/puppo-the-corgi-cuteness-overload-with-the-unity-ml-agents-toolkit）。
-此环境是使用 [Unity 游戏引擎](https://unity.com/) 和 [MLAgents](https://github.com/Unity-Technologies/ml-agents) 创建的。 ML-Agents 是 Unity 游戏引擎的工具包，它允许我们**使用 Unity 创建环境或使用预制环境来训练我们的智能体**。
+此环境是使用 [Unity 游戏引擎](https://unity.com/) 和 [MLAgents](https://github.com/Unity-Technologies/ml-agents) 创建的。 ML-Agents 是 Unity 游戏引擎的工具包，他允许我们**使用 Unity 创建环境或使用预制环境来训练我们的智能体**。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit-bonus1/huggy.jpg" alt="Huggy" width="100%">
 
@@ -54,13 +54,13 @@ Huggy 不会“看到”他的环境。相反，我们向他提供有关环境�
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit-bonus1/training-env.jpg" alt="Huggy training env" width="100%">
 
 
-这是一个**棍子随机产生**的地方。当 Huggy 到达它时，棍子会在其他地方生成。
+这是一个**棍子随机产生**的地方。当 Huggy 到达他时，棍子会在其他地方生成。
 我们为训练构建了**环境的多个副本**。这有助于通过提供更多样化的体验来加快培训速度。
 
 
 
 既然你已经了解了环境的大局，就可以训练 Huggy 去拿棍子了。
 
-为此，我们将使用 [MLAgents](https://github.com/Unity-Technologies/ml-agents)。如果你以前从未使用过它，请不要担心。在本单元中，我们将使用 Google Colab 来训练 Huggy ，然后你就可以加载训练好的 Huggy 并直接在浏览器中与他一起玩。
+为此，我们将使用 [MLAgents](https://github.com/Unity-Technologies/ml-agents)。如果你以前从未使用过他，请不要担心。在本单元中，我们将使用 Google Colab 来训练 Huggy ，然后你就可以加载训练好的 Huggy 并直接在浏览器中与他一起玩。
 
 在以后的单元中，我们将更深入地研究 MLAgent 及其工作原理。但是现在，我们只使用提供的实现来保持简单。

@@ -13,7 +13,7 @@
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit2/thumbnail.png" alt="Bonus Unit 1Thumbnail">
 
-在本笔记本中，我们将通过**教 Huggy 狗拿起棍子然后直接在浏览器中玩它**来巩固我们在第一个单元中学到的知识
+在本 notebook 中，我们将通过**教 Huggy 狗拿起棍子然后直接在浏览器中玩他**来巩固我们在第一个单元中学到的知识
 
 ⬇️ 这是**你将在本单元结束时实现的示例。** ⬇️（启动 ▶ 以查看）
 
@@ -30,7 +30,7 @@
 
 - [MLAgents（Hugging Face 版本）](https://github.com/huggingface/ml-agents)
 
-我们一直在努力改进我们的教程，所以**如果你在此 Notebook 中发现一些问题**，请[在 Github Repo 上打开一个 issue](https://github.com/huggingface/deep-rl-class/issues)。
+我们一直在努力改进我们的教程，所以**如果你在此 notebook 中发现一些问题**，请[在 Github Repo 上打开一个 issue](https://github.com/huggingface/deep-rl-class/issues)。
 
 ## 本章的目标 🏆
 
@@ -60,7 +60,7 @@
 
 ## 克隆仓库并安装依赖项🔽
 
-- 我们需要克隆仓库，它**包含允许你将训练有素的代理推送到 Hub 的实验版本。**
+- 我们需要克隆仓库，他**包含允许你将训练有素的代理推送到 Hub 的实验版本。**
 
 ```bash
 # 克隆这个特定的仓库（可能需要 3 分钟）
@@ -77,7 +77,7 @@ pip3 install -e ./ml-agents
 ## 下载并将环境压缩文件移动到 `./trained-envs-executables/linux/` 下
 
 - 我们的环境可执行文件位于一个压缩文件中。
-- 我们需要下载它并将其放置到`./trained-envs-executables/linux/` 位置下
+- 我们需要下载他并将其放置到`./trained-envs-executables/linux/` 位置下
 
 ```bash
 mkdir ./trained-envs-executables
@@ -142,7 +142,7 @@ chmod -R 755 ./trained-envs-executables/linux/Huggy
 
 - 在 ML-Agents 中，你将**训练超参数定义到 config.yaml 文件中。**
 
-- 对于本笔记本的范围，我们不打算修改超参数，但如果你想尝试作为实验，你还应该尝试修改其他一些超参数，Unity 提供了非常好的文档，在这里解释了它们中的每一个] （https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Training-Configuration-File.md）。
+- 对于本 notebook 的范围，我们不打算修改超参数，但如果你想尝试作为实验，你还应该尝试修改其他一些超参数，Unity 提供了非常好的文档，在这里解释了他们中的每一个] （https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Training-Configuration-File.md）。
 
 - **如果你想修改超参数**，在Google Colab notebook中，你可以点击这里打开config.yaml: `/content/ml-agents/config/ppo/Huggy.yaml`
 
@@ -197,7 +197,7 @@ from huggingface_hub import notebook_login
 notebook_login()
 ```
 
-如果你不想使用 Google Colab 或 Jupyter Notebook，则需要改用此命令：`huggingface-cli login`
+如果你不想使用 Google Colab 或 Jupyter notebook，则需要改用此命令：`huggingface-cli login`
 然后，我们只需要运行 mlagents-push-to-hf 即可。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit-bonus1/mlpush.png" alt="ml learn function" width="100%">
@@ -205,9 +205,9 @@ notebook_login()
 我们定义了 4 个参数：
 
 1. `--run-id`：训练运行id的名称。
-2. `--local-dir`：代理的保存位置，它是 results/<run_id name="None">，所以在我的例子中是 results/First Training。
+2. `--local-dir`：代理的保存位置，他是 results/<run_id name="None">，所以在我的例子中是 results/First Training。
 3. `--repo-id`：你要创建或更新的 Hugging Face 存储库的名称。总是<your huggingface="None" username="None">/<the repo="None" name="None">
-如果回购不存在**它将自动创建**
+如果回购不存在**他将自动创建**
 4. `--commit-message`：由于 HF 存储库是 git 存储库，因此你需要定义提交消息。
 
 ```bash
@@ -222,7 +222,7 @@ mlagents-push-to-hf --run-id="HuggyTraining" --local-dir="./results/Huggy" --rep
 Your model is pushed to the hub. You can view your model here: https://huggingface.co/ThomasSimonini/ppo-Huggy
 ```
 
-它是你的模型存储库的链接。存储库包含一个模型卡，解释如何使用模型、你的 Tensorboard 日志和你的配置文件。 **很棒的是它是一个 git 存储库，这意味着你可以进行不同的提交、使用新推送更新你的存储库、打开 Pull Requests 等。**
+他是你的模型存储库的链接。存储库包含一个模型卡，解释如何使用模型、你的 Tensorboard 日志和你的配置文件。 **很棒的是他是一个 git 存储库，这意味着你可以进行不同的提交、使用新推送更新你的存储库、打开 Pull Requests 等。**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit-bonus1/modelcard.png" alt="ml learn function" width="100%">
 
@@ -248,7 +248,7 @@ Your model is pushed to the hub. You can view your model here: https://huggingfa
 
 恭喜你完成了这个奖励单元！
 
-你现在可以坐下来享受和你的 Huggy 🐶 一起玩耍的乐趣了。并且不要 ** 忘记通过与你的朋友分享 Huggy 来传播热爱 🤗**。如果你在社交媒体上分享它，**请声明我们@huggingface 和我@simoninithomas**
+你现在可以坐下来享受和你的 Huggy 🐶 一起玩耍的乐趣了。并且不要 ** 忘记通过与你的朋友分享 Huggy 来传播热爱 🤗**。如果你在社交媒体上分享他，**请声明我们@huggingface 和我@simoninithomas**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit-bonus1/huggy-cover.jpeg" alt="Huggy cover" width="100%">
 

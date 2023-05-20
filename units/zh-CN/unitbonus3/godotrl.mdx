@@ -21,7 +21,7 @@
 
 我们今天创建的示例游戏很简单，但**展示了 Godot 引擎和 Godot RL 智能体库的许多功能**。你随后可以深入研究更复杂的环境和行为示例。
 
-我们今天要构建的环境称为 Ring Pong，它是乒乓球游戏，但球场是一个环形，球拍在环上移动。**目标是让球在环内持续弹跳**。
+我们今天要构建的环境称为 Ring Pong，他是乒乓球游戏，但球场是一个环形，球拍在环上移动。**目标是让球在环内持续弹跳**。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/ringpong.gif" alt="Ring Pong">
 
@@ -29,7 +29,7 @@
 
 [Godot 游戏引擎](https://godotengine.org/)是一个用于**创建视频游戏、工具和用户界面的开源工具。**
 
-Godot 引擎是一个功能齐全的跨平台游戏引擎，旨在通过统一的界面创建 2D 和 3D 游戏。它提供了一套全面的常用工具，使用户可以专注于制作游戏，而无需重新造轮子。游戏可以一键导出到多个平台，包括主要的桌面平台（Linux、macOS、Windows），以及移动（Android、iOS）和基于 Web 的（HTML5）平台。
+Godot 引擎是一个功能齐全的跨平台游戏引擎，旨在通过统一的界面创建 2D 和 3D 游戏。他提供了一套全面的常用工具，使用户可以专注于制作游戏，而无需重新造轮子。游戏可以一键导出到多个平台，包括主要的桌面平台（Linux、macOS、Windows），以及移动（Android、iOS）和基于 Web 的（HTML5）平台。
 
 虽然我们将指导你实现智能体的步骤，但你可能希望了解更多关于 Godot 游戏引擎的信息。他们的[文档](https://docs.godotengine.org/en/latest/index.html)非常详尽，YouTube 上也有许多教程，我们推荐 [GDQuest](https://www.gdquest.com/)、[KidsCanCode](https://kidscancode.org/godot_recipes/4.x/) 和 [Bramwell](https://www.youtube.com/channel/UCczi7Aq_dTKrQPF5ZV5J3gg) 作为信息来源。
 
@@ -75,11 +75,11 @@ Godot RL 智能体插件现在已经下载到你的机器上了。再点击 Proj
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/godot4.png" alt="Godot">
 
-右键点击 **Player** 节点，然后点击 **Add Child Node** 。这里列出了许多节点，搜索 `AIController3D` 并创建它。
+右键点击 **Player** 节点，然后点击 **Add Child Node** 。这里列出了许多节点，搜索 `AIController3D` 并创建他。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/godot5.png" alt="Godot">
 
-AI 控制器节点应该已经添加到场景树中，在其旁边有一个滚动条。点击它以打开附加到 AI 控制器的脚本。Godot 游戏引擎使用一种名为 GDScript 的脚本语言，它在语法上类似于 Python。该脚本包含需要实现的方法，以使我们的 AI 控制器正常工作。
+AI 控制器节点应该已经添加到场景树中，在其旁边有一个滚动条。点击他以打开附加到 AI 控制器的脚本。Godot 游戏引擎使用一种名为 GDScript 的脚本语言，他在语法上类似于 Python。该脚本包含需要实现的方法，以使我们的 AI 控制器正常工作。
 
 ```python
 #-- Methods that need implementing using the "extend script" option in Godot --#
@@ -193,7 +193,7 @@ func _on_area_3d_body_entered(body):
 
 现在我们需要在 Godot 中运行的游戏和 Python 中正在训练的神经网络之间进行同步。Godot RL Agents 提供了一个节点来完成这个任务。打开 train.tscn 场景，在根节点上右键单击，然后选择“添加子节点”。然后，在搜索框中搜索 “sync”，添加一个 Godot RL Agents Sync 节点。这个节点负责在 TCP 上处理 Python 和 Godot 之间的通信。
 
-您可以在编辑器中实时运行训练，首先使用 `gdrl` 启动 Python 训练。
+你可以在编辑器中实时运行训练，首先使用 `gdrl` 启动 Python 训练。
 
 在这个简单的示例中，合理的策略可以在几分钟内学到。你可能希望加快训练速度，点击训练场景中的 Sync 节点，你会看到编辑器中暴露了一个名为 "Speed Up" 的属性：
 

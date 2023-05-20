@@ -7,7 +7,7 @@ notebooks={[
   askForHelpUrl="http://hf.co/join/discord" />
 
 
-我们了解了 ML-Agents 是什么以及它是如何工作的。我们还研究了我们将要使用的两种环境。现在我们准备好训练我们的智能体了！
+我们了解了 ML-Agents 是什么以及他是如何工作的。我们还研究了我们将要使用的两种环境。现在我们准备好训练我们的智能体了！
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/envs.png" alt="Environments" />
 
@@ -29,13 +29,13 @@ Hub 上的 ML-Agents 部分**仍处于试验阶段**。将来会添加一些功�
 在本 notebook 中， 你将了解 ML-Agents 并训练两个智能体。
 
 - 第一个将学习**将雪球射到生成的目标上**。
-- 第二个需要按一个按钮来生成金字塔，然后导航到金字塔，将其打倒，**然后移动到顶部的金砖**。为此，它需要探索其环境，我们将使用一种称为好奇心的技术。
+- 第二个需要按一个按钮来生成金字塔，然后导航到金字塔，将其打倒，**然后移动到顶部的金砖**。为此，他需要探索其环境，我们将使用一种称为好奇心的技术。
 
 之后，你将能够直接在**浏览器上观看你的智能体运行。**
 
 有关认证过程的更多信息，请查看此部分 👉 https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process
 
-⬇️ **这是您将在本单元结束时实现**的示例。⬇️
+⬇️ **这是你将在本单元结束时实现**的示例。⬇️
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/pyramids.gif" alt="Pyramids"/>
 
@@ -102,7 +102,7 @@ https://huggingface.co/deep-rl-course/unit5/snowball-target
 
 ### 下载并移动环境 zip 文件到 `./training-envs-executables/linux/`
 - 我们的环境的可执行文件在一个 zip 文件中。
-- 我们需要下载它并将其放到 `./training-envs-executables/linux/`
+- 我们需要下载他并将其放到 `./training-envs-executables/linux/`
 - 因为我们使用 colab 所以我们使用 Liunx 可执行文件，colab 的机器操作系统是 Ubuntu (linux)
 
 ```python
@@ -139,7 +139,7 @@ https://huggingface.co/deep-rl-course/unit5/snowball-target
 
 你需要在 ./content/ml-agents/config/ppo/ 下创建一个 `SnowballTarget.yaml` 配置文件。
 
-我们将会给你第一版的配置(将其复制粘贴到 `SnowballTarget.yaml file`)，**但你需要优化它**
+我们将会给你第一版的配置(将其复制粘贴到 `SnowballTarget.yaml file`)，**但你需要优化他**
 
 ```yaml
 behaviors:
@@ -193,9 +193,9 @@ behaviors:
 
 训练模型并且使用 `--resume` 标记在打断情况下继续训练。
 
-> 如果您使用了 `--resume` 参数，第一次运行可能会失败。请尝试重新运行该代码块以跳过错误。
+> 如果你使用了 `--resume` 参数，第一次运行可能会失败。请尝试重新运行该代码块以跳过错误。
 
-训练将根据你的配置需要 10 至 35 分钟不等。去享受一杯 ☕️吧，你值得拥有它 🤗。
+训练将根据你的配置需要 10 至 35 分钟不等。去享受一杯 ☕️吧，你值得拥有他 🤗。
 
 ```bash
 !mlagents-learn ./config/ppo/SnowballTarget.yaml --env=./training-envs-executables/linux/SnowballTarget/SnowballTarget --run-id="SnowballTarget1" --no-graphics
@@ -203,7 +203,7 @@ behaviors:
 
 ### 将智能体推送到 Hugging Face Hub 
 
-- 现在我们已经训练了我们的智能体，我们**准备将它推送到 Hub，以便能够在你的浏览器上可视化播放它🔥。**
+- 现在我们已经训练了我们的智能体，我们**准备将他推送到 Hub，以便能够在你的浏览器上可视化播放他🔥。**
 
 为了能够分享你的模型到社区，你需要遵循以下三个步骤：
 
@@ -223,7 +223,7 @@ from huggingface_hub import notebook_login
 notebook_login()
 ```
 
-如果你不想使用 Google Colab 或者 Jupyter Notebook，你需要用这行命令替代：`huggingface-cli login` (or `login`)
+如果你不想使用 Google Colab 或者 Jupyter notebook，你需要用这行命令替代：`huggingface-cli login` (or `login`)
 
 下面，我们需要运行 `mlagents-push-to-hf`.
 
@@ -253,9 +253,9 @@ notebook_login()
 你的模型会被推送到 Hub。你可以在此处查看你的模型： https://huggingface.co/ThomasSimonini/ppo-SnowballTarget
 ```
 
-它是你模型的链接。它包含一张解释如何使用它的模型卡、你的 Tensorboard 和你的配置文件。**更棒的是它是一个 git 仓库，这意味着你可以有不同的提交，用新的推送更新你仓库，等等。**
+他是你模型的链接。他包含一张解释如何使用他的模型卡、你的 Tensorboard 和你的配置文件。**更棒的是他是一个 git 仓库，这意味着你可以有不同的提交，用新的推送更新你仓库，等等。**
 
-但现在最好的部分来了：**可以在线可视化您的智能体 👀。**
+但现在最好的部分来了：**可以在线可视化你的智能体 👀。**
 
 ### 观看你的智能体 👀
 
@@ -286,7 +286,7 @@ notebook_login()
 
 ### 下载并移动环境 zip 文件到 `./training-envs-executables/linux/`
 - 我们的环境的可执行文件在一个 zip 文件中。
-- 我们需要下载它并将其放到 `./training-envs-executables/linux/`
+- 我们需要下载他并将其放到 `./training-envs-executables/linux/`
 - 因为我们使用 colab 所以我们使用 Liunx 可执行文件，colab 的机器操作系统是 Ubuntu (linux)
 
 使用 `wget` 从 https://drive.google.com/uc?export=download&id=1UiFNdKlsH0NTu32xV-giYUEVKV4-vc7H 中下载 Pyramids.zip 文件。[在这里](https://bcrf.biochem.wisc.edu/2021/02/05/download-google-drive-files-using-wget/)查看从 GDrive 下载大文件的完整解决方案。
@@ -295,7 +295,7 @@ notebook_login()
 !wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1UiFNdKlsH0NTu32xV-giYUEVKV4-vc7H' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1UiFNdKlsH0NTu32xV-giYUEVKV4-vc7H" -O ./training-envs-executables/linux/Pyramids.zip && rm -rf /tmp/cookies.txt
 ```
 
-解压它
+解压他
 
 ```python
 %%capture
@@ -326,7 +326,7 @@ notebook_login()
 
 ### 训练智能体
 
-训练将根据你的配置需要 30 至 45 分钟不等。去享受一杯 ☕️吧，你值得拥有它 🤗。
+训练将根据你的配置需要 30 至 45 分钟不等。去享受一杯 ☕️吧，你值得拥有他 🤗。
 
 ```python
 !mlagents-learn ./config/ppo/PyramidsRND.yaml --env=./training-envs-executables/linux/Pyramids/Pyramids --run-id="Pyramids Training" --no-graphics
@@ -334,7 +334,7 @@ notebook_login()
 
 ### 将智能体推送到 Hugging Face Hub 
 
-- 现在我们已经训练了我们的智能体，我们**准备将它推送到 Hub，以便能够在你的浏览器上可视化播放它🔥。**
+- 现在我们已经训练了我们的智能体，我们**准备将他推送到 Hub，以便能够在你的浏览器上可视化播放他🔥。**
 
 ```bash
 !mlagents-push-to-hf  --run-id= # Add your run id  --local-dir= # Your local dir  --repo-id= # Your repo id  --commit-message= # Your commit message

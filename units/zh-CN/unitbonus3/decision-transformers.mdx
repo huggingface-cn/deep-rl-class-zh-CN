@@ -1,9 +1,9 @@
 # 决策 Transformer
 
-决策 Transformer 模型是由[Chen L.等人在 "Decision Transformer: Reinforcement Learning via Sequence Modeling" 中提出的](https://arxiv.org/abs/2106.01345)。它将强化学习抽象为一个条件序列建模问题。
+决策 Transformer 模型是由[Chen L.等人在 "Decision Transformer: Reinforcement Learning via Sequence Modeling" 中提出的](https://arxiv.org/abs/2106.01345)。他将强化学习抽象为一个条件序列建模问题。
 
 其主要思想是，**不是使用强化学习方法训练策略，如拟合价值函数，告诉我们应该采取什么行动来最大化收益（累计奖励），而是使用序列建模算法（Transformer），根据所需的回报、过去的状态和行动，生成未来的行动以实现所需的回报。**
-它是一个自回归模型，以所需的回报、过去的状态和行动为条件，生成未来的行动，以实现所需的回报。
+他是一个自回归模型，以所需的回报、过去的状态和行动为条件，生成未来的行动，以实现所需的回报。
 
 这是对强化学习范式的完全转变，因为我们使用生成轨迹建模（建模状态、行动和奖励序列的联合分布）来代替传统的RL算法。这意味着在决策Transformer中，我们不是最大化回报，而是生成一系列未来的行动，以实现所需的回报。
 
@@ -11,7 +11,7 @@
 
 ## 了解决策 Transformer
 
-要了解更多关于决策 Transformer 的信息，您应该阅读我们在[ Hugging Face 上介绍决策 Transformer 的博客文章](https://huggingface.co/blog/decision-transformers)。
+要了解更多关于决策 Transformer 的信息，你应该阅读我们在[ Hugging Face 上介绍决策 Transformer 的博客文章](https://huggingface.co/blog/decision-transformers)。
 
 ## 训练你的第一个决策 Transformer
 

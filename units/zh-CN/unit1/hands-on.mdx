@@ -9,7 +9,7 @@
         ]}
         askForHelpUrl="http://hf.co/join/discord" />
 
-现在你已经学习了强化学习的基础知识，你已经准备好训练你的第一个智能体并通过 Hub 与社区分享它 🔥：
+现在你已经学习了强化学习的基础知识，你已经准备好训练你的第一个智能体并通过 Hub 与社区分享他 🔥：
 你将学会正确登陆月球的月球着陆器智能体🌕
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit1/lunarLander.gif" alt="LunarLander">
@@ -40,7 +40,7 @@
 # 第 1 单元：训练你的第一个深度强化学习智能体 🤖
 ![Cover](https://github.com/huggingface/deep-rl-class/blob/main/unit1/assets/img/thumbnail.png?raw=true)
 
-在此笔记本中，你将训练你的**第一个深度强化学习智能体**一个月球着陆器智能体，它将学习**正确降落在月球上🌕**。使用 [Stable-Baselines3](https://stable-baselines3.readthedocs.io/en/master/) 深度强化学习库，与社区分享，并尝试不同的配置
+在此笔记本中，你将训练你的**第一个深度强化学习智能体**一个月球着陆器智能体，他将学习**正确降落在月球上🌕**。使用 [Stable-Baselines3](https://stable-baselines3.readthedocs.io/en/master/) 深度强化学习库，与社区分享，并尝试不同的配置
 
 ⬇️这是**你将在短短几分钟内实现的示例。** ⬇️
 
@@ -104,9 +104,9 @@
 - RL 过程是一个**循环，该循环输出一个 **状态、动作、奖励 和 下一个状态的序列。**
 
 
-- 为了计算预期的累积奖励（期望回报），我们对奖励进行折扣：较早出现的奖励（在游戏开始时）**更有可能发生，因为它们比长期的未来奖励更可预测。* *
+- 为了计算预期的累积奖励（期望回报），我们对奖励进行折扣：较早出现的奖励（在游戏开始时）**更有可能发生，因为他们比长期的未来奖励更可预测。* *
 
-- 要解决 RL 问题，你需要**找到最优策略**。该策略是你智能体的“大脑”，它将告诉我们**在给定状态下采取什么动作。**最优策略**为你提供了最大化期望回报的动作。**
+- 要解决 RL 问题，你需要**找到最优策略**。该策略是你智能体的“大脑”，他将告诉我们**在给定状态下采取什么动作。**最优策略**为你提供了最大化期望回报的动作。**
 
 有两种方法可以找到你的最佳策略：
 - 通过直接训练你的策略：**基于策略的方法。**
@@ -179,7 +179,7 @@ virtual_display.start()
 我们导入的另一个库是 huggingface_hub **，能够从仓库上传和下载训练有素的模型**。
 
 
-huggingface 仓库🤗是任何人都可以共享和探索模型和数据集的中心地点。它具有版本控制，指标，可视化和其他功能，可让你轻松与他人合作
+huggingface 仓库🤗是任何人都可以共享和探索模型和数据集的中心地点。他具有版本控制，指标，可视化和其他功能，可让你轻松与他人合作
 
 这里可以看到所有可用的深度强化学习模型 👉 https://huggingface.co/models?pipeline_tag=reinforcement-learning&sort=downloads
 
@@ -233,7 +233,7 @@ Gym 库提供了两个事情：
 - `done`: 标记这轮是否完成
 - `info`: 一个提供额外信息的字典 (取决于环境).
 
-如果这个回合技术:
+如果这个回合结束:
 - 我们重设环境初始状态  `observation = env.reset()`
 
 **让我们看一个例子!** 确保你读了代码
@@ -526,7 +526,7 @@ notebook_login()
 
 - `model_name`：我们在``model_save''中定义的训练模型的名称
 
-- `model_architecture`：我们使用的模型体系结构：在我们的情况下的PPO
+- `model_architecture`：我们使用的模型体系结构：在我们的情况下的 PPO
 
 - `env_id`：环境的名称，在我们的情况下`lunarlander-v2`
 
@@ -694,7 +694,7 @@ print(f"mean_reward={mean_reward:.2f} +/- {std_reward}")
 
 使用 [leaderboard](https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard) 🏆比较你和你同学的 LunarLander-v2结果
 
-月亮着陆任务太无聊了吗？尝试**改变环境**，使用MountainCar-V0，Cartpole-V1或Carracing-V0？查看它们的工作原理[使用Gym文档]（https://www.gymlibrary.dev/），祝你玩的开心。
+月亮着陆任务太无聊了吗？尝试**改变环境**，使用MountainCar-V0，Cartpole-V1或Carracing-V0？查看他们的工作原理[使用Gym文档]（https://www.gymlibrary.dev/），祝你玩的开心。
 
 恭喜完成本章！这是重要的一步
 
@@ -702,7 +702,7 @@ print(f"mean_reward={mean_reward:.2f} +/- {std_reward}")
 
 花点时间才能真正掌握信息，然后再尝试其他挑战**。掌握这些信息并拥有坚实的基础很重要。
 
-自然，在课程中，我们将使用并更深入地解释这些术语，但是**最好在深入下一章之前对它们有很好的了解。**
+自然，在课程中，我们将使用并更深入地解释这些术语，但是**最好在深入下一章之前对他们有很好的了解。**
 
 
 
