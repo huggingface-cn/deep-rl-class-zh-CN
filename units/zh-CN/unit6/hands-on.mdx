@@ -1,4 +1,4 @@
-# 利用 PyBullet 和 Panda-Gym 进行机器人模拟的 高阶演员--评论家方法 (A2C) 🤖[[hands-on]]
+# 利用 PyBullet 和 Panda-Gym 进行机器人模拟的 **优势动作评论算法** (A2C) 🤖[[hands-on]]
 
 ```
   <CourseFloatingBanner classNames="absolute z-10 right-0 top-0"
@@ -8,7 +8,7 @@
     askForHelpUrl="http://hf.co/join/discord" />
 ```
 
-现在您已经研究了 高阶演员--评论家方法 (A2C) 背后的理论，**您已准备好在机器人环境中使用 Stable-Baselines3 训练您的 A2C 智能体**。 并训练两个机器人：
+现在您已经研究了 **优势动作评论算法** (A2C) 背后的理论，**您已准备好在机器人环境中使用 Stable-Baselines3 训练您的 A2C 智能体**。 并训练两个机器人：
 
 - 一个正在学习移动的蜘蛛。🕷️ 
 - 一个正在学习移动到正确位置的机械臂。 🦾
@@ -33,7 +33,7 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit6/unit6.ipynb)
 
-# 第 6 单元：利用 PyBullet 和 Panda-Gym 进行机器人模拟的 高阶演员--评论家方法 (A2C) 🤖
+# 第 6 单元：利用 PyBullet 和 Panda-Gym 进行机器人模拟的 **优势动作评论算法** (A2C) 🤖
 
 ### 🎮 开发环境:
 
@@ -183,6 +183,7 @@ env = make_vec_env(env_id, n_envs=4)
 
 # Adding this wrapper to normalize the observation and the reward
 env = # TODO: Add the wrapper
+
 ```
 
 #### 解决方法
@@ -191,6 +192,7 @@ env = # TODO: Add the wrapper
 env = make_vec_env(env_id, n_envs=4)
 
 env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
+
 ```
 
 ### 创建 A2C 模型 🤖
@@ -203,6 +205,7 @@ env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
 
 ```python
 model = # Create the A2C model and try to find the best parameters
+
 ```
 
 #### 解决方案
@@ -224,6 +227,7 @@ model = A2C(
     use_sde=True,
     verbose=1,
 )
+
 ```
 
 ### 训练 A2C 智能体 🏃
@@ -232,12 +236,14 @@ model = A2C(
 
 ```python
 model.learn(2_000_000)
+
 ```
 
 ```python
 # Save the model and  VecNormalize statistics when saving the agent
 model.save("a2c-AntBulletEnv-v0")
 env.save("vec_normalize.pkl")
+
 ```
 
 ### 评估智能体 📈
@@ -264,6 +270,7 @@ model = A2C.load("a2c-AntBulletEnv-v0")
 mean_reward, std_reward = evaluate_policy(model, env)
 
 print(f"Mean reward = {mean_reward:.2f} +/- {std_reward:.2f}")
+
 ```
 
 ### 在 Hub 上发布您的训练模型 🔥
@@ -301,6 +308,7 @@ print(f"Mean reward = {mean_reward:.2f} +/- {std_reward:.2f}")
 ```python
 notebook_login()
 !git config --global credential.helper store
+
 ```
 
 如果您不想使用 Google Colab 或 Jupyter Notebook，则需要改用此命令： `huggingface-cli login`
@@ -317,6 +325,7 @@ package_to_hub(
     repo_id=f"ThomasSimonini/a2c-{env_id}",  # Change the username
     commit_message="Initial commit",
 )
+
 ```
 
 ## 喝杯咖啡休息一下吧！ ☕
@@ -355,12 +364,14 @@ env = gym.make(env_id)
 # Get the state space and action space
 s_size = env.observation_space.shape
 a_size = env.action_space
+
 ```
 
 ```python
 print("_____OBSERVATION SPACE_____ \n")
 print("The State Space is: ", s_size)
 print("Sample observation", env.observation_space.sample())  # Get a random observation
+
 ```
 
 The observation space **是一个包含 3 个不同元素的字典**:
@@ -375,6 +386,7 @@ The observation space **是一个包含 3 个不同元素的字典**:
 print("\n _____ACTION SPACE_____ \n")
 print("The Action Space is: ", a_size)
 print("Action Space Sample", env.action_space.sample())  # Take a random action
+
 ```
 
 动作空间是一个具有 3 个值的向量：
@@ -406,6 +418,7 @@ env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
 model = A2C(policy="MultiInputPolicy", env=env, verbose=1)
 # 5
 model.learn(1_000_000)
+
 ```
 
 ```python
@@ -443,6 +456,7 @@ package_to_hub(
     repo_id=f"ThomasSimonini/a2c-{env_id}",  # TODO: Change the username
     commit_message="Initial commit",
 )
+
 ```
 
 ## 一些额外的挑战 🏆
