@@ -1,41 +1,41 @@
-# 高阶演员--评论家（A2C)方法[[advantage-actor-critic]]
+# 优势演员--评论员（A2C)算法[[advantage-actor-critic]]
 
-## 使用演员--评论家方法减少方差
+## 使用演员--评论员算法减少方差
 
-减少强化学习算法的方差并更快更好地训练我们的智能体的解决方案是结合使用基于策略和基于价值的方法：*演员--评论家 方法*。
+减少强化学习算法的方差并更快更好地训练我们的智能体的解决方案是结合使用基于策略和基于价值的方法：*演员--评论员 方法*。
 
-要了解*演员--评论家*方法，请想象您玩电子游戏。 你可以和一个朋友一起玩，他会给你一些反馈。 此种情况下，你是演员，你的朋友是评论家。
+要了解*演员--评论员*方法，请想象您玩电子游戏。 你可以和一个朋友一起玩，他会给你一些反馈。 此种情况下，你是演员，你的朋友是评论员。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/ac.jpg" alt="Actor Critic"/>
 
-一开始你不知道怎么玩，**所以你随机尝试一些动作**。 评论家会观察您的行为并**提供反馈**。
+一开始你不知道怎么玩，**所以你随机尝试一些动作**。 评论员会观察您的行为并**提供反馈**。
 
 从此反馈中学习，**您将更新您的策略并更好地玩该游戏。**
 
-另一方面，您的朋友（评论家）也会更新他们提供反馈的方式，以便下次可以做得更好。
+另一方面，您的朋友（评论员）也会更新他们提供反馈的方式，以便下次可以做得更好。
 
-这就是“演员--评论家”方法背后的理念。我们学习了两个函数近似:
+这就是“演员--评论员”方法背后的理念。我们学习了两个函数近似:
 
 - *一项策略*，**控制我们的智能体如何行事**: \\( \pi_{\theta}(s,a) \\)
 - *一个价值函数*  ，通过衡量所采取的行动有多好来协助政策更新: \\( \hat{q}_{w}(s,a) \\)
 
-## 演员--评论家方法实现过程
+## 演员--评论员方法实现过程
 
-现在我们已经有了对 Actor--Critic 方法的全面的总体看法，让我们更深入地了解 演员 和 评论家 在训练过程中是如何一起改进的。
+现在我们已经有了对 Actor--Critic 方法的全面的总体看法，让我们更深入地了解 演员 和 评论员 在训练过程中是如何一起改进的。
 
 正如我们所见，对于 Actor-Critic 方法，有两个函数近似（两个神经网络）：
 
 - *Actor*，一个参数化的**策略函数** theta: \\( \pi_{\theta}(s,a) \\)
 - *Critic*，一个参数化的**价值函数** w: \\( \hat{q}_{w}(s,a) \\)
 
-让我们看看训练过程，了解 演员 和 评论家 是如何优化的：
+让我们看看训练过程，了解 演员 和 评论员  是如何优化的：
 
-- 在每个时间步长 t，我们从环境中得到当前状态 \\( S_t\\) 并将其**通过我们的演员和评论家**作为输入传递。
+- 在每个时间步长 t，我们从环境中得到当前状态 \\( S_t\\) 并将其**通过我们的演员和评论员 **作为输入传递。
 - 我们的训练策略接收状态并**输出一个动作** \\( A_t \\)。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step1.jpg" alt="Step 1 Actor Critic"/>
 
-- 评论家也将该动作作为输入，并使用 \\( S_t\\) 和 \\( A_t \\)，**计算在该状态下采取该动作的值：Q 值**。
+- 评论员也将该动作作为输入，并使用 \\( S_t\\) 和 \\( A_t \\)，**计算在该状态下采取该动作的值：Q 值**。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step2.jpg" alt="Step 2 Actor Critic"/>
 
@@ -48,13 +48,13 @@
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step4.jpg" alt="Step 4 Actor Critic"/>
 
 - 由于其更新的参数，在给定新状态 \\( S_{t+1} \\) 的情况下，Actor 会在 \\( A_{t+1} \\) 处产生要采取的下一个动作。
-- 然后 评论家 更新它的参数的值。
+- 然后 评论员 更新它的参数的值。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step5.jpg" alt="Step 5 Actor Critic"/>
 
 ## Adding Advantage in Actor-Critic (A2C)
 
-我们可以通过**使用 优势函数 作为 评论家 以替代 动作值函数** 来进一步稳定学习。
+我们可以通过**使用 优势函数 作为 评论员 以替代 动作值函数** 来进一步稳定学习。
 
 这个想法是 优势函数 计算一个动作与一个状态下可能的其他动作相比的相对优势：**与状态的平均值相比，在一个状态下采取该动作如何更好**。 它是从状态动作对中减去状态的平均值：
 
