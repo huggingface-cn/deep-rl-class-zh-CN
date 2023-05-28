@@ -1,26 +1,24 @@
 # 深度 Q 网络 (DQN)  [[deep-q-network]]
-这是我们深度 Q 学习网络的结构：
+这是我们深度 Q-learning 网络的结构：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit4/deep-q-network.jpg" alt="Deep Q Network"/>
 
-作为输入，我们的状态采用 **4 帧堆**经过网络，并且输出一个该状态下**每个可能动作的 Q 值向量**。然后像 Q 学习一样，我们仅仅需要使用 $\epsilon$-贪婪 策略去筛选我们要采取的动作就行。
+作为输入，我们的状态采用 **4 帧的堆**经过网络，并且输出一个该状态下**每个可能动作的 Q 值向量**。然后像 Q-learning 一样，我们仅仅需要使用 $\epsilon$-贪心策略去挑选我们要采取的动作就行。
 
-当神经网络开始初始化， **Q 值的估计很糟糕**。但是随着训练进行，我们的深度 Q 网络会用合适的动作关联情景并且**学习如何掌控游戏**。
-
+当神经网络开始初始化， **Q 值的估计很糟糕**。但是随着训练进行，深度 Q 网络会将情况与合适的动作关联起来，并**学习如何玩好游戏**。
 
 ## 预处理输入和时序限制[[preprocessing]]
 
-我们需要**预处理输入**。对于我们想要**减少我们状态的复杂度来减少训练的计算时间来说**，这很重要。
+我们需要**预处理输入**。因为我们想要**减少状态的复杂度，从而减少训练的计算时间**，所以这是一个重要的步骤。
 
-为了达到这个目标，我们减少**状态空间到 84x84 并且进行灰度化**。让 Atari 环境不加入重要信息就可以实现这一步骤。**把 3 通道（RGB）降低到 1 通道**极大地节省了计算。
+为了达到这个目标，我们减少**状态空间到 84x84 并且进行灰度化**。之所以这样做，是因为颜色在雅达利环境中没有增加重要的信息。这是一个重要的进步，因为我们**把 3 通道（RGB）降低到 1 通道**
 
-如果不包括重要信息的话，我们同样可以**裁剪掉一些游戏画面**来节省计算。
-然后我们把 4 个帧堆在一起。
+我们也可以**某些游戏中屏幕的一部分**，如果它不包含重要信息。然后我们把 4 个帧堆在一起。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit4/preprocessing.jpg" alt="Preprocessing"/>
 
 **为啥要堆在一起呢？**
-因为这帮助我们处理一些**时序限制问题**。让我们用 Pong 这个游戏举例，当你看到如下帧：
+因为这帮助我们处理一些**时序限制问题**。以 Pong 这个游戏举例，当你看到如下帧：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit4/temporal-limitation.jpg" alt="Temporal Limitation"/>
 
@@ -34,8 +32,9 @@
 
 如果你不知道啥是卷积层，别担心。你可以查看[Udacity 的深度强化学习课程第四课](https://www.udacity.com/course/deep-learning-pytorch--ud188)
 
-最后，我们有一对全连接层输出每一个该状态下可能动作的 Q 值.
+最后，我们有几个全连接层，其在该状态下为每个可能的动作输出一个 Q 值。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit4/deep-q-network.jpg" alt="Deep Q Network"/>
 
-我们了解了深度 Q 学习是用一个给定一个状态的神经网络去估计该状态每一个可能的动作的不同 Q 值。下面让我们学习深度 Q 学习算法。
+因此，我们了解了深度 Q-learning 使用神经网络来近似给定一个状态，该状态下每个可能动作的不同 q 值。
+下面让我们学习深度 Q-learning 算法。
