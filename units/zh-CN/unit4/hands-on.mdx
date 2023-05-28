@@ -133,6 +133,14 @@ virtual_display.start()
 - `gym-games`: 使用 PyGame 制作的额外 gym 环境。
 - `huggingface_hub`: Hub 是一个中心化的平台，任何人都可以在其中分享和探索模型和数据集。他提供版本控制、度量、可视化等功能，使你能够轻松地与他人合作。
 
+你可能想知道为什么我们安装的是 gym 而不是 gymnasium，一个更新版本的 gym ？因为我们使用的 gym-games 还没有更新到 gymnasium。
+
+你会遇到的不同之处有：
+
+在 `gym` 中，我们没有 `terminated` 和 `truncated` ，只有 `done` 。
+在 `gym` 中，使用 `env.step()` 返回的是 `state, reward, done, info`
+你可以在这里了解更多关于 Gym 和 Gymnasium 之间的区别 👉 https://gymnasium.farama.org/content/migration-guide/
+
 你可以在这里看到所有的可用的强化学习模型 👉 https://huggingface.co/models?other=reinforce
 
 并且你在这里可以找到所有的深度强化学习模型 👉 https://huggingface.co/models?pipeline_tag=reinforcement-learning
@@ -871,8 +879,8 @@ print("Action Space Sample", env.action_space.sample())  # Take a random action
 - 下一个方块的下部y位置
 
 动作空间 (2) 🎮:
-- 上
-- 下
+- 上 (按下加速)
+- 保持沉默 （不要按下加速）
 
 奖励函数 💰:
 - 每穿过一个垂直的方块，他获得一个 +1 的正奖励。每当到达终止状态时，他会获得一个 -1 的负奖励。
