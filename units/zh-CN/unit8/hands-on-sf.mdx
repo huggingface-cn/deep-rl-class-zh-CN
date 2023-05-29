@@ -1,4 +1,4 @@
-# 动手尝试：高级深度强化学习。使用 Sample Factory 框架输入像素玩 Doom
+# 动手尝试：进阶深度强化学习。使用 Sample Factory 框架输入像素玩 Doom
 
 <CourseFloatingBanner classNames="absolute z-10 right-0 top-0"
 notebooks={[
@@ -73,8 +73,8 @@ Sample Factory 经过了充分**的测试，被许多研究人员和从业者使
 - 单智能体和多智能体训练、自我对弈，支持在一个或多个 GPU 上同时训练[多个策略](https://www.samplefactory.dev/07-advanced-topics/multi-policy-training/)
 - 基于种群的训练（[PBT](https://www.samplefactory.dev/07-advanced-topics/pbt/)）
 - 离散、连续、混合动作空间
-- 向量、图像、字典观察空间
-- 通过解析动作/观察空间规范自动创建模型架构。支持[自定义模型架构](https://www.samplefactory.dev/03-customization/custom-models/)
+- 向量、图像、字典观测空间
+- 通过解析动作/观测空间规范自动创建模型架构。支持[自定义模型架构](https://www.samplefactory.dev/03-customization/custom-models/)
 - 设计成可导入其他项目，[自定义环境](https://www.samplefactory.dev/03-customization/custom-environments/)是一等公民
 - 详细的[ WandB 和 Tensorboard 摘要](https://www.samplefactory.dev/05-monitoring/metrics-reference/)、[自定义指标](https://www.samplefactory.dev/05-monitoring/custom-metrics/)
 - [HuggingFace 🤗 集成](https://www.samplefactory.dev/10-huggingface/huggingface/)（上传训练模型和指标到 Hub）
@@ -98,13 +98,13 @@ Sample-factory 是社区中**最高度优化的强化学习实现之一**。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/samplefactory.png" alt="Sample factory"/>
 
-### Sample-factory 中的演员评论员模型
+### Sample-factory 中的演员-评论员模型
 
-在 Sample Factory 中，演员评论员模型由三个组件组成：
+在 Sample Factory 中，演员-评论员模型由三个部分组成：
 
-- **Encoder** - 处理输入观测（图像、向量）并将它们映射到一个向量。这是您最有可能想要自定义的模型部分。
-- **Core** - 将一个或多个编码器的向量集成，可以选择在基于记忆的智能体中包括单层或多层 LSTM/GRU。
-- **Decoder** - 在计算策略和价值输出之前，对模型核心的输出应用额外的层。
+- **编码器** - 处理输入观测（图像、向量）并将它们映射到一个向量。这是您最有可能想要自定义的模型部分。
+- **核心** - 将一个或多个编码器的向量集成，可以选择在基于记忆的智能体中包括单层或多层 LSTM/GRU。
+- **解码器** - 在计算策略和价值输出之前，对模型核心的输出应用额外的层。
 
 该库已经被设计成自动支持任何观测和动作空间。用户可以轻松添加他们自己的自定义模型。你可以在[文档](https://www.samplefactory.dev/03-customization/custom-models/#actor-critic-models-in-sample-factory)中了解更多信息。
 
@@ -155,7 +155,7 @@ apt-get install liblua5.1-dev
 
 ## 然后我们安装 Sample Factory 和 ViZDoom
 
-- 这个耗时 7 min 左右
+- 这个耗时 7 分钟左右
 
 ```bash
 pip install sample-factory
@@ -231,7 +231,7 @@ def parse_vizdoom_cfg(argv=None, evaluation=False):
 
 ## 训练智能体
 
-- 我们将要训练这个智能体大约 4000000 步，这大概会耗费 20min 
+- 我们将要训练这个智能体大约 4000000 步，这大概会耗费 20 分钟 
 
 ```python
 ## Start the training, this should take around 15 minutes
@@ -325,8 +325,6 @@ status = enjoy(cfg)
 ```
 
 ## 让我们加载模型
-
-
 
 
 这个智能体的表现不错，但还有提升的空间！让我们从 Hub 下载并可视化一个训练了 10B 个时间步的智能体。

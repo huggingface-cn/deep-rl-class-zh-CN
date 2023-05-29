@@ -1,4 +1,4 @@
-# 环境 SnowballTarget
+# SnowballTarget 环境
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballtarget.gif" alt="SnowballTarget"/>
 
@@ -27,14 +27,14 @@ SnowballTarget 是从 [Kay Lousberg](https://kaylousberg.com/) 在 Hugging Face 
 
 我们可以有一个更复杂的奖励函数（例如，通过惩罚来推动智能体走得更快）。但是当你设计一个环境时，你需要避免奖励工程问题，它有一个过于复杂的奖励函数来迫使你的智能体按照你想要的方式行事。为什么？因为那样做，你可能会**错过你的智能体通过更简单的奖励函数找到有趣策略**。
 
-在代码方面，它看起来像这样：
+代码看起来像这样：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit7/snowballtarget-reward-code.png" alt="Reward"/>
 
 
-## 观察空间
+## 观测空间
 
-关于观察，我们不使用普通视觉（框架），而是**使用光线投射**。
+关于观测，我们不使用普通视觉（帧），而是**使用光线投射**。
 
 将光线投射想象成激光，可以检测它们是否穿过物体。
 
