@@ -10,9 +10,9 @@
 
 
 
-现在我们已经学习了强化算法背后的理论，**你已经准备好用 Pytorch 编写你的强化算法智能体了**。并且你会用 CartPole-v1 和 PixelCopter 来测试他的鲁棒性。
+现在我们已经学习了强化算法背后的理论，**你已经准备好用 PyTorch 编写你的强化算法智能体了**。并且你会用 CartPole-v1 和 PixelCopter 来测试其鲁棒性。
 
-你可以通过更高级的环境迭代和提升这个操作。
+你可以针对更高级的环境来迭代并改进这个实现。
 
 <figure class="image table text-center m-0 w-full">
   <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit6/envs.gif" alt="Environments"/>
@@ -37,12 +37,12 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit4/unit4.ipynb)
 
 
-# 单元 4: 用 Pytorch 编写你的第一个深度强化学习算法：强化算法，并测试他的鲁棒性 💪
+# 单元 4: 用 PyTorch 编写你的第一个深度强化学习算法：强化算法，并测试他的鲁棒性 💪
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit6/thumbnail.png" alt="thumbnail"/>
 
 
-在本 notebook 中, 你将从头开始编写你的第一个深度强化学习算法：强化算法（也称为蒙特卡罗策略梯度）。
+在本 notebook 中, 你将从头开始编写你的第一个深度强化学习算法：强化算法（也称为蒙特卡洛策略梯度）。
 
 强化算法是一种*基于策略的方法*，一种深度强化学习算法，试图直接优化策略而不使用动作值函数。
 
@@ -212,7 +212,7 @@ print(device)
 如果以下任一条件成立，本轮片段就会结束：
 - 杆的角度大于 ±12°
 - 车的位置大于 ±2.4
-- 本轮片段的持续时间大于 500
+- 本轮回合的持续时间大于 500
 
 每个时间步，如果杆保持在平衡状态，则我们获得 +1 的奖励💰。
 
@@ -347,7 +347,7 @@ class Policy(nn.Module):
 
 通过使用 CartPole ，我们更容易调试，因为**我们知道错误来自于我们的集成，而不是我们简单的环境**。
 
-- 由于**我们想要从动作的概率分布中采用一个动作**，我们就不能使用  `action = np.argmax(m)` 因为他总会输出概率最高的动作。
+- 由于**我们想要从动作的概率分布中采用一个动作**，我们就不能使用  `action = np.argmax(m)` 因为它总会输出概率最高的动作。
 
 - 我们需要从概率分布 P(.|s) 采样来替代 `action = m.sample()` 。
 

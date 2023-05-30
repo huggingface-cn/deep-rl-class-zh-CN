@@ -8,7 +8,7 @@
 
 
 
-之前我们已经学习了Q-Learning算法，现在我们要从头实现它，并在两个环境中训练Q-Learning智能体：
+之前我们已经学习了Q-learning算法，现在我们要从头实现它，并在两个环境中训练Q-learning智能体：
 
 1. [Frozen-Lake-v1（非滑动和滑动版本）](https://www.gymlibrary.dev/environments/toy_text/frozen_lake/)☃️：智能体需要**从起始状态（S）到达目标状态（G）**，只在冰冻的瓷砖（F）上行走，避免掉入洞穴（H）。
 2. [自动驾驶出租车](https://www.gymlibrary.dev/environments/toy_text/taxi/)🚖：智能体需要**学会在城市中导航**，以便将乘客从A点运输到B点。
@@ -30,11 +30,11 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit2/unit2.ipynb)
 
 
-# Unit 2: 在FrozenLake-v1 ⛄ 和 Taxi-v3 🚕中使用 Q-Learning 
+# Unit 2: 在FrozenLake-v1 ⛄ 和 Taxi-v3 🚕中使用 Q-learning 
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/thumbnail.jpg" alt="Unit 2 Thumbnail">
 
-在这个笔记本中，**你将从头编写你的第一个强化学习智能体**，使用Q-Learning训练智能体在FrozenLake❄️中玩游戏，并将其分享给社区，可以尝试不同的配置进行训练。
+在这个笔记本中，**你将从头编写你的第一个强化学习智能体**，使用Q-learning训练智能体在FrozenLake❄️中玩游戏，并将其分享给社区，可以尝试不同的配置进行训练。
 
 ⬇️ 下面是一个例子，你可以在**几分钟内实现它**。⬇️
 
@@ -57,7 +57,7 @@
 在单元结束时，你将：
 
 - 能够使用**Gym**环境库。
-- 能够从头编写一个Q-Learning智能体。
+- 能够从头编写一个Q-learning智能体。
 - 能够**将你的训练过的智能体及其代码推送到Hub**，并附上精美的视频回放和评估得分🔥。
 
 ## 知识前提 🏗️
@@ -66,24 +66,24 @@
 
 🔲 📚 **通过阅读Unit 2学习[Q-Learning](https://huggingface.co/deep-rl-course/unit2/introduction)** 🤗
 
-## Q-Learning的简要回顾
+## Q-learning的简要回顾
 
-- Q-Learning算法是**一种强化学习算法**，具有以下主要特点：
-  - 它会训练一个Q函数，这是一种**动作-价值函数**，其内部有一个Q表，用于**存储所有状态-动作对的值**。
-  - 当给定一个状态和动作时，Q函数**会在Q表中查找相应的值**。
+- Q-learning算法是**一种强化学习算法**，具有以下主要特点：
+  - 它会训练一个Q函数，这是一种**动作价值函数**，其内部有一个Q表格，用于**存储所有状态-动作对的值**。
+  - 当给定一个状态和动作时，Q函数**会在Q表格中查找相应的值**。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-function-2.jpg" alt="Q function"  width="100%"/>
 
-- 在训练完成后，我们会得到一个**最优的Q函数**，**从而获得一个最优的Q表**。
+- 在训练完成后，我们会得到一个**最优的Q函数**，**从而获得一个最优的Q表格**。
 - 当我们拥有一个**最优的Q函数**时，我们就能得到一个最优策略，因为我们知道**在每个状态下应该采取什么最佳动作。**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/link-value-policy.jpg" alt="Link value policy"  width="100%"/>
 
-然而，在一开始，**我们的Q表是没用的**，**因为它为每个状态-动作对提供了任意的值（通常我们会将Q表初始化为全零值）**。但随着我们不断地探索环境并更新Q表，它将为我们提供越来越好的近似值。
+然而，在一开始，**我们的Q表格是没用的**，**因为它为每个状态-动作对提供了任意的值（通常我们会将Q表格初始化为全零值）**。但随着我们不断地探索环境并更新Q表格，它将为我们提供越来越好的近似值。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit2/q-learning.jpeg" alt="q-learning.jpeg" width="100%"/>
 
-以下是Q-Learning算法的伪代码：
+以下是Q-learning算法的伪代码：
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-2.jpg" alt="Q-Learning" width="100%"/>
 
@@ -101,11 +101,11 @@
 
 - `gym`：包含FrozenLake-v1⛄和Taxi-v3🚕环境。我们使用`gym==0.24`，因为它包含一个漂亮的Taxi-v3 UI版本。
 - `pygame`：用于FrozenLake-v1和Taxi-v3的UI。
-- `numpy`：用于处理我们的Q-table。
+- `numpy`：用于处理我们的Q表格。
 
 Hugging Face Hub 🤗 作为一个中心平台，任何人都可以在此共享和探索模型和数据集。它具有版本控制、度量、可视化等功能，使你可以轻松与他人合作。
 
-你可以在这里查看所有可用的深度强化学习模型（如果它们使用Q-Learning）👉 https://huggingface.co/models?other=q-learning
+你可以在这里查看所有可用的深度强化学习模型（如果它们使用Q-learning）👉 https://huggingface.co/models?other=q-learning
 
 ```bash
 pip install -r https://raw.githubusercontent.com/huggingface/deep-rl-class/main/notebooks/unit2/requirements-unit2.txt
@@ -137,7 +137,7 @@ virtual_display.start()
 
 除了安装的库之外，我们还使用：
 
-- `random`：生成随机数（对于epsilon-贪婪策略非常有用）。
+- `random`：生成随机数（对于epsilon-贪心策略非常有用）。
 - `imageio`：生成回放视频。
 
 ```python
@@ -151,7 +151,7 @@ import pickle5 as pickle
 from tqdm.notebook import tqdm
 ```
 
-接下来我们正式进入Q-Learning算法的代码部分 🔥
+接下来我们正式进入Q-learning算法的代码部分 🔥
 
 # Part 1: Frozen Lake ⛄ (非滑动版本)
 
@@ -165,7 +165,7 @@ from tqdm.notebook import tqdm
 
 ---
 
-我们将使用Q-Learning算法来训练智能体，使其**仅在冰冻砖块（F）上行走，并避开洞穴（H），从起始状态（S）导航至目标状态（G）**。
+我们将使用Q-learning算法来训练智能体，使其**仅在冰冻砖块（F）上行走，并避开洞穴（H），从起始状态（S）导航至目标状态（G）**。
 
 我们有两种规格的环境：
 
@@ -236,13 +236,13 @@ print("Action Space Sample", env.action_space.sample())  # 采取一个随机动
 - 到达洞穴：0
 - 到达冰冻：0
 
-## 创建并初始化 Q-table 🗄️
+## 创建并初始化 Q表格 🗄️
 
-(👀 以下是Q-Learning算法的伪代码)
+(👀 以下是Q-learning算法的伪代码)
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-2.jpg" alt="Q-Learning" width="100%"/>
 
-现在是初始化我们的Q表的时候了！为了知道要使用多少行（状态）和列（动作），我们需要了解动作和观测空间。虽然我们之前已经知道了动作和观测空间的数值，但是为了算法能够适用于不同的环境，我们在程序中以变量的形式对它们进行存储。Gym 为我们提供了一种方法：`env.action_space.n` 和 `env.observation_space.n`。
+现在是初始化我们的Q表格的时候了！为了知道要使用多少行（状态）和列（动作），我们需要了解动作和观测空间。虽然我们之前已经知道了动作和观测空间的数值，但是为了算法能够适用于不同的环境，我们在程序中以变量的形式对它们进行存储。Gym 为我们提供了一种方法：`env.action_space.n` 和 `env.observation_space.n`。
 
 
 ```python
@@ -254,7 +254,7 @@ print("There are ", action_space, " possible actions")
 ```
 
 ```python
-# 创建一个大小为（state_space，action_space）的 Q-table，并使用 np.zeros 将每个值初始化为 0
+# 创建一个大小为（state_space，action_space）的 Q表格，并使用 np.zeros 将每个值初始化为 0
 def initialize_q_table(state_space, action_space):
   Qtable =
   return Qtable
@@ -275,7 +275,7 @@ print("There are ", action_space, " possible actions")
 ```
 
 ```python
-# 创建一个大小为（state_space，action_space）的 Q-table，并使用 np.zeros 将每个值初始化为 0
+# 创建一个大小为（state_space，action_space）的 Q表格，并使用 np.zeros 将每个值初始化为 0
 def initialize_q_table(state_space, action_space):
     Qtable = np.zeros((state_space, action_space))
     return Qtable
@@ -285,14 +285,14 @@ def initialize_q_table(state_space, action_space):
 Qtable_frozenlake = initialize_q_table(state_space, action_space)
 ```
 
-## 定义贪婪策略 🤖
+## 定义贪心策略 🤖
 
-需要注意的是我们有两个策略，因为 Q-Learning 是一种**离线策略**算法，所以我们**使用不同的策略来更新行动和价值函数**。
+需要注意的是我们有两个策略，因为 Q-learning 是一种**异策略**算法，所以我们**使用不同的策略来更新行动和价值函数**。
 
-- Epsilon 贪婪策略（行动策略）
-- 贪婪策略（更新策略）
+- Epsilon 贪心策略（行动策略）
+- 贪心策略（更新策略）
 
-贪婪策略也将是使用 Q-Learning 算法训练智能体后的最终策略，贪婪策略用于从 Q-table 中选择动作。
+贪心策略也将是使用 Q-learning 算法训练智能体后的最终策略，贪心策略用于从 Q表格 中选择动作。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/off-on-4.jpg" alt="Q-Learning" width="100%"/>
 
@@ -315,11 +315,11 @@ def greedy_policy(Qtable, state):
     return action
 ```
 
-##定义 epsilon 贪婪策略 🤖
+##定义 epsilon 贪心策略 🤖
 
-Epsilon 贪婪策略是处理探索和利用之间的权衡问题的一种训练策略。
+Epsilon 贪心策略是处理探索和利用之间的权衡问题的一种训练策略。
 
-Epsilon 贪婪策略的思想是：
+Epsilon 贪心策略的思想是：
 
 - *概率 1 — ɛ*：智能体进行**利用**（即智能体选择具有最高状态-动作对值的动作）。
 - *概率 ɛ*：**智能体进行探索**（尝试随机动作）。
@@ -403,7 +403,7 @@ decay_rate = 0.0005 # 探索概率的指数衰减速率
 重置环境
 
     对于每个最大尝试步数：
-      使用 epsilon 贪婪策略选择动作 At
+      使用 epsilon 贪心策略选择动作 At
       执行动作（a）并观察结果状态（s'）和奖励（r）
       使用贝尔曼方程更新 Q 值 Q(s,a) + lr [R(s,a) + gamma * max Q(s',a') - Q(s,a)]
       如果完成，结束本回合
@@ -422,7 +422,7 @@ def train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_st
 
     # 重复
     for step in range(max_steps):
-      # 使用 epsilon 贪婪策略选择动作 At
+      # 使用 epsilon 贪心策略选择动作 At
       action =
 
       # 采取动作 At 并观察 Rt+1 和 St+1
@@ -455,7 +455,7 @@ def train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_st
 
         # 重复
         for step in range(max_steps):
-            # 使用 epsilon 贪婪策略选择动作 At
+            # 使用 epsilon 贪心策略选择动作 At
             action = epsilon_greedy_policy(Qtable, state, epsilon)
 
             # 采取动作 At 并观察 Rt+1 和 St+1
@@ -476,13 +476,13 @@ def train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_st
     return Qtable
 ```
 
-## 训练 Q-Learning 智能体 🏃
+## 训练 Q-learning 智能体 🏃
 
 ```python
 Qtable_frozenlake = train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_steps, Qtable_frozenlake)
 ```
 
-## 查看Q-table中的值 👀
+## 查看Q表格中的值 👀
 
 ```python
 Qtable_frozenlake
@@ -490,7 +490,7 @@ Qtable_frozenlake
 
 ## 评估函数 📝
 
-- 定义我们要用来测试 Q-Learning 智能体的评估函数
+- 定义我们要用来测试 Q-learning 智能体的评估函数
 
 ```python
 def evaluate_agent(env, max_steps, n_eval_episodes, Q, seed):
@@ -498,7 +498,7 @@ def evaluate_agent(env, max_steps, n_eval_episodes, Q, seed):
     对智能体进行 n_eval_episodes 轮评估，返回平均奖励和奖励的标准差。
     :param env: 评估环境
     :param n_eval_episodes: 评估智能体的轮数
-    :param Q: Q-table
+    :param Q: Q表格
     :param seed: 评估种子数组（用于taxi-v3）
 	"""
     episode_rewards = []
@@ -527,7 +527,7 @@ def evaluate_agent(env, max_steps, n_eval_episodes, Q, seed):
     return mean_reward, std_reward
 ```
 
-## 评估Q-Learning智能体 📈
+## 评估Q-learning智能体 📈
 
 - 通常应该得到平均奖励为1.0
 - 因为状态空间非常小（16），所以该**环境相对简单**，你可以尝试用[有滑动版本](https://www.gymlibrary.dev/environments/toy_text/frozen_lake/)替换它，这会引入随机性，使环境更加复杂。
@@ -564,7 +564,7 @@ def record_video(env, Qtable, out_directory, fps=1):
     """
     生成智能体表现的回放视频
     :param env
-    :param Qtable: 我们智能体的Q表
+    :param Qtable: 我们智能体的Q表格
     :param out_directory
     :param fps: 每秒帧数（对于taxi-v3和frozenlake-v1，我们使用1）
     """
@@ -665,8 +665,8 @@ def push_to_hub(repo_id, model, env, video_fps=1, local_repo_path="hub"):
     metadata = {**metadata, **eval}
 
     model_card = f"""
-    # **Q-Learning** 智能体玩 **{env_id}**
-    这是一个受过训练的**Q-Learning**智能体玩 **{env_id}** 的模型。
+    # **Q-learning** 智能体玩 **{env_id}**
+    这是一个受过训练的**Q-learning**智能体玩 **{env_id}** 的模型。
 
     ## 用法
 
@@ -843,7 +843,7 @@ print("There are ", action_space, " possible actions")
 - 非法执行“接载”和“放下”动作-10。
 
 ```python
-# 创建具有state_size行和action_size列（500x6）的Q表
+# 创建具有state_size行和action_size列（500x6）的Q表格
 Qtable_taxi = initialize_q_table(state_space, action_space)
 print(Qtable_taxi)
 print("Q-table shape: ", Qtable_taxi.shape)
@@ -977,7 +977,7 @@ min_epsilon = 0.05 # 最小探索概率
 decay_rate = 0.005 # 探索概率的指数衰减率
 ```
 
-## 训练 Q-Learning 智能体 🏃
+## 训练 Q-learning 智能体 🏃
 
 ```python
 Qtable_taxi = train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_steps, Qtable_taxi)
@@ -986,7 +986,7 @@ Qtable_taxi
 
 ## 创建一个模型字典 💾 并将训练好的模型发布到Hub 🔥
 
-- 我们创建一个模型字典，其中将包含所有可复现的训练超参数和Q-Table。
+- 我们创建一个模型字典，其中将包含所有可复现的训练超参数和Q表格。
 
 
 ```python
@@ -1100,15 +1100,15 @@ _____________________________________________________________________
 
 恭喜🥳，你刚刚实现、训练并上传了你的第一个强化学习智能体。
 
-理解Q-Learning对于领会基于价值的方法非常重要。
+理解Q-learning对于领会基于价值的方法非常重要。
 
-在接下来的单元中，我们将学习深度Q学习。我们会发现，创建和更新Q表的确是个好策略，**但这种方法并不具备扩展性**。
+在接下来的单元中，我们将学习深度Q学习。我们会发现，创建和更新Q表格的确是个好策略，**但这种方法并不具备扩展性**。
 
 例如，假设你创建了一个能玩《毁灭战士》的智能体。
 
 <img src="https://vizdoom.cs.put.edu.pl/user/pages/01.tutorial/basic.png" alt="Doom"/>
 
-毁灭战士是一个庞大的环境，拥有大量的状态空间（数百万个不同状态）。为这样的环境创建和更新Q表并不高效。
+毁灭战士是一个庞大的环境，拥有大量的状态空间（数百万个不同状态）。为这样的环境创建和更新Q表格并不高效。
 
 正因如此，我们将在下一单元学习深度Q学习。这是一种算法，**它利用神经网络在给定状态时近似计算每个动作的不同Q值**。
 

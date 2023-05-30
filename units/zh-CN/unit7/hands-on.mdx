@@ -83,7 +83,7 @@ pip install -e ./ml-agents-envs
 pip install -e ./ml-agents
 ```
 
-我们同样需要用以下命令安装 pytorch:
+我们同样需要用以下命令安装 PyTorch:
 
 ```bash
 pip install torch
@@ -122,9 +122,9 @@ Mac：下载[此可执行文件](https://drive.google.com/drive/folders/1h7YB0qw
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit10/soccerreward.png" alt="SoccerTwos Reward"/>
 
-### 观察空间
+### 观测空间
 
-观察空间由大小为 336 的向量组成：
+观测空间由大小为 336 的向量组成：
 
 - 11 个向前分布在 120 度范围内的射线（264 个状态维度）
 - 3 个向后分布在 90 度范围内的射线（72 个状态维度）
@@ -152,7 +152,7 @@ Mac：下载[此可执行文件](https://drive.google.com/drive/folders/1h7YB0qw
 
 Unity MLAgents 团队在一个名为 *MA-POCA（Multi-Agent POsthumous Credit Assignment）* 的新的多智能体程序训练器中开发了解决方案。
 
-这个想法简单而强大：一个集中化的评论家**处理团队中所有智能体程序的状态，以估计每个智能体程序的表现如何**。可以将这个评论家看作是一名教练。
+这个想法简单而强大：一个集中化的评论员**处理团队中所有智能体程序的状态，以估计每个智能体程序的表现如何**。可以将这个评论员看作是一名教练。
 
 这使得每个智能体程序可以**仅根据其局部感知做出决策**，并**同时评估其行为在整个团队环境中的优劣**。
 
