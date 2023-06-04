@@ -27,7 +27,7 @@
   - local: unit1/glossary
     title: 术语表
   - local: unit1/hands-on
-    title: 动手尝试
+    title: 动手实践
   - local: unit1/quiz
     title: 测验
   - local: unit1/conclusion
@@ -67,17 +67,17 @@
   - local: unit2/mid-way-quiz
     title: 中途测验
   - local: unit2/q-learning
-    title: 引入Q学习
+    title: 引入 Q 学习
   - local: unit2/q-learning-example
-    title: 一个Q学习示例
+    title: 一个 Q 学习示例
   - local: unit2/q-learning-recap
-    title: Q学习回顾
+    title: Q 学习回顾
   - local: unit2/glossary
     title: 术语表
   - local: unit2/hands-on
-    title: 动手尝试操作
+    title: 动手实践
   - local: unit2/quiz2
-    title: Q学习测验
+    title: Q 学习测验
   - local: unit2/conclusion
     title: 结论
   - local: unit2/additional-readings
