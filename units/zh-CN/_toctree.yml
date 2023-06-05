@@ -183,26 +183,26 @@
   - local: unit8/introduction
     title: 介绍
   - local: unit8/intuition-behind-ppo
-    title: 近端策略优化的直觉
+    title: 近端策略优化的直观理解
   - local: unit8/clipped-surrogate-objective
-    title: 引入剪切智能体目标函数
+    title: 引入裁剪智能体目标函数
   - local: unit8/visualize
-    title: 可视化剪切智能体目标函数
+    title: 可视化裁剪智能体目标函数
   - local: unit8/hands-on-cleanrl
-    title: 使用CleanRL的PPO
+    title: 使用 CleanR 的 PPO
   - local: unit8/conclusion
     title: 结论
   - local: unit8/additional-readings
     title: 补充阅读
-- title: 第 8 单元. 第 2 部分 近端策略优化（PPO）与Doom
+- title: 第 8 单元. 第 2 部分 近端策略优化（PPO）与 Doom
   sections:
   - local: unit8/introduction-sf
     title: 介绍
   - local: unit8/hands-on-sf
-    title: 使用Sample Factory和Doom的PPO
+    title: 使用 Sample Factory 和 Doom 的 PPO
   - local: unit8/conclusion-sf
     title: 结论
-- title: 附加第 3 单元. 强化学习的高级主题
+- title: 奖励 3 单元. 强化学习的高级主题
   sections:
   - local: unitbonus3/introduction
     title: 介绍
