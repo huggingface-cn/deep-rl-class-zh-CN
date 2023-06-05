@@ -34,7 +34,7 @@
     title: 结论
   - local: unit1/additional-readings
     title: 补充阅读
-- title: 附加 1 单元. 使用 Huggy 的深度强化学习介绍
+- title: 奖励 1 单元. 使用 Huggy 的深度强化学习介绍
   sections:
   - local: unitbonus1/introduction
     title: 介绍
@@ -87,29 +87,29 @@
   - local: unit3/introduction
     title: 介绍
   - local: unit3/from-q-to-dqn
-    title: 从Q学习到深度Q学习
+    title: 从 Q 学习到深度 Q 学习
   - local: unit3/deep-q-network
-    title: 深度Q网络（DQN）
+    title: 深度 Q 网络（DQN）
   - local: unit3/deep-q-algorithm
-    title: 深度Q算法
+    title: 深度 Q 算法
   - local: unit3/glossary
     title: 术语表
   - local: unit3/hands-on
-    title: 动手尝试操作
+    title: 动手实践
   - local: unit3/quiz
     title: 测验
   - local: unit3/conclusion
     title: 结论
   - local: unit3/additional-readings
     title: 补充阅读
-- title: 附加 2 单元. 使用 Optuna 进行自动超参数调优
+- title:  奖励 2 单元. 使用 Optuna 进行自动超参数调优
   sections:
   - local: unitbonus2/introduction
     title: 介绍
   - local: unitbonus2/optuna
     title: Optuna
   - local: unitbonus2/hands-on
-    title: 动手尝试操作
+    title: 动手实践
 - title: 第 4 单元. 使用 PyTorch 进行策略梯度
   sections:
   - local: unit4/introduction

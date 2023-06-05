@@ -218,7 +218,7 @@ from tqdm.notebook import tqdm
 env = gym.make()  # 目标：使用正确的参数
 ```
 
-### 答案
+### 参考答案
 
 ```python
 env = gym.make("FrozenLake-v1", map_name="4x4", is_slippery=False, render_mode="rgb_array")
@@ -298,7 +298,7 @@ def initialize_q_table(state_space, action_space):
 Qtable_frozenlake = initialize_q_table(state_space, action_space)
 ```
 
-### 答案
+### 参考答案
 
 ```python
 state_space = env.observation_space.n
@@ -339,7 +339,7 @@ def greedy_policy(Qtable, state):
   return action
 ```
 
-#### 答案
+#### 参考答案
 
 ```python
 def greedy_policy(Qtable, state):
@@ -379,7 +379,7 @@ def epsilon_greedy_policy(Qtable, state, epsilon):
   return action
 ```
 
-#### 答案
+#### 参考答案
 
 ```python
 def epsilon_greedy_policy(Qtable, state, epsilon):
@@ -476,7 +476,7 @@ def train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_st
   return Qtable
 ```
 
-#### 答案
+#### 参考答案
 
 ```python
 def train(n_training_episodes, min_epsilon, max_epsilon, decay_rate, env, max_steps, Qtable):

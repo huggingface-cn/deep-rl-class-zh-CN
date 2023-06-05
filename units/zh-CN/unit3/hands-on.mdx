@@ -31,7 +31,7 @@
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit3/unit3.ipynb)
 
 
-# Unit 3: 用 RL Baselines3 Zoo 进行深度 Q-learning 来玩雅达利游戏 👾  
+# 第 3 单元: 用 RL Baselines3 Zoo 进行深度 Q-learning 来玩雅达利游戏 👾  
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit4/thumbnail.jpg" alt="Unit 3 Thumbnail">
 
@@ -39,16 +39,12 @@
 
 我们使用 [RL-Baselines-3 Zoo 集成, 深度 Q-learning 的原始版本](https://stable-baselines3.readthedocs.io/en/master/modules/dqn.html) 其不包含像双 DQN，竞争 DQN 或者优先级经验回放的扩充。
 
-⬇️ 这是你将要**达成效果**的例子 ⬇️
-
-```python
-%%html
-<video controls autoplay><source src="https://huggingface.co/ThomasSimonini/ppo-SpaceInvadersNoFrameskip-v4/resolve/main/replay.mp4" type="video/mp4"></video>
-```
 
 ### 🎮 环境：
 
-- SpacesInvadersNoFrameskip-v4
+- [SpacesInvadersNoFrameskip-v4](https://gymnasium.farama.org/environments/atari/space_invaders/)
+
+你可以在这里查看 Space Invaders 版本之间的区别👉 https://gymnasium.farama.org/environments/atari/space_invaders/#variants
 
 ### 📚 RL-库:
 
@@ -56,7 +52,7 @@
 
 ## 目标 🏆
 
-在本笔记结束，你将会得到：
+在本 notebook 结束，你将会得到：
 
 - 能够对  **RL Baselines3 Zoo 怎么运作**有更深的理解。
 - 能够把你训练的智能体和代码推送到 Hub 上并展示一个不错的视频效果和评估分数 🔥。
@@ -71,6 +67,16 @@
 
 # 让我们训练一个深度 Q-learning 智能体去玩雅达利太空侵略者 👾 并把他上传到 Hub。
 
+我们强烈建议学生**使用 Google Colab 进行动手练习，而不是在个人电脑上运行它们**。
+
+通过使用 Google Colab，**你可以专注于学习和实验，而不用担心设置环境的技术问题**。
+
+为了通过认证过程验证这个动手练习，你需要将你训练过的模型推送到Hub，并且**获得 >= 200 的结果**。
+
+要查找你的结果，请转到排行榜并找到你的模型，**结果 = 平均奖励 - 奖励标准差**
+
+有关认证过程的更多信息，请查看此部分👉 https://huggingface.co/deep-rl-course/en/unit0/introduction#certification-process
+
 ## 设置 GPU 💪
 
 - 为了 **加速智能体的训练，我们将使用 GPU**. 点击 `Runtime > Change Runtime type`
@@ -80,6 +86,32 @@
 - `Hardware Accelerator > GPU`
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/gpu-step2.jpg" alt="GPU Step 2">
+
+# 安装 RL-Baselines3 Zoo 和他的依赖 📚
+
+如果你看到`ERROR: pip's dependency resolver does not currently take into account all the packages that are installed.`，**这是正常的，不是一个严重的错误**，这是版本冲突。但我们需要的包已经安装。
+
+```python
+# For now we install this update of RL-Baselines3 Zoo
+pip install git+https://github.com/DLR-RM/rl-baselines3-zoo@update/hf
+```
+
+仅当上面的版本不再存在时，取消注释并安装下面的版本。
+
+```python
+#pip install rl_zoo3==2.0.0a9
+```
+
+```bash
+apt-get install swig cmake ffmpeg
+```
+
+为了能够在 Gymnasium 中使用 Atari 游戏，我们需要安装 atari 包。并接受 rom 许可证以下载 rom 文件（游戏文件）。
+
+```python
+!pip install gymnasium[atari]
+!pip install gymnasium[accept-rom-license]
+```
 
 ## 创建一个虚拟显示 🔽
 
@@ -94,47 +126,43 @@ apt install xvfb
 pip3 install pyvirtualdisplay
 ```
 
-```bash
-apt-get install swig cmake freeglut3-dev
-```
-
-```bash
-pip install pyglet==1.5.1
-```
-
 ```python
-# Virtual display
+# 虚拟显示
 from pyvirtualdisplay import Display
 
 virtual_display = Display(visible=0, size=(1400, 900))
 virtual_display.start()
 ```
 
-## 拷贝 RL-Baselines3 Zoo 仓库 📚
-你可以直接从 Python 包 (`pip install rl_zoo3`) 安装,但是想要**带有额外环境和依赖的全安装**，我们需要拷贝 `RL-Baselines3-Zoo` 仓库并从源码安装。
-
-```bash
-git clone https://github.com/DLR-RM/rl-baselines3-zoo
-```
-
-## 安装依赖 🔽
-我们现在可以安装 RL-Baselines3 Zoo 需要的依赖 (这大概持续 5min ⏲)
-
-```bash
-cd /content/rl-baselines3-zoo/
-```
-
-```bash
-pip install -r requirements.txt
-```
 
 ## 训练我们的深度 Q-learning 智能体去玩太空侵略者👾
 
 要用 RL-Baselines3-Zoo 训练智能体，我们仅需做两件事：
-1. 在 `rl-baselines3-zoo/hyperparams/dqn.yml` 里定义超参数
 
-<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit3/hyperparameters.png" alt="DQN Hyperparameters">
+1. 创建一个名为`dqn.yml`的超参数配置文件，其中包含我们的训练超参数。
 
+这是一个模板示例：
+
+```
+SpaceInvadersNoFrameskip-v4:
+  env_wrapper:
+    - stable_baselines3.common.atari_wrappers.AtariWrapper
+  frame_stack: 4
+  policy: 'CnnPolicy'
+  n_timesteps: !!float 1e7
+  buffer_size: 100000
+  learning_rate: !!float 1e-4
+  batch_size: 32
+  learning_starts: 100000
+  target_update_interval: 1000
+  train_freq: 4
+  gradient_steps: 1
+  exploration_fraction: 0.1
+  exploration_final_eps: 0.01
+  # If True, you need to deactivate handle_timeout_termination
+  # in the replay_buffer_kwargs
+  optimize_memory_usage: False
+```
 
 我们可以看到：
 - 使用 `Atari Wrapper` 进行预加载 (缩减帧, 灰度, 堆叠四帧),
@@ -155,28 +183,31 @@ pip install -r requirements.txt
 
 2. 运行 `train.py` 并把模型保存在 `logs` 文件夹 📁
 
+- 在 `--algo` 后面定义算法，在 `-f` 后面保存模型，在 `-c` 后面是超参数配置。
+
 ```bash
-python train.py --algo ________ --env SpaceInvadersNoFrameskip-v4  -f _________
+python -m rl_zoo3.train --algo ________ --env SpaceInvadersNoFrameskip-v4  -f _________  -c _________
 ```
 
 #### 参考答案
 
 ```bash
-python train.py --algo dqn  --env SpaceInvadersNoFrameskip-v4 -f logs/
+python -m rl_zoo3.train --algo dqn  --env SpaceInvadersNoFrameskip-v4 -f logs/ -c dqn.yml
 ```
 
 ## 让我们评估我们的智能体 👀
+
 - RL-Baselines3-Zoo 提供 `enjoy.py` 文件, 一个评估智能体的 python 脚本。在大多数 RL 库中，我们都把评估脚本叫做 `enjoy.py`.
 - 让我们用 5000 步评估一下  🔥
 
 ```bash
-python enjoy.py  --algo dqn  --env SpaceInvadersNoFrameskip-v4  --no-render  --n-timesteps _________  --folder logs/
+python -m rl_zoo3.enjoy  --algo dqn  --env SpaceInvadersNoFrameskip-v4  --no-render  --n-timesteps _________  --folder logs/
 ```
 
 #### 参考答案
 
 ```bash
-python enjoy.py  --algo dqn  --env SpaceInvadersNoFrameskip-v4  --no-render  --n-timesteps 5000  --folder logs/
+python -m rl_zoo3.enjoy  --algo dqn  --env SpaceInvadersNoFrameskip-v4  --no-render  --n-timesteps 5000  --folder logs/
 ```
 
 ## 把我们训练的模型发布在 Hub 上 🚀
@@ -204,20 +235,24 @@ python enjoy.py  --algo dqn  --env SpaceInvadersNoFrameskip-v4  --no-render  --n
 - 复制 token
 - 运行下面单元格并粘贴 token
 
-```python
+
+```bash
 from huggingface_hub import notebook_login # To log to our Hugging Face account to be able to upload models to the Hub.
 notebook_login()
-git config --global credential.helper store
+!git config --global credential.helper store
 ```
 
 如果你不想使用 Google Colab 或者 Jupyter Notebook，你需要用这个命令代替：`huggingface-cli login`
 
 3️⃣ 我们现在已经准备好推送你的智能体到 Hub 🤗了 🔥
 
-让我们运行 `push_to_hub.py` 去上传我们训练的智能体到 Hub。这里有两个重要参数:
+让我们运行 push_to_hub.py 文件，将我们训练好的代理上传到 Hub。
 
-* `--repo-name `: 仓库名
-* `-orga`: 你的 Hugging Face 用户名
+`--repo-name`：仓库的名称
+
+`-orga`：你的 Hugging Face 用户名
+
+`-f`：训练好的模型文件夹所在位置（在我们的例子中是 `logs`）
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit3/select-id.png" alt="Select Id">
 
@@ -270,7 +305,7 @@ python -m rl_zoo3.load_from_hub --algo dqn --env BeamRiderNoFrameskip-v4 -orga s
 2. 让我们运行 5000 步评估一下
 
 ```bash
-python enjoy.py --algo dqn --env BeamRiderNoFrameskip-v4 -n 5000  -f rl_trained/
+python -m rl_zoo3.enjoy --algo dqn --env BeamRiderNoFrameskip-v4 -n 5000  -f rl_trained/ --no-render
 ```
 
 为啥不试着训练一下你自己的**深度 Q-learning 智能体去玩 BeamRiderNoFrameskip-v4? 🏆.**
@@ -304,6 +339,13 @@ ________________________________________________________________________
 在继续下一章之前请花时间**仔细回顾并尝试额外挑战**。这对于稳固基础十分重要。
 
 在下一单元，我们**将要学习 [Optuna](https://optuna.org/)**. 一个深度强化学习中最关键的任务，寻找最优超参数。 Optuna 是一个帮助你进行自动搜索的库
+
+### 这是一个为你👷🏿‍♀️打造的课程
+
+最后，我们希望根据你的反馈不断改进和更新课程。如果你有任何反馈，请填写此表格👉 https://forms.gle/3HgA7bEHwAmmLfwh9
+
+我们一直在努力改进我们的教程，所以**如果你在这个 notebook 中发现了一些问题**，请在 [Github Repo 上提出问题](https://github.com/huggingface/deep-rl-class/issues)。
+
 
 让我们在奖励单元 2 再见! 🔥
 
