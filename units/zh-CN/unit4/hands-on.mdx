@@ -1,4 +1,4 @@
-# 动手尝试
+# 动手实践
 
 
 
@@ -36,8 +36,11 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit4/unit4.ipynb)
 
+我们强烈建议学生**使用 Google Colab 进行动手练习，而不是在个人电脑上运行它们**。
 
-# 单元 4: 用 PyTorch 编写你的第一个深度强化学习算法：强化算法，并测试他的鲁棒性 💪
+通过使用 Google Colab，**你可以专注于学习和实验，而不用担心设置环境的技术问题**。
+
+# 第 4 单元: 用 PyTorch 编写你的第一个深度强化学习算法：强化算法，并测试他的鲁棒性 💪
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit6/thumbnail.png" alt="thumbnail"/>
 
@@ -132,6 +135,15 @@ virtual_display.start()
 - `gym`
 - `gym-games`: 使用 PyGame 制作的额外 gym 环境。
 - `huggingface_hub`: Hub 是一个中心化的平台，任何人都可以在其中分享和探索模型和数据集。它提供版本控制、度量、可视化等功能，使你能够轻松地与他人合作。
+
+你可能想知道为什么我们安装了 gym 而不是更近的 gymnasium 版本？**因为我们使用的 gym-games 还没有与 gymnasium 更新**。
+
+你会在这里遇到的差异：
+- 在 `gym` 中，我们没有 `terminated` 和 `truncated`，只有 `done`。
+- 在 `gym` 中，使用 `env.step()` 返回 `state, reward, done, info`
+
+你可以在这里了解有关 Gym 和 Gymnasium 之间差异的更多信息👉 https://gymnasium.farama.org/content/migration-guide/
+
 
 你可以在这里看到所有的可用的强化学习模型 👉 https://huggingface.co/models?other=reinforce
 
@@ -871,8 +883,8 @@ print("Action Space Sample", env.action_space.sample())  # Take a random action
 - 下一个方块的下部y位置
 
 动作空间 (2) 🎮:
-- 上
-- 下
+- 向上（按下加速器）
+- 什么都不做（不按加速器）
 
 奖励函数 💰:
 - 每穿过一个垂直的方块，它获得一个 +1 的正奖励。每当到达终止状态时，它会获得一个 -1 的负奖励。
@@ -992,7 +1004,7 @@ push_to_hub(
 
 ________________________________________________________________________
 
-**恭喜你完成了本单元的学习**！这是非常多信息的一个单元。祝贺您成功地使用 PyTorch 从头开始编写了你的第一个深度强化学习智能体，并分享到了 Hub 🥳。
+**恭喜你完成了本单元的学习**！这是非常多信息的一个单元。祝贺你成功地使用 PyTorch 从头开始编写了你的第一个深度强化学习智能体，并分享到了 Hub 🥳。
 
 如果你想进一步**改进实现以处理更复杂的环境**（例如将网络更改为卷积神经网络以处理观察帧），请随时迭代此单元。
 

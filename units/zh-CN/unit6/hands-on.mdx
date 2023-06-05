@@ -185,7 +185,7 @@ env = make_vec_env(env_id, n_envs=4)
 env = # TODO: Add the wrapper
 ```
 
-#### 解决方法
+#### 参考答案
 
 ```python
 env = make_vec_env(env_id, n_envs=4)
@@ -205,7 +205,7 @@ env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
 model = # Create the A2C model and try to find the best parameters
 ```
 
-#### 解决方案
+#### 参考答案
 
 ```python
 model = A2C(
@@ -392,7 +392,7 @@ print("Action Space Sample", env.action_space.sample())  # Take a random action
 7. 评估你的智能体
 8. 在 Hub 上发布你的训练模型 🔥通过使用 `package_to_hub`函数
 
-### 解决方案(完成待办事项)
+### 参考答案(完成待办事项)
 
 ```python
 # 1 - 2

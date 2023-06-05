@@ -123,7 +123,7 @@
   - local: unit4/pg-theorem
     title: （可选）策略梯度定理
   - local: unit4/hands-on
-    title: 动手尝试
+    title: 动手实践
   - local: unit4/quiz
     title: 测验
   - local: unit4/conclusion
@@ -135,29 +135,29 @@
   - local: unit5/introduction
     title: 介绍
   - local: unit5/how-mlagents-works
-    title: ML-Agents的工作原理？
+    title: ML-Agents 的工作原理？
   - local: unit5/snowball-target
-    title: SnowballTarget环境
+    title: SnowballTarget 环境
   - local: unit5/pyramids
-    title: Pyramids环境
+    title: Pyramids 环境
   - local: unit5/curiosity
     title: （可选）深度强化学习中的好奇心是什么？
   - local: unit5/hands-on
-    title: 动手尝试
+    title: 动手实践
   - local: unit5/bonus
-    title: 奖励部分。学习如何使用Unity和MLAgents创建自己的环境
+    title: 奖励部分，学习如何使用 Unity 和 MLAgents 创建自己的环境
   - local: unit5/conclusion
     title: 结论
-- title: 第 6 单元. 带有机器人环境的 Actor Critic 方法
+- title: 第 6 单元. 带有机器人环境的演员-评论员算法 
   sections:
   - local: unit6/introduction
     title: 介绍
   - local: unit6/variance-problem
-    title: Reinforce中的方差问题
+    title: Reinforce 中的方差问题
   - local: unit6/advantage-actor-critic
-    title: Advantage Actor Critic（A2C）
+    title: 优势演员-评论员算法（A2C）
   - local: unit6/hands-on
-    title: 使用PyBullet和Panda-Gym进行Advantage Actor Critic（A2C）的机器人模拟 🤖
+    title: 使用 PyBullet 和 Panda-Gym 进行优势演员-评论员算法（A2C）的机器人模拟 🤖
   - local: unit6/conclusion
     title: 结论
   - local: unit6/additional-readings
