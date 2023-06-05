@@ -21,7 +21,7 @@ Q-Learning是一种**异策略的基于价值**的方法，它**使用时序差�
 - *状态的价值*或*状态-动作对的价值*是智能体在此状态（或状态-动作对）开始行动并按照其策略行事时预期的累积奖励。
 - *奖励*是在状态下执行动作后**从环境中获得的反馈**。
 
-在内部，Q函数有一个**Q表格，这个表中的每个单元格对应一个状态-动作对的价值。可以将这个Q表格视为Q函数的记忆或速查表。**
+在内部，Q 函数有一个**Q 表格，这个表中的每个单元格对应一个状态-动作对的价值。可以将这个 Q 表格视为 Q 函数的记忆或速查表。**
 
 让我们通过一个迷宫的例子来解释以上内容。
 
@@ -31,11 +31,11 @@ Q-Learning是一种**异策略的基于价值**的方法，它**使用时序差�
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Maze-2.jpg" alt="Maze example"/>
 
-在这里我们可以看到，**初始状态向上的状态-动作值为0：**
+在这里我们可以看到，**初始状态向上的状态-动作值为 0：**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Maze-3.jpg" alt="Maze example"/>
 
-因此，Q函数包含一个Q表格，其中包含每个状态动作对的值。给定一个状态和动作，Q函数会在其Q表格中搜索并输出该值。
+因此，Q 函数包含一个 Q 表格，其中包含每个状态动作对的值。给定一个状态和动作，Q 函数会在其 Q 表格中搜索并输出该值。
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-function-2.jpg" alt="Q-function"/>
@@ -44,34 +44,34 @@ Q-Learning是一种**异策略的基于价值**的方法，它**使用时序差�
 
 回顾一下，*Q-learning*是一个包含以下过程的**强化学习算法**: 
 
-- 训练一个*Q-函数*（一个**动作价值函数**），其内部是一个**包含所有状态-动作对值的Q表格。**
-- 给定状态和动作，我们的Q函数**会在其Q表格中查找相应的值。**
-- 当训练完成后，**我们有了一个最优的Q-函数，这意味着我们有了最优的Q表格。**
-- 如果我们**拥有最优的Q函数**，我们**拥有最优的策略**，因为我们**知道每个状态下应该采取的最佳动作。**
+- 训练一个 *Q-函数*（一个**动作价值函数**），其内部是一个**包含所有状态-动作对值的Q表格。**
+- 给定状态和动作，我们的Q函数**会在其 Q 表格中查找相应的值。**
+- 当训练完成后，**我们有了一个最优的 Q-函数，这意味着我们有了最优的 Q 表格。**
+- 如果我们**拥有最优的 Q 函数**，我们**拥有最优的策略**，因为我们**知道每个状态下应该采取的最佳动作。**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/link-value-policy.jpg" alt="Link value policy"/>
 
-但是，在开始时**我们的Q表格是没有用的，因为它给每个状态-动作对赋予了任意的值**（大多数情况下，我们把Q表格初始化为0）。随着智能体**探索环境并更新Q表格，它会给我们更好的近似最优策略。**
+但是，在开始时**我们的Q表格是没有用的，因为它给每个状态-动作对赋予了任意的值**（大多数情况下，我们把 Q 表格初始化为 0）。随着智能体**探索环境并更新 Q 表格，它会给我们更好的近似最优策略。**
 
 <figure class="image table text-center m-0 w-full">
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-1.jpg" alt="Q-learning"/>
-  <figcaption>可以看到随着训练，Q表格变得更好了，因为借助它，我们可以知道每个状态-动作对的值。</figcaption>
+  <figcaption>可以看到随着训练，Q 表格变得更好了，因为借助它，我们可以知道每个状态-动作对的值。</figcaption>
 </figure>
-现在我们已经理解了什么是Q-learning，Q函数和Q表格，接下来**让我们深入了解一下Q-learning算法**。
+现在我们已经理解了什么是 Q-learning，Q 函数和 Q 表格，接下来**让我们深入了解一下 Q-learning 算法**。
 
 ## Q-learning 算法
 
-这是Q-learning 的伪代码；让我们研究一下其中的每一部分，并在实现它之前**用一个简单的例子看看它是如何工作的。**不要被它的形式吓到，它比看起来简单！
+这是 Q-learning 的伪代码；让我们研究一下其中的每一部分，并在实现它之前**用一个简单的例子看看它是如何工作的。**不要被它的形式吓到，它比看起来简单！
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-2.jpg" alt="Q-learning"/>
 
-### 第一步: 初始化Q表格
+### 第一步: 初始化 Q 表格
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-3.jpg" alt="Q-learning"/>
 
-我们需要初始化Q表格中的每个状态动作值。**大多数情况下，我们用0来初始化。**
+我们需要初始化 Q 表格中的每个状态动作值。**大多数情况下，我们用 0 来初始化。**
 
-### 第二步: 使用epsilon贪心策略选择一个动作
+### 第二步: 使用 epsilon 贪心策略选择一个动作
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-4.jpg" alt="Q-learning"/>
 
@@ -86,11 +86,11 @@ epsilon-贪心策略是一种处理探索与利用权衡的策略。
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-5.jpg" alt="Q-learning"/>
 
-### 第三步: 执行动作At, 得到奖励Rt+1和下一个状态St+1
+### 第三步: 执行动作 At, 得到奖励 Rt+1 和下一个状态 St+1
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-learning-6.jpg" alt="Q-learning"/>
 
-### 第四步: 更新Q(St, At)
+### 第四步: 更新 Q(St, At)
 
 需要注意的是，在时序差分学习中，我们在与环境交互之后更新策略或价值函数（取决于我们选择的强化学习方法）。
 
@@ -105,7 +105,7 @@ epsilon-贪心策略是一种处理探索与利用权衡的策略。
 这意味着要更新 \(Q(S_t, A_t)\)：
 
 - 需要 \(S_t, A_t, R_{t+1}, S_{t+1}\)。
-- 需要更新给定状态-动作对的Q值，使用时序差分目标。
+- 需要更新给定状态-动作对的 Q 值，使用时序差分目标。
 
 如何形成时序差分目标？
 
@@ -122,7 +122,7 @@ epsilon-贪心策略是一种处理探索与利用权衡的策略。
 
 - *异策略*：**在行动（推断）和更新（训练）部分中**使用**不同的策略**。
 
-例如，使用Q学习，ε-贪心策略（行动策略），与**用于选择最佳下一状态动作值来更新Q值（更新策略）**的贪心策略不同。
+例如，使用 Q 学习，ε-贪心策略（行动策略），与**用于选择最佳下一状态动作值来更新Q值（更新策略）**的贪心策略不同。
 
 <figure>
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/off-on-1.jpg" alt="Off-on policy"/>

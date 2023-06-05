@@ -108,13 +108,13 @@ virtual_display.start()
 ```
 
 ## 安装依赖 🔽
-对于本次练习，我们使用 `gym==0.21`
+对于本次练习，我们使用 `gym==0.22`
 
 ```python
-pip install gym==0.21
+pip install gym==0.22
 pip install imageio-ffmpeg
 pip install huggingface_hub
-pip install box2d
+pip install gym[box2d]==0.22
 ```
 
 ## 让我们使用 Costa Huang 的教程从零开始编写 PPO
@@ -1050,6 +1050,8 @@ notebook_login()
 如果你不想使用 Google Colab 或者 Jupyter Notebook，你需要用这行命令替代：`huggingface-cli login` (or `login`)
 
 ## 让我们开始训练 🔥
+
+⚠️ ⚠️ ⚠️  不要使用与你在单元 1 中使用的相同的 repo id。
 
 - 现在你已经从头开始编写了 PPO 并添加了 Hugging Face 集成，现在我们准备开始训练🔥
 
