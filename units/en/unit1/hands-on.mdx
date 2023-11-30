@@ -282,7 +282,7 @@ env.close()
 
 ## Create the LunarLander environment 🌛 and understand how it works
 
-### [The environment 🎮](https://gymnasium.farama.org/environments/box2d/lunar_lander/)
+### The environment 🎮
 
 In this first tutorial, we’re going to train our agent, a [Lunar Lander](https://gymnasium.farama.org/environments/box2d/lunar_lander/), **to land correctly on the moon**. To do that, the agent needs to learn **to adapt its speed and position (horizontal, vertical, and angular) to land correctly.**
 
@@ -315,8 +315,8 @@ We see with `Observation Space Shape (8,)` that the observation is a vector of s
 - Vertical speed (y)
 - Angle
 - Angular speed
-- If the left leg contact point has touched the land
-- If the right leg contact point has touched the land
+- If the left leg contact point has touched the land (boolean)
+- If the right leg contact point has touched the land (boolean)
 
 
 ```python
@@ -433,7 +433,7 @@ model = PPO(
 # TODO: Train it for 1,000,000 timesteps
 
 # TODO: Specify file name for model and save the model to file
-model_name = ""
+model_name = "ppo-LunarLander-v2"
 ```
 
 #### Solution
