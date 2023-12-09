@@ -141,7 +141,8 @@ pip install -r https://raw.githubusercontent.com/huggingface/deep-rl-class/main/
 
 ```bash
 sudo apt-get update
-apt install python-opengl ffmpeg xvfb
+sudo apt-get install -y python3-opengl
+apt install ffmpeg xvfb
 pip3 install pyvirtualdisplay
 ```
 
@@ -243,7 +244,7 @@ print("Observation Space", env.observation_space)
 print("Sample observation", env.observation_space.sample())  # 获得一个随机观测值
 ```
 
-我们通过`Observation Space Shape Discrete(16)`可以看到，观测值是一个整数，表示**智能体当前位置为current_row \* nrows + current_col（其中行和列都从0开始）**。
+我们通过`Observation Space Shape Discrete(16)`可以看到，观测值是一个整数，表示**智能体当前位置为current_row \* ncols + current_col（其中行和列都从0开始）**。
 
 例如，4x4地图中的目标位置可以按以下方式计算：3 * 4 + 3 = 15。可能的观测值数量取决于地图的大小。**例如，4x4地图有16个可能的观测值。**
 
@@ -384,9 +385,9 @@ def epsilon_greedy_policy(Qtable, state, epsilon):
 ```python
 def epsilon_greedy_policy(Qtable, state, epsilon):
     # 在 0 和 1 之间随机生成一个数字
-    random_int = random.uniform(0, 1)
-    # 如果 random_int > epsilon --> 利用
-    if random_int > epsilon:
+    random_num = random.uniform(0, 1)
+    # 如果 random_num > epsilon --> 利用
+    if random_num > epsilon:
         # 采取给定状态下最高值的动作
         # 这里可以用 np.argmax
         action = greedy_policy(Qtable, state)
@@ -710,13 +711,11 @@ def push_to_hub(repo_id, model, env, video_fps=1, local_repo_path="hub"):
 
     ## 用法
 
-    ```python
 
     model = load_from_hub(repo_id="{repo_id}", filename="q-learning.pkl")
 
     # 不要忘记检查是否需要添加额外的属性 (is_slippery=False等)
     env = gym.make(model["env_id"])
-```
 
     """
     
