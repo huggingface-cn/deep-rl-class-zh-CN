@@ -28,6 +28,8 @@ Q-Learning是一种**异策略的基于价值**的方法，它**使用时序差�
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Maze-1.jpg" alt="Maze example"/>
 
 我们对Q表格进行初始化，所以其中的值都为0. 这个表格**包含了每个状态的四个状态-动作值。**
+对于这个简单的例子，状态仅由鼠标的位置定义。因此，在我们的Q表中我们有2*3行，每行对应鼠标可能的每一种位置。在更复杂的情况下，状态可能包含比行动者位置更多的信息。
+
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Maze-2.jpg" alt="Maze example"/>
 
