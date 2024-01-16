@@ -64,7 +64,7 @@
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit9/clipped.jpg" alt="PPO"/>
 
-这个裁剪部分是 rt(theta) 在 \\( [1 - \epsilon, 1 + \epsilon] \\) 范围内被裁剪的版本。
+这个裁剪部分是 \\( r_t(\theta) \\) 在 \\( [1 - \epsilon, 1 + \epsilon] \\) 范围内被裁剪的版本。
 
 使用裁剪替代目标函数，我们有两个概率比率，一个非裁剪的，一个在范围内裁剪的（在 \\( [1 - \epsilon, 1 + \epsilon] \\)之间，epsilon 是一个超参数，帮助我们定义这个裁剪范围（在论文中 \\( \epsilon = 0.2 \\)）。
 
