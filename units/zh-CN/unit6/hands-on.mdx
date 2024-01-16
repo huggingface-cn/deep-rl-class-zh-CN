@@ -1,4 +1,4 @@
-# 利用 PyBullet 和 Panda-Gym 进行机器人模拟的优势演员--评论员方法 (A2C) 🤖[[hands-on]]
+# 利用 Panda-Gym 进行机器人模拟的优势演员--评论员方法 (A2C) 🤖[[hands-on]]
 
 ```
   <CourseFloatingBanner classNames="absolute z-10 right-0 top-0"
@@ -8,21 +8,18 @@
     askForHelpUrl="http://hf.co/join/discord" />
 ```
 
-现在你已经研究了优势阶演员--评论员方法 (A2C) 背后的理论，**你已准备好在机器人环境中使用 Stable-Baselines3 训练你的 A2C 智能体**。 并训练两个机器人：
+现在你已经研究了优势阶演员--评论员方法 (A2C) 背后的理论，**你已准备好在机器人环境中使用 Stable-Baselines3 训练你的 A2C 智能体**。 并训练机器人：
 
-- 一个正在学习移动的蜘蛛。🕷️ 
-- 一个正在学习移动到正确位置的机械臂。 🦾
 
-我们将使用两个机器人开发环境：
+- 一个机器人手臂🦾，使其移动到正确的位置。
 
-- [PyBullet](https://github.com/bulletphysics/bullet3)
+我们将使用的机器人开发环境：
+
 - [panda-gym](https://github.com/qgallouedec/panda-gym)
 
-<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/environments.gif" alt="Environments"/>
 
-要验证认证过程的实际操作，你需要将两个经过训练的模型推送到 Hub 并获得以下结果：
+要验证认证过程的实际操作，你需要将经过训练的模型推送到 Hub 并获得以下结果：
 
-- `AntBulletEnv-v0` 得到的结果需 >= 650.
 - `PandaReachDense-v2` 得到的结果需 >= -3.5.
 
 要找到你的结果，[转到排行榜](https://huggingface.co/spaces/huggingface-projects/Deep-Reinforcement-Learning-Leaderboard) 并找到你的模型，**结果 = 平均奖励 - 奖励标准* *
@@ -33,11 +30,10 @@
 
 [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit6/unit6.ipynb)
 
-# 第 6 单元：利用 PyBullet 和 Panda-Gym 进行机器人模拟的 高阶演员--评论家方法 (A2C) 🤖
+# 第 6 单元：利用 Panda-Gym 进行机器人模拟的高阶演员--评论家方法 (A2C) 🤖
 
 ### 🎮 开发环境:
 
-- [PyBullet](https://github.com/bulletphysics/bullet3)
 - [Panda-Gym](https://github.com/qgallouedec/panda-gym)
 
 ### 📚 强化学习库:
@@ -50,7 +46,7 @@
 
 在本notebook的最后，你将：
 
-- 有能力能够使用环境库 **PyBullet** 和 **Panda-Gym**。
+- 有能力能够使用环境库 **Panda-Gym**。
 - 能够**使用 A2C** 训练机器人。
 - 理解为什么**我们需要规范化输入**。
 - 能够**将你训练有素的智能体和代码推送到 Hub**，并附带有漂亮的视频回放和评估分数 🔥。
@@ -99,22 +95,25 @@ virtual_display.start()
 
 第一步是安装依赖项，我们将安装多个依赖：
 
-- `pybullet`: 包含步行机器人环境。
+- `gymnasium`
 - `panda-gym`: 包含机械臂环境。
-- `stable-baselines3[extra]`: SB3 深度强化学习库。
+- `stable-baselines3`: SB3 深度强化学习库。
 - `huggingface_sb3`: Stable-baselines3 的附加代码，用于从 Hugging Face 🤗 Hub 加载和上传模型。
 - `huggingface_hub`: Library允许任何人使用 Hub 的仓库。
 
 ```bash
-!pip install -r https://raw.githubusercontent.com/huggingface/deep-rl-class/main/notebooks/unit6/requirements-unit6.txt
+!pip install stable-baselines3[extra]
+!pip install gymnasium
+!pip install huggingface_sb3
+!pip install huggingface_hub
+!pip install panda_gym
 ```
 
 ## 导入相关包 📦
 
 ```python
-import pybullet_envs
+import gymnasium as gym
 import panda_gym
-import gym
 
 import os
 
@@ -128,22 +127,31 @@ from stable_baselines3.common.env_util import make_vec_env
 from huggingface_hub import notebook_login
 ```
 
-## 环境 1: AntBulletEnv-v0 🕸
+## PandaReachDense-v3 🦾
 
-### 创建 AntBulletEnv-v0环境
+我们将训练的智能体是一个需要进行控制的机器人手臂（移动手臂并使用末端执行器）。
+在机器人学中，*末端执行器*是安装在机器人手臂末端的设备，用于与环境互动。
+在 `PandaReach` 中，机器人必须将其末端执行器放置在目标位置（绿色球）。
+我们将使用这个环境的密集型版本。这意味着我们将获得一个*密集奖励函数*，它**在每个时间步都会提供奖励**（代理完成任务越接近，奖励越高）。这与*稀疏奖励函数*不同，后者只有在任务完成时才**返回奖励**。
+同时，我们将使用*末端执行器位移控制*，这意味着**动作对应于末端执行器的位移**。我们不控制每个关节的单独运动（关节控制）。
+
+![机器人学](https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/robotics.jpg)
+
+通过这种方式，**训练将会更加容易**。
+
+### 创建环境
 
 #### 环境依赖 🎮
 
-在这种环境中，智能体需要正确使用其不同的关节才能正确行走。
-你可以在此处找到此环境的详细说明： https://hackmd.io/@jeffreymo/SJJrSJh5_#PyBullet
+在 PandaReachDense-v3 中，机器人手臂必须将其末端执行器放置在目标位置（绿色球）
 
 ```python
-env_id = "AntBulletEnv-v0"
+env_id = "PandaReachDense-v3"
 # Create the env
 env = gym.make(env_id)
 
 # Get the state space and action space
-s_size = env.observation_space.shape[0]
+s_size = env.observation_space.shape
 a_size = env.action_space
 ```
 
@@ -153,10 +161,15 @@ print("The State Space is: ", s_size)
 print("Sample observation", env.observation_space.sample())  # Get a random observation
 ```
 
-observation space (来自 [Jeffrey Y Mo](https://hackmd.io/@jeffreymo/SJJrSJh5_#PyBullet)):
-区别在于我们的 observation space 是 28 而不是 29.
+观察空间**是一个具有3个不同元素的字典**：
 
-<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/obs_space.png" alt="PyBullet Ant Obs space"/>
+- `Achased_goal`: (X，Y，Z)目标的位置。
+
+- `desired_goal`: (x，y，z)目标位置与当前对象位置之间的距离。
+
+- `observation`: 位置(x，y，z)和最终效果的速度(VX，VY，VZ)。
+
+鉴于它是一个字典，**我们需要使用 MultiInputpolicy 策略而不是 Mlppolicy 策略**。
 
 ```python
 print("\n _____ACTION SPACE_____ \n")
@@ -164,9 +177,9 @@ print("The Action Space is: ", a_size)
 print("Action Space Sample", env.action_space.sample())  # Take a random action
 ```
 
-The action Space (来自 [Jeffrey Y Mo](https://hackmd.io/@jeffreymo/SJJrSJh5_#PyBullet)):
+动作空间是一个具有3个值的向量：
 
-<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/action_space.png" alt="PyBullet Ant Obs space"/>
+- 控制 X，Y，Z 运动
 
 ### 归一化观测和奖励
 
@@ -190,16 +203,16 @@ env = # TODO: Add the wrapper
 ```python
 env = make_vec_env(env_id, n_envs=4)
 
-env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
+env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.)
 ```
 
 ### 创建 A2C 模型 🤖
 
-在这种情况下，因为我们有一个包含 28 个值的向量作为输入，所以我们将使用多层感知机（MLP）作为策略。
+
 
 有关使用 StableBaselines3 实现 A2C 的更多信息，请查看： https://stable-baselines3.readthedocs.io/en/master/modules/a2c.html#notes
 
-为了找到最佳参数，我检查了 [official trained agents by Stable-Baselines3 team](https://huggingface.co/sb3).
+为了找到最佳参数，检查了 [official trained agents by Stable-Baselines3 team](https://huggingface.co/sb3).
 
 ```python
 model = # Create the A2C model and try to find the best parameters
@@ -208,35 +221,22 @@ model = # Create the A2C model and try to find the best parameters
 #### 参考答案
 
 ```python
-model = A2C(
-    policy="MlpPolicy",
-    env=env,
-    gae_lambda=0.9,
-    gamma=0.99,
-    learning_rate=0.00096,
-    max_grad_norm=0.5,
-    n_steps=8,
-    vf_coef=0.4,
-    ent_coef=0.0,
-    policy_kwargs=dict(log_std_init=-2, ortho_init=False),
-    normalize_advantage=False,
-    use_rms_prop=True,
-    use_sde=True,
-    verbose=1,
-)
+model = A2C(policy = "MultiInputPolicy",
+            env = env,
+            verbose=1)
 ```
 
 ### 训练 A2C 智能体 🏃
 
-- 让我们用 2,000,000 个时间步训练我们的智能体，不要忘记在 Colab 上使用 GPU。 大约需要 25-40 分钟
+- 让我们用 1,000,000 个时间步训练我们的智能体，不要忘记在 Colab 上使用 GPU。 大约需要 25-40 分钟
 
 ```python
-model.learn(2_000_000)
+model.learn(1_000_000)
 ```
 
 ```python
 # Save the model and  VecNormalize statistics when saving the agent
-model.save("a2c-AntBulletEnv-v0")
+model.save("a2c-PandaReachDense-v3")
 env.save("vec_normalize.pkl")
 ```
 
@@ -244,13 +244,13 @@ env.save("vec_normalize.pkl")
 
 - 现在我们的智能体已经过了训练，我们需要**检查其性能**。
 - Stable-Baselines3 提供了一种方法来做到这一点: `evaluate_policy`
-- 就我而言，我得到的平均奖励是 `2371.90 +/- 16.50`
+
 
 ```python
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 
 # Load the saved statistics
-eval_env = DummyVecEnv([lambda: gym.make("AntBulletEnv-v0")])
+eval_env = DummyVecEnv([lambda: gym.make("PandaReachDense-v3")])
 eval_env = VecNormalize.load("vec_normalize.pkl", eval_env)
 
 #  do not update them at test time
@@ -259,9 +259,9 @@ eval_env.training = False
 eval_env.norm_reward = False
 
 # Load the agent
-model = A2C.load("a2c-AntBulletEnv-v0")
+model = A2C.load("a2c-PandaReachDense-v3")
 
-mean_reward, std_reward = evaluate_policy(model, env)
+mean_reward, std_reward = evaluate_policy(model, eval_env)
 
 print(f"Mean reward = {mean_reward:.2f} +/- {std_reward:.2f}")
 ```
@@ -272,9 +272,6 @@ print(f"Mean reward = {mean_reward:.2f} +/- {std_reward:.2f}")
 
 📚 libraries 文档👉 https://github.com/huggingface/huggingface_sb3/tree/main#hugging-face--x-stable-baselines3-v20
 
-这是模型卡的示例（使用 PyBullet 环境）：
-
-<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/modelcardpybullet.png" alt="Model Card Pybullet"/>
 
 通过使用 `package_to_hub`, 正如我们在之前的单元中提到的，**评估、录制回放、生成智能体的模型卡并将其推送到Hub**。
 
@@ -319,71 +316,21 @@ package_to_hub(
 )
 ```
 
-## 喝杯咖啡休息一下吧！ ☕
+## 一些额外的挑战 🏆
 
-- 恭喜你已经训练了第一个学会移动的机器人 🥳!
-- **该休息了**。 不要犹豫，**保存此笔记本**“文件 > 将副本保存到云端硬盘”，以便稍后处理第二部分。
-
-## 开发环境 2：PandaReachDense-v2 🦾
-
-我们要训练的智能体是一个需要进行控制（移动手臂和使用末端执行器）的机械臂。
-
-在机器人技术中，*末端执行器*是位于机械臂末端的装置，旨在与环境进行交互。
-
-在 `PandaReach`中, 机器人必须将其末端执行器放置在目标位置（绿色球）。
-
-我们将使用此环境的密集版本。 这意味着我们将获得一个*密集的奖励函数*，**将在每个时间步提供奖励**（智能体越接近完成任务，奖励越高）。 与*稀疏奖励函数*相反，其中环境**当且仅当任务完成时才返回奖励**。
-
-此外，我们将使用*末端执行器位移控制*，这意味着**动作对应于末端执行器的位移**。 我们不控制每个关节的单独运动（关节控制）。
-
-<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/robotics.jpg"  alt="Robotics"/>
-
-这种方法会使得**训练会更容易**。
+学习**的最佳方法是自己尝试**！ 为什么不尝试“ pandapickandplace-v3”？
 
 
+如果你想尝试 panda-gym 的更高级任务，你需要查看使用 **TQC 或 SAC**（一种更适合机器人任务的样本高效算法）所做的工作。在实际的机器人学中，出于一个简单的原因，你会使用更高效的样本算法：与模拟不同，**如果你过度移动你的机器人手臂，就有可能导致它损坏**。
 
-在 `PandaReachDense-v2`中, 机械臂必须将其末端执行器放置在目标位置（绿色球）。
+PandaPickAndPlace-v1 (这个模型使用v1版本环境): https://huggingface.co/sb3/tqc-PandaPickAndPlace-v1
 
-```python
-import gym
+对了，别忘了查看 panda-gym 文档：https://panda-gym.readthedocs.io/en/latest/usage/train_with_sb3.html
 
-env_id = "PandaPushDense-v2"
+我们提供了训练另一个智能体的步骤（可选）：
 
-# Create the env
-env = gym.make(env_id)
 
-# Get the state space and action space
-s_size = env.observation_space.shape
-a_size = env.action_space
-```
-
-```python
-print("_____OBSERVATION SPACE_____ \n")
-print("The State Space is: ", s_size)
-print("Sample observation", env.observation_space.sample())  # Get a random observation
-```
-
-The observation space **是一个包含 3 个不同元素的字典**:
-
-- `achieved_goal`: (x,y,z) 目标的位置。
-- `desired_goal`: (x,y,z) 目标位置和当前对象位置之间的距离。
-- `observation`: 末端执行器的位置 (x,y,z) 和速度 (vx, vy, vz)。
-
-鉴于它是一个作为观测的字典，**我们将需要使用 MultiInputPolicy 而不是 MlpPolicy**。
-
-```python
-print("\n _____ACTION SPACE_____ \n")
-print("The Action Space is: ", a_size)
-print("Action Space Sample", env.action_space.sample())  # Take a random action
-```
-
-动作空间是一个具有 3 个值的向量：
-
-- 控制 x, y, z 移动
-
-现在轮到你了：
-
-1. 定义名为“PandaReachDense-v2”的环境
+1. 定义名为“PandaPickAndPlace-v3”的环境
 2. 制作矢量化环境
 3. 添加 wrapper 以规范化观察和奖励。 [Check the documentation](https://stable-baselines3.readthedocs.io/en/master/guide/vec_envs.html#vecnormalize)
 4. 创建 A2C 模型（不要忘记使 verbose=1 来打印训练日志）。
@@ -392,25 +339,27 @@ print("Action Space Sample", env.action_space.sample())  # Take a random action
 7. 评估你的智能体
 8. 在 Hub 上发布你的训练模型 🔥通过使用 `package_to_hub`函数
 
-### 参考答案(完成待办事项)
+### 参考答案(可选)
 
 ```python
 # 1 - 2
-env_id = "PandaReachDense-v2"
+env_id = "PandaPickAndPlace-v3"
 env = make_vec_env(env_id, n_envs=4)
 
 # 3
-env = VecNormalize(env, norm_obs=True, norm_reward=False, clip_obs=10.0)
+env = VecNormalize(env, norm_obs=True, norm_reward=True, clip_obs=10.0)
 
 # 4
-model = A2C(policy="MultiInputPolicy", env=env, verbose=1)
+model = A2C(policy="MultiInputPolicy",
+             env=env,
+             verbose=1)
 # 5
 model.learn(1_000_000)
 ```
 
 ```python
 # 6
-model_name = "a2c-PandaReachDense-v2"
+model_name = "a2c-PandaPickAndPlace-v3"
 model.save(model_name)
 env.save("vec_normalize.pkl")
 
@@ -418,7 +367,7 @@ env.save("vec_normalize.pkl")
 from stable_baselines3.common.vec_env import DummyVecEnv, VecNormalize
 
 # Load the saved statistics
-eval_env = DummyVecEnv([lambda: gym.make("PandaReachDense-v2")])
+eval_env = DummyVecEnv([lambda: gym.make("PandaPickAndPlace-v3")])
 eval_env = VecNormalize.load("vec_normalize.pkl", eval_env)
 
 #  do not update them at test time
@@ -429,7 +378,7 @@ eval_env.norm_reward = False
 # Load the agent
 model = A2C.load(model_name)
 
-mean_reward, std_reward = evaluate_policy(model, env)
+mean_reward, std_reward = evaluate_policy(model, eval_env)
 
 print(f"Mean reward = {mean_reward:.2f} +/- {std_reward:.2f}")
 
@@ -444,22 +393,6 @@ package_to_hub(
     commit_message="Initial commit",
 )
 ```
-
-## 一些额外的挑战 🏆
-
-学习**的最佳方法是自己尝试**！ 为什么不为 PyBullet 尝试“HalfCheetah Bullet Env-v0”，为 Panda-Gym 尝试“PandaPick Place-v1”？
-
-如果你想为 panda-gym 尝试更高级的任务，你需要检查使用 **TQC 或 SAC**（一种更适合机器人任务的样本效率更高的算法）完成了什么。 在真实的机器人技术中，出于一个简单的原因，你将使用样本效率更高的算法：与模拟过程相反**如果你将机械臂移动太多，则有损坏它的风险**。
-
-PandaPickAndPlace-v1: https://huggingface.co/sb3/tqc-PandaPickAndPlace-v1
-
-不要犹豫，在这里查看 panda-gym 文档: https://panda-gym.readthedocs.io/en/latest/usage/train_with_sb3.html
-
-以下是实现此目标的一些想法：
-
-- 训练更多步数
-- 通过查看其他同学所做的工作，尝试不同的超参数 👉 https://huggingface.co/models?other=https://huggingface.co/models?other=AntBulletEnv-v0
-- **在 Hub 上推送你新训练的模型** 🔥
 
 第7单元见! 🔥
 

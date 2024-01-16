@@ -1,0 +1,113 @@
+### 测验
+学习和避免能力错觉的最佳方式就是测试自己。这将帮助你发现你需要加强知识的领域。
+### Q1: 以下哪些工具是专门为视频游戏开发设计的？
+<Question
+	choices={[
+		{
+			text: "Unity (C#)",
+			explain: "",
+            correct: true,
+		},
+		{
+			text: "Unreal Engine (C++)",
+			explain: "",
+            correct: true,
+		},
+		{
+			text: "Godot (GDScript, C++, C#)",
+			explain: "",
+            correct: true,
+		},
+		{
+			text: "JetBrains' Rider",
+			explain: "虽然它支持C#用于Unity，但它不是一个视频游戏开发IDE",
+            correct: false,
+		},
+		{
+			text: "JetBrains' CLion",
+			explain: "虽然它支持C++用于Unreal Engine，但它不是一个视频游戏开发IDE",
+            correct: false,
+		},
+		{
+			text: "Microsoft Visual Studio和Visual Studio Code",
+			explain: "包括对Unity和Unreal的支持，它们是通用IDE，不是以视频游戏为导向的。",
+            correct: false，
+		},
+	]}
+/>
+### Q2: 关于Unity ML-Agents的以下哪些陈述是正确的？
+<Question
+	choices={[
+		{
+			text: "Unity的`Scene`对象可以用来创建学习环境",
+			explain: "",
+            correct: true,
+		},
+		{
+			text: "Unit ML-Agents允许你使用强化学习来创建和训练你的代理",
+			explain: "",
+            correct: true,
+		},
+        {
+			text: "它的`Communicator`组件负责管理Unity的C#环境和代理与Python后端之间的通信",
+			explain: "",
+            correct: true,
+		},
+        {
+			text: "训练过程使用Pytorch实现的强化学习算法",
+			explain: "",
+            correct: true,
+		},
+        {
+			text: "Unity ML-Agents只支持近端策略优化（PPO）",
+			explain: "不，Unity ML-Agents支持几种算法家族，包括将在下一节解释的演员-评论家方法",
+            correct: false,
+		},
+        {
+			text: "它包括一个Gym包装器和它的多代理版本，叫做`PettingZoo`",
+			explain: "",
+            correct: true,
+		},
+	]}
+/>
+### Q3: 填写缺失的字母
+- 在Unity ML-Agents中，代理的策略被称为b _ _ _ n
+- 负责编排代理的组件被称为 _ c _ _ _ m _
+<details>
+<summary>解决方案</summary>
+- b r a i n
+- a c a d e m y
+</details>
+### Q4: 用你自己的话定义什么是`raycast`
+<details>
+<summary>解决方案</summary>
+`Raycast`通常是一个线性投影，就像`激光`一样，旨在通过物体检测碰撞。
+</details>
+### Q5: 使用`frames`或`raycasts`捕获环境有什么区别？
+<Question
+	choices={[
+    {
+      text: "使用`frames`时，环境由屏幕上的每个像素定义。使用`raycasts`时，我们只发送那些像素的一个样本。",
+      explain: "`Raycasts`与像素无关。它们是我们发出的线性投影（激光），用来寻找碰撞。",
+      correct: false，
+    },
+    {
+      text: "使用`raycasts`时，环境由屏幕上的每个像素定义。使用`frames`时，我们发出（通常是）一条线来检查它与哪些物体发生碰撞",
+      explain: "正好相反 - `frames`收集像素，`raycasts`检查碰撞。",
+      correct: false，
+    },
+    {
+      text: "使用`frames`时，我们收集屏幕上的所有像素，这些像素定义了环境。使用`raycast`时，我们不使用像素，我们发出（通常是）线并检查它们的碰撞",
+      explain: "",
+      correct: true，
+    },
+	]}
+/>
+### Q6: 列出在Snowball或Pyramid环境中训练代理时使用的环境和代理输入变量
+<details>
+<summary>解决方案</summary>
+- 从代理发出的射线检测到的块、（不可见的）墙、石头、我们的目标、开关等的碰撞。
+- 描述代理特征的常规输入，比如它的速度。
+- 布尔变量，比如Pyramid中的开关（开/关）或SnowballTarget中的“我能射击吗？”。
+</details>
+### 恭喜你完成了这个测验🥳，如果你错过了某些元素，花时间再次阅读章节以加强（😏）你的知识。

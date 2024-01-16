@@ -21,12 +21,8 @@
 
 在本 notebook 中，我们将通过**教 Huggy 狗拿起棍子然后直接在浏览器中玩它**来巩固我们在第一个单元中学到的知识
 
-⬇️ 这是**你将在本单元结束时实现的示例。** ⬇️（启动 ▶ 以查看）
 
-```python
-%%html
-<video controls="None" autoplay="None"><source src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit-bonus1/huggy.mp4" type="video/mp4"></video>
-```
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/notebooks/unit-bonus1/huggy.jpg" alt="Huggy"/>
 
 ### 环境🎮
 
@@ -34,7 +30,7 @@
 
 ### 使用的库📚
 
-- [MLAgents（Hugging Face 版本）](https://github.com/huggingface/ml-agents)
+-  [MLAgents](https://github.com/Unity-Technologies/ml-agents)
 
 我们一直在努力改进我们的教程，所以**如果你在此 Notebook 中发现一些问题**，请[在 Github Repo 上打开一个 issue](https://github.com/huggingface/deep-rl-class/issues)。
 
@@ -66,11 +62,11 @@
 
 ## 克隆仓库并安装依赖项🔽
 
-- 我们需要克隆仓库，它**包含允许你将训练有素的代理推送到 Hub 的实验版本。**
+- 我们需要克隆包含 ML-Agents 的存储库。
 
 ```bash
-# 克隆这个特定的仓库（可能需要 3 分钟）
-git clone https://github.com/huggingface/ml-agents/
+# 克隆这个仓库（可能需要 3 分钟）
+git clone --depth 1 https://github.com/Unity-Technologies/ml-agents
 ```
 
 ```bash
@@ -150,6 +146,45 @@ chmod -R 755 ./trained-envs-executables/linux/Huggy
 
 - 对于本笔记本的范围，我们不打算修改超参数，但如果你想尝试作为实验，你还应该尝试修改其他一些超参数，Unity 提供了非常好的文档，在这里解释了它们中的每一个] （https://github.com/Unity-Technologies/ml-agents/blob/main/docs/Training-Configuration-File.md）。
 
+- 我们需要为 Huggy 创建一个 config 文件
+
+- 转到目录 `/content/ml-agents/config/ppo`
+
+- 创建一个新文件叫  `Huggy.yaml`
+
+- 复制粘贴以下内容 🔽
+
+```
+behaviors:
+  Huggy:
+    trainer_type: ppo
+    hyperparameters:
+      batch_size: 2048
+      buffer_size: 20480
+      learning_rate: 0.0003
+      beta: 0.005
+      epsilon: 0.2
+      lambd: 0.95
+      num_epoch: 3
+      learning_rate_schedule: linear
+    network_settings:
+      normalize: true
+      hidden_units: 512
+      num_layers: 3
+      vis_encode_type: simple
+    reward_signals:
+      extrinsic:
+        gamma: 0.995
+        strength: 1.0
+    checkpoint_interval: 200000
+    keep_checkpoints: 15
+    max_steps: 2e6
+    time_horizon: 1000
+    summary_freq: 50000
+```
+
+- 别忘了保存文件
+
 - **如果你想修改超参数**，在Google Colab notebook中，你可以点击这里打开config.yaml: `/content/ml-agents/config/ppo/Huggy.yaml`
 
 
@@ -165,7 +200,7 @@ chmod -R 755 ./trained-envs-executables/linux/Huggy
 
 1. `mlagents-learn <config>`：超参数配置文件所在路径。
 2. `--env`：环境可执行文件所在的位置。
-3. `--run_id`：你要为训练运行 ID 指定的名称。
+3. `--run-id`：你要为训练运行 ID 指定的名称。
 4. `--no-graphics`：在训练期间不启动可视化。
 
 训练模型并使用 `--resume` 标志在中断的情况下继续训练。

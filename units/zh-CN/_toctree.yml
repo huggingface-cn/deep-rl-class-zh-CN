@@ -122,6 +122,8 @@
     title: 深入理解策略梯度
   - local: unit4/pg-theorem
     title: （可选）策略梯度定理
+  - local: unit4/glossary
+    title: 术语表
   - local: unit4/hands-on
     title: 动手实践
   - local: unit4/quiz
@@ -146,6 +148,8 @@
     title: 动手实践
   - local: unit5/bonus
     title: 奖励部分，学习如何使用 Unity 和 MLAgents 创建自己的环境
+  - local: unit5/quiz
+    title: 测验
   - local: unit5/conclusion
     title: 结论
 - title: 第 6 单元. 带有机器人环境的演员-评论员算法 
@@ -158,6 +162,8 @@
     title: 优势演员-评论员算法（A2C）
   - local: unit6/hands-on
     title: 使用 PyBullet 和 Panda-Gym 进行优势演员-评论员算法（A2C）的机器人模拟 🤖
+  - local: unit6/quiz
+    title: 测验
   - local: unit6/conclusion
     title: 结论
   - local: unit6/additional-readings
@@ -174,6 +180,8 @@
     title: 自我对弈
   - local: unit7/hands-on
     title: 让我们训练我们的足球队击败你同学的队伍（AI vs. AI）
+  - local: unit7/quiz
+    title: 测验
   - local: unit7/conclusion
     title: 结论
   - local: unit7/additional-readings
@@ -209,7 +217,9 @@
   - local: unitbonus3/model-based
     title: 基于模型的强化学习
   - local: unitbonus3/offline-online
-    title: 离线与在线强化学习
+    title: 离线强化学习与在线强化学习
+  - local: unitbonus3/generalisation
+    title: 泛化强化学习
   - local: unitbonus3/rlhf
     title: 从人类反馈中进行强化学习
   - local: unitbonus3/decision-transformers
@@ -219,9 +229,13 @@
   - local: unitbonus3/curriculum-learning
     title: （自动）课程学习在强化学习中的应用
   - local: unitbonus3/envs-to-try
-    title: 值得尝试的有趣环境
+    title: 有趣的环境尝试
+  - local: unitbonus3/learning-agents
+    title: 虚幻学习智能体简介
   - local: unitbonus3/godotrl
-    title: Godot RL 介绍
+    title: Godot RL 简介
+  - local: unitbonus3/student-works
+    title: 学生项目
   - local: unitbonus3/rl-documentation
     title: 强化学习文档的简要介绍
 - title: 证书和祝贺

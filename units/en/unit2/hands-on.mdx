@@ -2,7 +2,7 @@
 
       <CourseFloatingBanner classNames="absolute z-10 right-0 top-0"
       notebooks={[
-        {label: "Google Colab", value: "https://colab.research.google.com/github/huggingface/deep-rl-class/blob/master/notebooks/unit2/unit2.ipynb"}
+        {label: "Google Colab", value: "https://colab.research.google.com/github/huggingface/deep-rl-class/blob/main/notebooks/unit2/unit2.ipynb"}
         ]}
         askForHelpUrl="http://hf.co/join/discord" />
 
@@ -93,16 +93,16 @@ Before diving into the notebook, you need to:
 
 *Q-Learning* **is the RL algorithm that**:
 
-- Trains *Q-Function*, an **action-value function** that encoded, in internal memory, by a *Q-table* **that contains all the state-action pair values.**
+- Trains *Q-Function*, an **action-value function** that is encoded, in internal memory, by a *Q-table* **that contains all the state-action pair values.**
 
 - Given a state and action, our Q-Function **will search the Q-table for the corresponding value.**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/Q-function-2.jpg" alt="Q function"  width="100%"/>
 
-- When the training is done,**we have an optimal Q-Function, so an optimal Q-Table.**
+- When the training is done, **we have an optimal Q-Function, so an optimal Q-Table.**
 
 - And if we **have an optimal Q-function**, we
-have an optimal policy, since we **know for, each state, the best action to take.**
+have an optimal policy, since we **know for each state, the best action to take.**
 
 <img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit3/link-value-policy.jpg" alt="Link value policy"  width="100%"/>
 
@@ -146,7 +146,8 @@ pip install -r https://raw.githubusercontent.com/huggingface/deep-rl-class/main/
 
 ```bash
 sudo apt-get update
-apt install python-opengl ffmpeg xvfb
+sudo apt-get install -y python3-opengl
+apt install ffmpeg xvfb
 pip3 install pyvirtualdisplay
 ```
 
@@ -246,7 +247,7 @@ print("Observation Space", env.observation_space)
 print("Sample observation", env.observation_space.sample())  # Get a random observation
 ```
 
-We see with `Observation Space Shape Discrete(16)` that the observation is an integer representing the **agent’s current position as current_row * nrows + current_col (where both the row and col start at 0)**.
+We see with `Observation Space Shape Discrete(16)` that the observation is an integer representing the **agent’s current position as current_row * ncols + current_col (where both the row and col start at 0)**.
 
 For example, the goal position in the 4x4 map can be calculated as follows: 3 * 4 + 3 = 15. The number of possible observations is dependent on the size of the map. **For example, the 4x4 map has 16 possible observations.**
 
@@ -352,7 +353,7 @@ def greedy_policy(Qtable, state):
     return action
 ```
 
-##Define the epsilon-greedy policy 🤖
+## Define the epsilon-greedy policy 🤖
 
 Epsilon-greedy is the training policy that handles the exploration/exploitation trade-off.
 
@@ -388,9 +389,9 @@ def epsilon_greedy_policy(Qtable, state, epsilon):
 ```python
 def epsilon_greedy_policy(Qtable, state, epsilon):
     # Randomly generate a number between 0 and 1
-    random_int = random.uniform(0, 1)
-    # if random_int > greater than epsilon --> exploitation
-    if random_int > epsilon:
+    random_num = random.uniform(0, 1)
+    # if random_num > greater than epsilon --> exploitation
+    if random_num > epsilon:
         # Take the action with the highest value given a state
         # np.argmax can be useful here
         action = greedy_policy(Qtable, state)
@@ -716,13 +717,10 @@ def push_to_hub(repo_id, model, env, video_fps=1, local_repo_path="hub"):
 
   ## Usage
 
-  ```python
-
   model = load_from_hub(repo_id="{repo_id}", filename="q-learning.pkl")
 
   # Don't forget to check if you need to add additional attributes (is_slippery=False etc)
   env = gym.make(model["env_id"])
-  ```
   """
 
     evaluate_agent(env, model["max_steps"], model["n_eval_episodes"], model["qtable"], model["eval_seed"])

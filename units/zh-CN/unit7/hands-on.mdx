@@ -26,7 +26,7 @@ AI vs. AI 是我们在 Hugging Face 开发的一个开源工具，用于在 Hub 
 
 除了这三个工具，你的同学 cyllum 还创建了一个 🤗 SoccerTwos Challenge Analytics，你可以在其中查看模型的详细比赛结果：[https://huggingface.co/spaces/cyllum/soccertwos-analytics](https://huggingface.co/spaces/cyllum/soccertwos-analytics)
 
-我们将撰写一篇博文详细介绍这个 AI vs. AI 工具，但为了给你一个大致的概念，它的工作原理如下：
+我们撰写了[一篇博文](https://huggingface.co/blog/aivsai)详细介绍这个 AI vs. AI 工具，但为了给你一个大致的概念，它的工作原理如下：
 
 - 每隔四个小时，我们的算法**获取给定环境（在我们的情况下是 ML-Agents-SoccerTwos）的所有可用模型**。
 - 它使用匹配算法创建一个**匹配队列**。
@@ -45,7 +45,6 @@ AI vs. AI 是我们在 Hugging Face 开发的一个开源工具，用于在 Hub 
 
 在这次竞赛中，决定胜负的将是你选择的超参数。
 
-AI 对战 AI 算法将持续运行直到 2023 年 4 月 30 日。
 
 我们一直在努力改进我们的教程，如果你在这个 Notebook 中发现了一些问题，请在[GitHub 仓库上提出问题](https://github.com/huggingface/deep-rl-class/issues)。
 
@@ -56,23 +55,20 @@ AI 对战 AI 算法将持续运行直到 2023 年 4 月 30 日。
 
 ## 步骤 0：安装 MLAgents 并下载正确的可执行文件
 
-⚠ 我们将使用一个实验版本的 ML-Agents，它允许你将模型从 Hub 中上传和下载到 / 。** 你需要安装相同的版本。**
-
-⚠ ⚠ ⚠ 我们将不使用与第5单元相同的版本：ML-Agents 入门 ⚠ ⚠ ⚠
 
 我们建议使用 [conda](https://docs.conda.io/en/latest/) 作为包管理器，并创建一个新的环境。
 
-使用 conda，我们创建一个名为 rl 的新环境，使用 **Python 3.9**：
+使用 conda，我们创建一个名为 rl 的新环境，使用  **Python 3.10.12**：
 
 ```bash
-conda create --name rl python=3.9
+conda create --name rl python=3.10.12
 conda activate rl
 ```
 
-为了能够正确训练我们的智能体并推送到 Hub，我们需要安装一个实验版本的 ML-Agents（Hugging Face ML-Agents 分支中的 aivsai）
+为了能够正确训练我们的智能体并推送到 Hub，我们需要安装 ML-Agents
 
 ```bash
-git clone --branch aivsai https://github.com/huggingface/ml-agents
+git clone https://github.com/Unity-Technologies/ml-agents
 ```
 
 当克隆完成（需要 2.63 GB）后，我们进入仓库并安装该软件包。
@@ -83,17 +79,12 @@ pip install -e ./ml-agents-envs
 pip install -e ./ml-agents
 ```
 
-我们同样需要用以下命令安装 PyTorch:
-
-```bash
-pip install torch
-```
 
 最后，你需要安装 git-lfs：https://git-lfs.com/
 
 安装完成后，我们需要添加环境训练可执行文件。根据你的操作系统，你需要下载其中一个可执行文件，并解压缩并放置在 `ml-agents` 目录下的一个名为 `training-envs-executables` 的新文件夹中。
 
-最终，你的可执行文件应位于 `mlagents/training-envs-executables/SoccerTwos` 中。
+最终，你的可执行文件应位于 `ml-agents/training-envs-executables/SoccerTwos` 中。
 
 Windows：下载[此可执行文件](https://drive.google.com/file/d/1sqFxbEdTMubjVktnV4C6ICjp89wLhUcP/view?usp=sharing)
 

@@ -1,0 +1,119 @@
+# 测验
+学习和避免能力错觉的最佳方式就是测试自己。这将帮助你发现你需要加强知识的领域。
+### Q1: 选择与比较不同类型的多人环境时更适合的选项
+- 在____环境中，你的智能体旨在最大化共同利益
+- 在____环境中，你的智能体旨在最大化共同利益，同时最小化对手的利益
+<Question
+	choices={[
+		{
+			text: "竞争, 合作",
+			explain: "你在合作中最大化共同利益，而在竞争中你也旨在减少对手的分数",
+   			correct: false,
+		},
+   		{
+			text: "合作, 竞争",
+			explain: "",
+   			correct: true,
+		},
+	]}
+/>
+### Q2: 关于`分布式`学习的以下哪些陈述是正确的？
+<Question
+	choices={[
+		{
+			text: "每个智能体都是从其他智能体中独立训练的",
+			explain: "",
+      		correct: true,
+		},
+    	{
+			text: "将其他智能体的输入视为环境数据",
+			explain: "",
+			correct: true,
+		},
+		{
+			text: "将其他智能体视为环境的一部分，使环境变得稳定",
+			explain: "在分布式学习中，智能体忽略其他智能体的存在，并将它们视为环境的一部分。然而，这意味着环境在不断变化，变得不稳定。",
+			correct: false,
+		},
+	]}
+/>
+### Q3: 关于`集中式`学习的以下哪些陈述是正确的？
+<Question
+	choices={[
+		{
+			text: "它基于所有智能体交互的学习，学习一个共同的策略",
+			explain: "",
+      		correct: true,
+		},
+    	{
+			text: "奖励是全局的",
+			explain: "",
+			correct: true,
+		},
+		{
+			text: "使用这种方法的环境是稳定的",
+			explain: "",
+			correct: true,
+		},
+	]}
+/>
+### Q4: 请用你自己的话解释`自我对弈`方法
+<details>
+<summary>解决方案</summary>
+`自我对弈`是一种方法，通过实例化与你的对手具有相同策略的智能体的副本，让你的智能体从具有相同训练水平的智能体中学习。
+</details>
+### Q5: 在配置`自我对弈`时，有几个参数非常重要。你能通过它们的定义识别出我们在谈论哪个参数吗？
+- 与当前自我对弈与从池中对抗对手的概率
+- 你可能面临的对手的训练水平（多样性）的差异
+- 在生成新对手之前训练步骤的数量
+- 对手变更率
+<Question
+	choices={[
+   		 {
+			text: "窗口, play_against_latest_model_ratio, save_steps, swap_steps+team_change",
+			explain: "",
+      		correct: false,
+		},
+		{
+			text: "play_against_latest_model_ratio, save_steps, 窗口, swap_steps+team_change",
+			explain: "",
+			correct: false,
+		},
+		{
+			text: "play_against_latest_model_ratio, 窗口, save_steps, swap_steps+team_change",
+			explain: "",
+			correct: true,
+		},
+    	{
+			text: "swap_steps+team_change, save_steps, play_against_latest_model_ratio, 窗口",
+			explain: "",
+      		correct: false,
+		},
+	]}
+/>
+### Q6: 使用ELO评分的主要动机是什么？
+<Question
+	choices={[
+   		 {
+			text: "分数考虑了你和你的对手之间的技能差异",
+			explain: "",
+      		correct: true,
+		},
+		{
+			text: "尽管可以根据比赛结果和给定智能体的水平交换更多的点数，但总和始终相同",
+			explain: "",
+			correct: true,
+		},
+		{
+			text: "智能体保持高分数率很容易",
+			explain: "这称为`评分下降`：随着时间的推移保持高分数需要更多的技能",
+			correct: false,
+		},
+    	{
+			text: "它很好地计算了团队中每个玩家的个人贡献",
+			explain: "ELO使用整个团队获得的分数，但个人贡献并没有被计算",
+      		correct: false,
+		},
+	]}
+/>
+恭喜你完成这个测验🥳，如果你错过了某些元素，花时间再次阅读章节以加强（😏）你的知识。
