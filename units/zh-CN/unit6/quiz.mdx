@@ -1,0 +1,98 @@
+### 测验
+学习和避免[胜任力错觉](https://www.coursera.org/lecture/learning-how-to-learn/illusions-of-competence-BuFzf)的最好方法就是测试自己。这将帮助你找到需要加强知识的地方。
+#### Q1: 在强化学习领域，关于偏差-方差折衷的以下哪种解释是最准确的？
+<Question
+	choices={[
+		{
+			text: "偏差-方差折衷反映了我的模型能够将知识泛化到我们在训练期间提供给模型的前标记数据。",
+			explain: "这是机器学习中的传统偏差-方差折衷。在我们特定的强化学习案例中，我们没有前标记的数据，只有一个奖励信号。",
+      			correct: false,
+		},
+   		{
+			text: "偏差-方差折衷反映了奖励信号如何准确地反映代理应从环境中获得的真实奖励",
+			explain: "",
+      			correct: true,
+		},		
+	]}
+/>
+#### Q2: 在讨论具有偏差和/或方差的RL模型时，以下哪些陈述是正确的？
+<Question
+	choices={[
+		{
+			text: "无偏的奖励信号返回与环境中真实/预期的奖励相似的奖励",
+			explain: "",
+      			correct: true,
+		},
+    		{
+			text: "有偏的奖励信号返回与环境中真实/预期的奖励相似的奖励",
+			explain: "如果奖励信号有偏，这意味着我们得到的奖励信号与我们应从环境中得到的真实奖励不同",
+      			correct: false,
+		},
+    		{
+			text: "具有高方差的奖励信号中有很多噪声，并且会受到例如环境中随机（非恒定）元素的影响",
+			explain: "",
+      			correct: true,
+		},		
+    		{
+			text: "具有低方差的奖励信号中有很多噪声，并且会受到例如环境中随机（非恒定）元素的影响",
+			explain: "如果奖励信号的方差很低，那么它受到环境中噪声的影响较小，并且无论环境中的随机元素如何，都能产生相似的值",
+      			correct: false,
+		},
+	]}
+/>
+#### Q3: 关于蒙特卡洛方法的以下哪些陈述是正确的？
+<Question
+	choices={[
+		{
+			text: "它是一种抽样机制，这意味着我们不分析所有可能的状态，而只是其中的一小部分",
+			explain: "",
+      			correct: true,
+		},
+    		{
+			text: "它对随机性（轨迹中的随机元素）非常抵抗",
+			explain: "蒙特卡洛每次都会随机估计轨迹的样本。但是，如果轨迹包含随机元素，即使相同的轨迹也可能有不同的奖励值",
+      			correct: false,
+		},
+    		{
+			text: "为了减少蒙特卡洛中随机元素的影响，我们采取`n`种策略并取平均值，从而减少它们各自的影响",
+			explain: "",
+			correct: true,
+		},		    
+	]}
+/>
+#### Q4: 请用你自己的话描述演员-评论家方法（A2C）。
+<details>
+<summary>答案</summary>
+演员-评论家方法背后的思想是，我们学习两个函数近似：
+1. 控制我们的代理如何行动的策略（π）
+2. 通过衡量所采取行动的好坏来帮助策略更新的价值函数（q）
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/step2.jpg" alt="Actor-Critic, step 2"/>
+</details>
+#### Q5: 关于演员-评论家方法的以下哪些陈述是正确的？
+<Question
+	choices={[
+   		 {
+			text: "评论家在训练过程中没有学习任何函数",
+			explain: "在训练期间，演员和评论家的函数参数都会更新",
+      			correct: false,
+		},
+		{
+			text: "演员学习策略函数，而评论家学习价值函数",
+			explain: "",
+      			correct: true,
+		},
+    		{
+			text: "它增加了对随机性的抵抗力并减少了高方差",
+			explain: "",
+      			correct: true,
+		},	    
+	]}
+/>
+#### Q6: 在A2C方法中，什么是“优势”？
+<details>
+<summary>答案</summary>
+我们不是直接使用评论家的动作-价值函数，而是可以使用一个“优势”函数。优势函数背后的思想是，我们计算与状态中可能的其他动作相比，采取该动作的相对优势，并对它们取平均值。
+换句话说：在某个状态下采取该动作比平均状态价值更好
+<img src="https://huggingface.co/datasets/huggingface-deep-rl-course/course-images/resolve/main/en/unit8/advantage1.jpg" alt="Advantage in A2C"/>
+</details>
+恭喜你完成这个测验🥳，如果你错过了某些元素，花时间再次阅读章节，以加强

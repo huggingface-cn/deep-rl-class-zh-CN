@@ -148,6 +148,8 @@
     title: Hands-on
   - local: unit5/bonus
     title: Bonus. Learn to create your own environments with Unity and MLAgents
+  - local: unit5/quiz
+    title: Quiz
   - local: unit5/conclusion
     title: Conclusion
 - title: Unit 6. Actor Critic methods with Robotics environments
@@ -160,6 +162,8 @@
     title: Advantage Actor Critic (A2C)
   - local: unit6/hands-on
     title: Advantage Actor Critic (A2C) using Robotics Simulations with Panda-Gym 🤖
+  - local: unit6/quiz
+    title: Quiz
   - local: unit6/conclusion
     title: Conclusion
   - local: unit6/additional-readings
@@ -176,6 +180,8 @@
     title: Self-Play
   - local: unit7/hands-on
     title: Let's train our soccer team to beat your classmates' teams (AI vs. AI)
+  - local: unit7/quiz
+    title: Quiz
   - local: unit7/conclusion
     title: Conclusion
   - local: unit7/additional-readings
